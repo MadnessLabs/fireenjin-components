@@ -1,0 +1,38 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+import namespace from '../../.storybook/helpers/mdx-packageJson';
+import dedent from 'ts-dedent';
+import markdown from '../../README.md';
+
+<Meta title="Getting Started" />
+
+# FireEnjin Components
+
+## Github
+- Repo: https://github.com/madnesslabs/firenjin-components
+- Issues: https://github.com/madnesslabs/firenjin-components/issues
+
+## MDX links
+- [MDX](https://mdxjs.com/getting-started)
+- [Storybook MDX](https://storybook.js.org/docs/react/api/mdx)
+
+## Change your package name
+in your `package.json`
+
+## Add this snippet code to your page
+<Source
+  language='html'
+  code={dedent`
+     <script type="module" src="${namespace}.esm.js"></script>
+     <link rel="stylesheet" href="${namespace}.css" />
+     <my-component ...></my-component>
+  `}
+/>
+
+## [Readme](https://github.com/madnesslabs/firenjin-components/blob/main/README.md)
+<Source
+  language='markdown'
+  code={markdown}
+/>
+
+Cheers
+Dutscher
