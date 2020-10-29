@@ -19,9 +19,9 @@ module.exports = {
 };
 
 const doProd = (config) => {
-  const { name, distDirs } = require('../package.json');
+  const { namespace, distDirs } = require('../package.json');
   const OUTPUT_DIR = path.join(__dirname, '../' + distDirs.stencil);
-  const mainJs = path.join(OUTPUT_DIR, `cjs/${name}.cjs.js`);
+  const mainJs = path.join(OUTPUT_DIR, `cjs/${namespace}.cjs.js`);
 
   // override HtmlWebpackPlugin to inject stencil into storybook prod
   // template default: @storybook/core/dist/server/templates/index.ejs

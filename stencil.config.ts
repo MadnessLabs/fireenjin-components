@@ -5,10 +5,11 @@ const { namespace, distDirs } = require('./package.json');
 export const config: Config = {
   namespace,
   buildEs5: false,
-  taskQueue: 'async',
+  taskQueue: "async",
   plugins: [
   ],
   globalStyle: 'src/css/global.css',
+  globalScript: "src/global.ts",
   devServer: {
     reloadStrategy: 'hmr',
     openBrowser: false,

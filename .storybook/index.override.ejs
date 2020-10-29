@@ -16,10 +16,10 @@
     <% }); %>
 
     <% // OVERRIDE START
-        const { name } = require('../package.json');
+        const { namespace } = require('../package.json');
     %>
-    <script type="module" src="<%= name %>.esm.js"></script>
-    <link rel="stylesheet" href="<%= name %>.css" />
+    <script type="module" src="<%= namespace %>.esm.js"></script>
+    <link rel="stylesheet" href="<%= namespace %>.css" />
     <% // OVERRIDE ENDS %>
 
     <style>

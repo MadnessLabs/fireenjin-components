@@ -34,7 +34,7 @@ export class MyComponent {
       <Host
         class={cssClasses}
         onClick={() => this.clicked.emit()}>
-        Konichiwa, World! I'm <span class={BEM(this, 'name')}> {this.getText()}</span>
+        <ion-card>Hello, World! I'm <span class={BEM(this, 'name')}> {this.getText()}</span></ion-card>
       </Host>
     );
   }
