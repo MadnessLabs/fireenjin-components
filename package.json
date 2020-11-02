@@ -10,6 +10,7 @@
   "module": "dist-stencil/index.js",
   "es2015": "dist-stencil/esm/index.js",
   "es2017": "dist-stencil/esm/index.js",
+  "jsnext:main": "dist-stencil/esm/index.mjs",
   "types": "dist-stencil/index.d.ts",
   "collection": "dist-stencil/collection/collection-manifest.json",
   "scripts": {
