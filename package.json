@@ -1,7 +1,7 @@
 {
   "name": "@madnesslabs/fireenjin-components",
   "namespace": "fireenjin",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "distDirs": {
     "stencil": "dist-stencil",
     "storybook": "dist-storybook"
