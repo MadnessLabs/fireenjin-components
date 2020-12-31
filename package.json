@@ -27,7 +27,7 @@
     "lint": "run-p lint:js",
     "lint:js": "eslint src/**/*{.ts,.tsx}",
     "chromatic": "run-s build:stencil chromatic:publish",
-    "chromatic:publish": "npx chromatic --project-token r7m9tomdlfj --build-script-name build:storybook"
+    "chromatic:publish": "npx chromatic --project-token r7m9tomdlfj --build-script-name build:storybook --auto-accept-changes"
   },
   "husky": {
     "hooks": {
