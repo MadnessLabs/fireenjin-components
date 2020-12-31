@@ -22,7 +22,7 @@
     "new:component": "stencil generate",
     "build": "run-s build:stencil build:storybook",
     "build:stencil": "stencil build --docs",
-    "build:storybook": "build-storybook --output-dir ./dist-storybook --static-dir ./dist-stencil/fireenjin",
+    "build:storybook": "build-storybook --output-dir ./dist-storybook --static-dir ./dist/fireenjin",
     "test": "stencil test --spec --e2e --coverage",
     "lint": "run-p lint:js",
     "lint:js": "eslint src/**/*{.ts,.tsx}",
