@@ -36,10 +36,10 @@
   },
   "dependencies": {
     "@ionic/core": "^5.5.2",
-    "@madnesslabs/fireenjin-backend": "^1.0.5",
     "@stencil/core": "^2.3.0",
     "@storybook/web-components": "^6.1.11",
     "debounce-decorator": "^1.0.6",
+    "graphql": "^15.4.0",
     "graphql-request": "^3.4.0",
     "lit-html": "^1.3.0",
     "localforage": "^1.9.0"

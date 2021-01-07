@@ -2,7 +2,6 @@ import "@ionic/core";
 import { GraphQLClient } from "graphql-request";
 import localforage from "localforage";
 import isEqual from "lodash/fp/isEqual";
-import { getSdk, Sdk } from "@madnesslabs/fireenjin-backend/dist/sdk";
 
 async function setComponentProps(event, data) {
   let newData = data ? data : {};
@@ -18,9 +17,10 @@ async function setComponentProps(event, data) {
 
 export default () => {
   if (window && !(window as any).FireEnjin) {
-    let client: GraphQLClient, sdk: Sdk;
+    let client: GraphQLClient, getSdk: any, sdk: any;
     (window as any).FireEnjin = {
       init: async (
+        getSdkFn: any,
         options: {
           host?: string;
           token?: string;
@@ -37,6 +37,7 @@ export default () => {
             ...(options.headers ? options.headers : {})
           }
         });
+        getSdk = getSdkFn;
         sdk = getSdk(client);
 
         window.addEventListener("fireenjinUpload", async (event: any) => {
