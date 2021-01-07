@@ -19,6 +19,10 @@ export const config: Config = {
     openBrowser: false,
   },
   outputTargets: [
+    {
+      type: "www",
+      serviceWorker: null
+    },
     // creates /dist dir
     {
       type: 'dist',
