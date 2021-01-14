@@ -9,6 +9,7 @@ import {
   Prop,
   State,
 } from "@stencil/core";
+import { Control } from "../../interface";
 
 @Component({
   tag: "fireenjin-filter-bar",

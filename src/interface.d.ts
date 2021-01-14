@@ -1,6 +1,6 @@
 import { SelectCompareFn, SelectInterface } from "@ionic/core";
 
-export declare interface Control {
+export interface Control {
     name: string;
     icon?: string;
     label?: string;

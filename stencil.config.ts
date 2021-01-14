@@ -39,8 +39,7 @@ export const config: Config = {
     },
     // creates readme.md for components
     {
-      type: 'docs-readme',
-      dir: distDirs.stencil,
+      type: 'docs-readme'
     },
     // create components(.d.ts|json) into dist
     {
