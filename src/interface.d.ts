@@ -8,7 +8,7 @@ export interface Control {
     header?: string;
     subHeader?: string;
     message?: string;
-    optionEl?: (result: any) => HTMLIonSelectOptionElement;
+    optionEl?: (result: any) => any;
     endpoint?: string;
     query?: string;
     limit?: number;
