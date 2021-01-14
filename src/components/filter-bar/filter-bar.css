@@ -1,0 +1,27 @@
+fireenjin-filter-bar ion-col.mode-toggle {
+  max-width: 60px;
+  padding-top: 12px;
+}
+fireenjin-filter-bar ion-col.filter-control ion-card {
+  padding: 12px;
+  margin-top: 8px;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+}
+fireenjin-filter-bar ion-col.filter-control ion-card.has-value {
+  padding: 5px 30px;
+}
+fireenjin-filter-bar ion-col.filter-control .start-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 20px;
+  width: 20px;
+}
+fireenjin-filter-bar ion-col.filter-control .end-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  opacity: 0.33;
+}
