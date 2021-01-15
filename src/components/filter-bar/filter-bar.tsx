@@ -198,13 +198,13 @@ export class FilterBar implements ComponentInterface {
                                     .filter(
                                       (option) => option.value === control.value
                                     )
-                                    .map((option) => option.label)
+                                    .map((option) => option.label).join(", ")
                                 : this.selectOptions[control.name]
                                 ? this.selectOptions[control.name]
                                     .filter(
                                       (result) => result.id === control.value
                                     )
-                                    .map((result) => result.name)
+                                    .map((result) => result.name).join(", ")
                                 : null}
                             </ion-label>
                             <ion-icon
