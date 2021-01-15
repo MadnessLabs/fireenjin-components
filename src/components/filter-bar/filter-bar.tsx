@@ -196,13 +196,13 @@ export class FilterBar implements ComponentInterface {
                               {control.options?.length
                                 ? control.options
                                     .filter(
-                                      (option) => option.value === control.value
+                                      (option) => control.value.map ? control.value.includes(option.value) : option.value === control.value
                                     )
                                     .map((option) => option.label).join(", ")
                                 : this.selectOptions[control.name]
                                 ? this.selectOptions[control.name]
                                     .filter(
-                                      (result) => result.id === control.value
+                                      (result) => control.value.map ? control.value.includes(result.id) : result.id === control.value
                                     )
                                     .map((result) => result.name).join(", ")
                                 : null}

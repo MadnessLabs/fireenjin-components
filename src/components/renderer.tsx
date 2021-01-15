@@ -4,7 +4,7 @@ export interface Control {
     name: string;
     icon?: string;
     label?: string;
-    value?: string;
+    value?: any;
     header?: string;
     subHeader?: string;
     message?: string;
