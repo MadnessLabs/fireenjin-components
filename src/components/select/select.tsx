@@ -25,42 +25,34 @@ export class Select implements ComponentInterface {
    * If `true`, the user cannot interact with the select.
    */
   @Prop() disabled = false;
-
   /**
    * The text to display on the cancel button.
    */
   @Prop() cancelText = 'Dismiss';
-
   /**
    * The text to display on the ok button.
    */
   @Prop() okText = 'Okay';
-
   /**
    * The text to display when the select is empty.
    */
   @Prop() placeholder?: string | null;
-
   /**
    * The name of the control, which is submitted with the form data.
    */
   @Prop() name: string;
-
   /**
    * The text to display instead of the selected option's value.
    */
   @Prop() selectedText?: string | null;
-
   /**
    * If `true`, the select can accept multiple values.
    */
   @Prop() multiple = false;
-
   /**
    * The interface the select should use: `action-sheet`, `popover` or `alert`.
    */
   @Prop() interface: SelectInterface = 'alert';
-
   /**
    * Any additional options that the `alert`, `action-sheet` or `popover` interface
    * can take. See the [ion-alert docs](../alert), the
@@ -71,12 +63,10 @@ export class Select implements ComponentInterface {
    * Note: `interfaceOptions` will not override `inputs` or `buttons` with the `alert` interface.
    */
   @Prop() interfaceOptions: any = {};
-
   /**
    * A property name or function used to compare object values
    */
   @Prop() compareWith?: string | SelectCompareFn | null;
-
   /**
    * the value of the select.
    */
@@ -103,7 +93,7 @@ export class Select implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   onSuccess(event) {
-    if (event?.detail?.name !== "select") return;
+    if (event?.detail?.name !== "select" || event.detail.endpoint !== this.endpoint) return;
     this.results = event?.detail?.data?.results
       ? event.detail.data.results
       : [];
@@ -154,6 +144,14 @@ export class Select implements ComponentInterface {
               message: this.message,
             }}
           >
+            {this.options.map((option) => (
+              <ion-select-option
+                value={option.value}
+                disabled={option.disabled}
+              >
+                {option.label}
+              </ion-select-option>
+            ))}
             {this.results.map((result) =>
               this.optionEl ? (
                 this.optionEl(result)
@@ -163,14 +161,6 @@ export class Select implements ComponentInterface {
                 </ion-select-option>
               )
             )}
-            {this.options.map((option) => (
-              <ion-select-option
-                value={option.value}
-                disabled={option.disabled}
-              >
-                {option.label}
-              </ion-select-option>
-            ))}
           </ion-select>
         </ion-item>
       </Host>
