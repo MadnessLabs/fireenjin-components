@@ -88,6 +88,7 @@ export class Select implements ComponentInterface {
     value?: any;
     disabled?: boolean;
   }[] = [];
+  @Prop() resultsKey?: string;
 
   @State() results: any[] = [];
 
@@ -104,7 +105,7 @@ export class Select implements ComponentInterface {
     this.fireenjinFetch.emit({
       name: "select",
       endpoint: this.endpoint,
-      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : null,
+      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : this.resultsKey ? { [this.resultsKey]: "results" } : null,
       params: {
         data: {
           ...(this.query ? { query: this.query } : {}),
