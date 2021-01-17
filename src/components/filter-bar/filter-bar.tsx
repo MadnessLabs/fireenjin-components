@@ -8,6 +8,7 @@ import {
   Method,
   Prop,
   State,
+  Watch,
 } from "@stencil/core";
 import { Control } from "../renderer";
 
@@ -43,6 +44,12 @@ export class FilterBar implements ComponentInterface {
   @State() currentFilters: {
     [filterKey: string]: Control;
   } = {};
+
+  @Watch("paginationEl")
+  onPaginationElChange() {
+    if (!this.paginationEl) return;
+    this.displayMode = this.paginationEl.display ? this.paginationEl.display : this.displayMode;
+  }
 
   @Listen("fireenjinSuccess", { target: "body" })
   onSuccess(event) {
