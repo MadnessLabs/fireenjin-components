@@ -102,9 +102,7 @@ export class Pagination implements ComponentInterface {
       if (!event.detail?.data?.results?.length) {
         this.infiniteScrollEl.disabled = true;
       }
-      setTimeout(async () => {
-        window.dispatchEvent(new window.Event("resize"));
-      }, 2000);
+      window.dispatchEvent(new window.Event("resize"));
     }
   }
 
