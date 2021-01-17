@@ -35,8 +35,10 @@ export class FilterBar implements ComponentInterface {
 
   @Prop() paginationEl: any;
   @Prop() modeToggle = false;
+  @Prop({
+    mutable: true
+  }) displayMode: "list" | "grid" = "grid";
 
-  @State() displayMode: "list" | "grid" = "grid";
   @State() selectOptions: any = {};
   @State() currentFilters: {
     [filterKey: string]: Control;
