@@ -40,6 +40,7 @@ export class Pagination implements ComponentInterface {
   @Prop() groupBy: string;
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
+  @Prop() resultsKey?: string;
 
   @State() paramData: {
     query?: string;
@@ -198,7 +199,7 @@ export class Pagination implements ComponentInterface {
     this.fireenjinFetch.emit({
       name: "pagination",
       endpoint: this.endpoint,
-      dataPropsMap: this.dataPropsMap,
+      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : this.resultsKey ? { [this.resultsKey]: "results" } : null,
       disableFetch: this.disableFetch,
       params: {
         data: this.fetchData ? this.fetchData : this.paramData,

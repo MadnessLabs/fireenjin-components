@@ -26,6 +26,7 @@
 | `page`             | `page`               |             | `number`                   | `0`                      |
 | `query`            | `query`              |             | `string`                   | `undefined`              |
 | `results`          | --                   |             | `any[]`                    | `[]`                     |
+| `resultsKey`       | `results-key`        |             | `string`                   | `undefined`              |
 
 
 ## Events
