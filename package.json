@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "stencil build",
-    "deploy:build": "npm run docs && npm run presets:build",
+    "deploy:build": "fireenjin env github && npm run docs && npm run presets:build",
     "dev": " stencil build --docs --dev --watch --serve",
     "docs": " stencil build --docs",
     "start": "npm-run-all --parallel dev presets:watch",
