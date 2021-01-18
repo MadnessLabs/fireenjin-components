@@ -2,17 +2,17 @@
   "name": "@madnesslabs/fireenjin-components",
   "namespace": "fireenjin",
   "version": "1.0.4",
-  "distDirs": {
-    "stencil": "dist",
-    "storybook": "dist-storybook"
-  },
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "es2015": "dist/esm/index.js",
-  "es2017": "dist/esm/index.js",
-  "jsnext:main": "dist/esm/index.mjs",
-  "types": "dist/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.js",
+  "es2015": "./dist/esm/index.mjs",
+  "es2017": "./dist/esm/index.mjs",
+  "types": "./dist/types/components.d.ts",
+  "unpkg": "./dist/fireenjin/fireenjin.js",
+  "collection:main": "./dist/collection/index.js",
+  "collection": "./dist/collection/collection-manifest.json",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "stencil build",
     "deploy:build": "npm run docs && npm run presets:build",
