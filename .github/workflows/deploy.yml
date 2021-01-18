@@ -13,12 +13,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14'
-      - name: Authenticate
-        run: echo -e "@madnesslabs:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_ACCESS_TOKEN }}" > ~/.npmrc
+      # - name: Authenticate
+      #   run: echo -e "@madnesslabs:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_ACCESS_TOKEN }}" > ~/.npmrc
       - name: Install
         run: npm ci
       - name: Build
-        run: npm run build --if-present
+        run: npm run deploy:build
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
