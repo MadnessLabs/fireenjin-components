@@ -9,6 +9,7 @@
 
 | Property       | Attribute       | Description | Type                                                                                                                                       | Default     |
 | -------------- | --------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `displayMode`  | `display-mode`  |             | `"grid" \| "list"`                                                                                                                         | `"grid"`    |
 | `filter`       | --              |             | `{ label?: string; controls: Control[]; }`                                                                                                 | `undefined` |
 | `modeToggle`   | `mode-toggle`   |             | `boolean`                                                                                                                                  | `false`     |
 | `paginationEl` | `pagination-el` |             | `any`                                                                                                                                      | `undefined` |

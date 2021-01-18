@@ -37,8 +37,12 @@
     />
     <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
+    
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
-
+    <script
+      type="module"
+      src="https://unpkg.com/@madnesslabs/fireenjin-designer@latest/dist/fireenjin-designer/fireenjin-designer.esm.js"
+    ></script>
     <!-- Add Firebase products that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-firestore.js"></script>
@@ -52,15 +56,6 @@
   </head>
 
   <body>
-    <fireenjin-renderer></fireenjin-renderer>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        FireEnjin.init({
-          host: "http://localhost:4000",
-          functionsHost:
-            "https://us-central1-fireenjin-live.cloudfunctions.net",
-        });
-      });
-    </script>
+    <fireenjin-designer-gallery></fireenjin-designer-gallery>
   </body>
 </html>

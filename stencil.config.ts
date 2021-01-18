@@ -1,7 +1,7 @@
 import { Config } from '@stencil/core';
-import typescript from "rollup-plugin-typescript";
+// import typescript from "rollup-plugin-typescript";
 
-const { namespace, distDirs } = require('./package.json');
+const { namespace } = require('./package.json');
 
 export const config: Config = {
   namespace,
@@ -10,7 +10,7 @@ export const config: Config = {
   plugins: [
   ],
   rollupPlugins: {
-    before: [typescript()],
+    // before: [typescript()],
   },
   globalStyle: 'src/css/global.css',
   globalScript: "src/global.ts",
@@ -20,31 +20,18 @@ export const config: Config = {
   },
   outputTargets: [
     {
+      type: "dist",
+    },
+    {
       type: "www",
-      serviceWorker: null
+      serviceWorker: null,
     },
-    // creates /dist dir
     {
-      type: 'dist',
-      dir: distDirs.stencil,
-      copy: [
-        // copy fonts into static for storybook and stencil build
-        { src: 'fonts' },
-      ],
+      type: "docs-readme",
     },
-    // one file in es6
     {
-      type: 'dist-custom-elements-bundle',
-      dir: distDirs.stencil,
-    },
-    // creates readme.md for components
-    {
-      type: 'docs-readme'
-    },
-    // create components(.d.ts|json) into dist
-    {
-      type: 'docs-json',
-      file: `${distDirs.stencil}/components.json`,
+      type: "docs-json",
+      file: "www/core.json",
     },
   ],
 };
