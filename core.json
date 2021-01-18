@@ -1,0 +1,2141 @@
+{
+  "timestamp": "2021-01-18T20:11:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.3.0",
+    "typescriptVersion": "4.0.5"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/filter-bar/filter-bar.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-filter-bar",
+      "readme": "# fireenjin-filter-bar\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "displayMode",
+          "type": "\"grid\" | \"list\"",
+          "mutable": true,
+          "attr": "display-mode",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"grid\"",
+          "values": [
+            {
+              "value": "grid",
+              "type": "string"
+            },
+            {
+              "value": "list",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "filter",
+          "type": "{ label?: string; controls: Control[]; }",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "{ label?: string; controls: Control[]; }"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "modeToggle",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "mode-toggle",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "paginationEl",
+          "type": "any",
+          "mutable": false,
+          "attr": "pagination-el",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "sort",
+          "type": "{ label?: string; value?: string; header?: string; subHeader?: string; message?: string; options: { label: string; value: string; }[]; }",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "{ label?: string; value?: string; header?: string; subHeader?: string; message?: string; options: { label: string; value: string; }[]; }"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "clearFilter",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "clearFilter(event: any, clearingControl: Control) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "openFilterPopover",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "openFilterPopover(event: any) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "togglePaginationDisplay",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "togglePaginationDisplay() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "events": [],
+      "listeners": [
+        {
+          "event": "fireenjinSuccess",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "fireenjinReset",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "fireenjinSubmit",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "ionChange",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ion-grid",
+        "ion-row",
+        "ion-col",
+        "ion-button",
+        "ion-icon",
+        "ion-searchbar",
+        "ion-card",
+        "ion-chip",
+        "ion-label",
+        "ion-select",
+        "ion-select-option"
+      ],
+      "dependencyGraph": {
+        "fireenjin-filter-bar": [
+          "ion-grid",
+          "ion-row",
+          "ion-col",
+          "ion-button",
+          "ion-icon",
+          "ion-searchbar",
+          "ion-card",
+          "ion-chip",
+          "ion-label",
+          "ion-select",
+          "ion-select-option"
+        ],
+        "ion-button": [
+          "ion-ripple-effect"
+        ],
+        "ion-searchbar": [
+          "ion-icon"
+        ],
+        "ion-card": [
+          "ion-ripple-effect"
+        ],
+        "ion-chip": [
+          "ion-ripple-effect"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/form/form.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-form",
+      "readme": "# fireenjin-form\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "beforeSubmit",
+          "type": "(data: any) => Promise<any>",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "A method that runs before form submission to allow editing of formData",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "(data: any) => Promise<any>"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "confirmExit",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "confirm-exit",
+          "reflectToAttr": false,
+          "docs": "Confirm leaving the page when the form is filled",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disableEnterButton",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-enter-button",
+          "reflectToAttr": false,
+          "docs": "Should the enter button binding be disabled",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disableLoader",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-loader",
+          "reflectToAttr": false,
+          "docs": "Should the form disable the loader on submit",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disableReset",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-reset",
+          "reflectToAttr": false,
+          "docs": "Should the form disable reset",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "documentId",
+          "type": "string",
+          "mutable": false,
+          "attr": "document-id",
+          "reflectToAttr": false,
+          "docs": "The id of the document being edited",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "mutable": false,
+          "attr": "endpoint",
+          "reflectToAttr": false,
+          "docs": "The endpoint that form submission should link to",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "excludeData",
+          "type": "string[]",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "The data to exclude from the form submit event",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "string[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "findDataMap",
+          "type": "any",
+          "mutable": false,
+          "attr": "find-data-map",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "findEndpoint",
+          "type": "string",
+          "mutable": false,
+          "attr": "find-endpoint",
+          "reflectToAttr": false,
+          "docs": "The endpoint to get data to fill the form",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "findParams",
+          "type": "any",
+          "mutable": false,
+          "attr": "find-params",
+          "reflectToAttr": false,
+          "docs": "The form params",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "formData",
+          "type": "any",
+          "mutable": true,
+          "attr": "form-data",
+          "reflectToAttr": false,
+          "docs": "The data from the form being filled out",
+          "docsTags": [],
+          "default": "{}",
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "hasChanged",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "has-changed",
+          "reflectToAttr": false,
+          "docs": "Has the form fields been changed",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "hideControls",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "hide-controls",
+          "reflectToAttr": false,
+          "docs": "Should the form controls be hidden?",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "loading",
+          "reflectToAttr": false,
+          "docs": "Is the component currently loading",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "The name of the form used for ID and name",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "resetButton",
+          "type": "string",
+          "mutable": false,
+          "attr": "reset-button",
+          "reflectToAttr": false,
+          "docs": "What the reset button says",
+          "docsTags": [],
+          "default": "\"Cancel\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "resetButtonColor",
+          "type": "string",
+          "mutable": false,
+          "attr": "reset-button-color",
+          "reflectToAttr": false,
+          "docs": "What color the reset button is",
+          "docsTags": [],
+          "default": "\"dark\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "resetButtonFill",
+          "type": "\"clear\" | \"default\" | \"outline\" | \"solid\"",
+          "mutable": false,
+          "attr": "reset-button-fill",
+          "reflectToAttr": false,
+          "docs": "What fill option to use for the reset button",
+          "docsTags": [],
+          "default": "\"clear\"",
+          "values": [
+            {
+              "value": "clear",
+              "type": "string"
+            },
+            {
+              "value": "default",
+              "type": "string"
+            },
+            {
+              "value": "outline",
+              "type": "string"
+            },
+            {
+              "value": "solid",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "submitButton",
+          "type": "string",
+          "mutable": false,
+          "attr": "submit-button",
+          "reflectToAttr": false,
+          "docs": "What the save button says",
+          "docsTags": [],
+          "default": "\"Save\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "submitButtonColor",
+          "type": "string",
+          "mutable": false,
+          "attr": "submit-button-color",
+          "reflectToAttr": false,
+          "docs": "What color the submit button is",
+          "docsTags": [],
+          "default": "\"primary\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "submitButtonFill",
+          "type": "\"clear\" | \"default\" | \"outline\" | \"solid\"",
+          "mutable": false,
+          "attr": "submit-button-fill",
+          "reflectToAttr": false,
+          "docs": "What fill option to use for the submit button",
+          "docsTags": [],
+          "default": "\"solid\"",
+          "values": [
+            {
+              "value": "clear",
+              "type": "string"
+            },
+            {
+              "value": "default",
+              "type": "string"
+            },
+            {
+              "value": "outline",
+              "type": "string"
+            },
+            {
+              "value": "solid",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "checkFormValidity",
+          "returns": {
+            "type": "Promise<boolean>",
+            "docs": ""
+          },
+          "signature": "checkFormValidity(reportValidity?: boolean) => Promise<boolean>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "reportFormValidity",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "reportFormValidity() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "reset",
+          "returns": {
+            "type": "Promise<boolean>",
+            "docs": ""
+          },
+          "signature": "reset(event?: any) => Promise<boolean>",
+          "parameters": [],
+          "docs": "Emit fireenjinReset event with form data",
+          "docsTags": [
+            {
+              "name": "param",
+              "text": "event The form reset event"
+            }
+          ]
+        },
+        {
+          "name": "setFormData",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setFormData(data: any) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "setLoading",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setLoading(value: boolean) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "submit",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "submit(event?: any) => Promise<void>",
+          "parameters": [],
+          "docs": "Emit fireenjinSubmit event with form data",
+          "docsTags": [
+            {
+              "name": "param",
+              "text": "event The form submit event"
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "event": "fireenjinFetch",
+          "detail": "{ event?: any; endpoint: string; params?: any; name?: string; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted on load with endpoint",
+          "docsTags": []
+        },
+        {
+          "event": "fireenjinReset",
+          "detail": "{ event: any; id: string; endpoint: string; data: any; name: string; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user resets the form",
+          "docsTags": []
+        },
+        {
+          "event": "fireenjinSubmit",
+          "detail": "{ event: any; id: string; endpoint: string; data: any; name: string; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user submits the form",
+          "docsTags": []
+        },
+        {
+          "event": "fireenjinValidation",
+          "detail": "{ event: any; isValid: boolean; name: string; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a filed checks validation",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "ionInput",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "ionChange",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "ionSelect",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "keydown",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "fireenjinSuccess",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "fireenjin-popover-filter"
+      ],
+      "dependencies": [
+        "ion-grid",
+        "ion-row",
+        "ion-col",
+        "ion-button"
+      ],
+      "dependencyGraph": {
+        "fireenjin-form": [
+          "ion-grid",
+          "ion-row",
+          "ion-col",
+          "ion-button"
+        ],
+        "ion-button": [
+          "ion-ripple-effect"
+        ],
+        "fireenjin-popover-filter": [
+          "fireenjin-form"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/pagination/pagination.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-pagination",
+      "readme": "# fireenjin-pagination\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "approxItemHeight",
+          "type": "number",
+          "mutable": true,
+          "attr": "approx-item-height",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "dataPropsMap",
+          "type": "any",
+          "mutable": false,
+          "attr": "data-props-map",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disableFetch",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-fetch",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "display",
+          "type": "\"grid\" | \"list\"",
+          "mutable": false,
+          "attr": "display",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"grid\"",
+          "values": [
+            {
+              "value": "grid",
+              "type": "string"
+            },
+            {
+              "value": "list",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "mutable": false,
+          "attr": "endpoint",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "fetchData",
+          "type": "any",
+          "mutable": false,
+          "attr": "fetch-data",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "gridEl",
+          "type": "FunctionalComponent<any>",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "FunctionalComponent<any>"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "groupBy",
+          "type": "string",
+          "mutable": false,
+          "attr": "group-by",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "mutable": false,
+          "attr": "limit",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "listEl",
+          "type": "FunctionalComponent<any>",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "FunctionalComponent<any>"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "loadingSpinner",
+          "type": "string",
+          "mutable": false,
+          "attr": "loading-spinner",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"bubbles\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "loadingText",
+          "type": "string",
+          "mutable": false,
+          "attr": "loading-text",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"Loading more data...\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "orderBy",
+          "type": "string",
+          "mutable": false,
+          "attr": "order-by",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "orderDirection",
+          "type": "string",
+          "mutable": false,
+          "attr": "order-direction",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "mutable": true,
+          "attr": "page",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "mutable": false,
+          "attr": "query",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "results",
+          "type": "any[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "any[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "resultsKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "results-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "addResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "addResults(results?: any[]) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "clearParamData",
+          "returns": {
+            "type": "Promise<{ query?: string; limit?: number; orderBy?: string; orderDirection?: \"asc\" | \"desc\"; whereEqual?: string; whereLessThan?: string; whereLessThanOrEqual?: string; whereGreaterThan?: string; whereGreaterThanOrEqual?: string; whereArrayContains?: string; whereArrayContainsAny?: string; whereIn?: string; next?: string; back?: string; }>",
+            "docs": ""
+          },
+          "signature": "clearParamData(key?: string) => Promise<{ query?: string; limit?: number; orderBy?: string; orderDirection?: \"asc\" | \"desc\"; whereEqual?: string; whereLessThan?: string; whereLessThanOrEqual?: string; whereGreaterThan?: string; whereGreaterThanOrEqual?: string; whereArrayContains?: string; whereArrayContainsAny?: string; whereIn?: string; next?: string; back?: string; }>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "clearResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "clearResults() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "getResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "getResults(options?: { page?: number; next?: boolean; limit?: number; paramData?: any; }) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "fireenjinFetch",
+          "detail": "any",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "fireenjinSuccess",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "ionInfinite",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "resize",
+          "target": "window",
+          "capture": false,
+          "passive": true
+        }
+      ],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "fireenjin-renderer"
+      ],
+      "dependencies": [
+        "ion-virtual-scroll",
+        "ion-grid",
+        "ion-row",
+        "ion-col",
+        "ion-card",
+        "ion-list",
+        "ion-infinite-scroll",
+        "ion-infinite-scroll-content"
+      ],
+      "dependencyGraph": {
+        "fireenjin-pagination": [
+          "ion-virtual-scroll",
+          "ion-grid",
+          "ion-row",
+          "ion-col",
+          "ion-card",
+          "ion-list",
+          "ion-infinite-scroll",
+          "ion-infinite-scroll-content"
+        ],
+        "ion-card": [
+          "ion-ripple-effect"
+        ],
+        "ion-infinite-scroll-content": [
+          "ion-spinner"
+        ],
+        "fireenjin-renderer": [
+          "fireenjin-pagination"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/popover-filter/popover-filter.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-popover-filter",
+      "readme": "# fireenjin-popover-filter\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "controls",
+          "type": "Control[]",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "Control[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "mutable": false,
+          "attr": "label",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ion-content",
+        "fireenjin-form",
+        "ion-item-divider",
+        "fireenjin-select"
+      ],
+      "dependencyGraph": {
+        "fireenjin-popover-filter": [
+          "ion-content",
+          "fireenjin-form",
+          "ion-item-divider",
+          "fireenjin-select"
+        ],
+        "fireenjin-form": [
+          "ion-grid",
+          "ion-row",
+          "ion-col",
+          "ion-button"
+        ],
+        "ion-button": [
+          "ion-ripple-effect"
+        ],
+        "fireenjin-select": [
+          "ion-item",
+          "ion-icon",
+          "ion-label",
+          "ion-select",
+          "ion-select-option"
+        ],
+        "ion-item": [
+          "ion-icon",
+          "ion-ripple-effect"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/renderer.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-renderer",
+      "readme": "# fireenjin-renderer\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ion-content",
+        "fireenjin-pagination",
+        "ion-item"
+      ],
+      "dependencyGraph": {
+        "fireenjin-renderer": [
+          "ion-content",
+          "fireenjin-pagination",
+          "ion-item"
+        ],
+        "fireenjin-pagination": [
+          "ion-virtual-scroll",
+          "ion-grid",
+          "ion-row",
+          "ion-col",
+          "ion-card",
+          "ion-list",
+          "ion-infinite-scroll",
+          "ion-infinite-scroll-content"
+        ],
+        "ion-card": [
+          "ion-ripple-effect"
+        ],
+        "ion-infinite-scroll-content": [
+          "ion-spinner"
+        ],
+        "ion-item": [
+          "ion-icon",
+          "ion-ripple-effect"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/select/select.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-select",
+      "readme": "# fireenjin-select\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "cancelText",
+          "type": "string",
+          "mutable": false,
+          "attr": "cancel-text",
+          "reflectToAttr": false,
+          "docs": "The text to display on the cancel button.",
+          "docsTags": [],
+          "default": "'Dismiss'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "compareWith",
+          "type": "((currentValue: any, compareValue: any) => boolean) | string",
+          "mutable": false,
+          "attr": "compare-with",
+          "reflectToAttr": false,
+          "docs": "A property name or function used to compare object values",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "((currentValue: any, compareValue: any) => boolean)"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "dataPropsMap",
+          "type": "any",
+          "mutable": false,
+          "attr": "data-props-map",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": false,
+          "docs": "If `true`, the user cannot interact with the select.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "mutable": false,
+          "attr": "endpoint",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "header",
+          "type": "string",
+          "mutable": false,
+          "attr": "header",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "interface",
+          "type": "\"action-sheet\" | \"alert\" | \"popover\"",
+          "mutable": false,
+          "attr": "interface",
+          "reflectToAttr": false,
+          "docs": "The interface the select should use: `action-sheet`, `popover` or `alert`.",
+          "docsTags": [],
+          "default": "'alert'",
+          "values": [
+            {
+              "value": "action-sheet",
+              "type": "string"
+            },
+            {
+              "value": "alert",
+              "type": "string"
+            },
+            {
+              "value": "popover",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "interfaceOptions",
+          "type": "any",
+          "mutable": false,
+          "attr": "interface-options",
+          "reflectToAttr": false,
+          "docs": "Any additional options that the `alert`, `action-sheet` or `popover` interface\ncan take. See the [ion-alert docs](../alert), the\n[ion-action-sheet docs](../action-sheet) and the\n[ion-popover docs](../popover) for the\ncreate options for each interface.\n\nNote: `interfaceOptions` will not override `inputs` or `buttons` with the `alert` interface.",
+          "docsTags": [],
+          "default": "{}",
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "mutable": false,
+          "attr": "label",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "mutable": false,
+          "attr": "limit",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "15",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "mutable": false,
+          "attr": "message",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "multiple",
+          "reflectToAttr": false,
+          "docs": "If `true`, the select can accept multiple values.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "The name of the control, which is submitted with the form data.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "okText",
+          "type": "string",
+          "mutable": false,
+          "attr": "ok-text",
+          "reflectToAttr": false,
+          "docs": "The text to display on the ok button.",
+          "docsTags": [],
+          "default": "'Okay'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "optionEl",
+          "type": "(result: any) => HTMLIonSelectOptionElement",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "(result: any) => HTMLIonSelectOptionElement"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "{ label?: string; value?: any; disabled?: boolean; }[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "{ label?: string; value?: any; disabled?: boolean; }[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "orderBy",
+          "type": "string",
+          "mutable": false,
+          "attr": "order-by",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "params",
+          "type": "any",
+          "mutable": false,
+          "attr": "params",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "mutable": false,
+          "attr": "placeholder",
+          "reflectToAttr": false,
+          "docs": "The text to display when the select is empty.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "mutable": false,
+          "attr": "query",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "resultsKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "results-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "selectedText",
+          "type": "string",
+          "mutable": false,
+          "attr": "selected-text",
+          "reflectToAttr": false,
+          "docs": "The text to display instead of the selected option's value.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "subHeader",
+          "type": "string",
+          "mutable": false,
+          "attr": "sub-header",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "mutable": true,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "the value of the select.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "fireenjinFetch",
+          "detail": "any",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "fireenjinSuccess",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "fireenjin-popover-filter"
+      ],
+      "dependencies": [
+        "ion-item",
+        "ion-icon",
+        "ion-label",
+        "ion-select",
+        "ion-select-option"
+      ],
+      "dependencyGraph": {
+        "fireenjin-select": [
+          "ion-item",
+          "ion-icon",
+          "ion-label",
+          "ion-select",
+          "ion-select-option"
+        ],
+        "ion-item": [
+          "ion-icon",
+          "ion-ripple-effect"
+        ],
+        "fireenjin-popover-filter": [
+          "fireenjin-select"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/select-tags/select-tags.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-select-tags",
+      "readme": "# fireenjin-select-tags\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "duplicates",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "duplicates",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "info",
+          "type": "string",
+          "mutable": false,
+          "attr": "info",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "any",
+          "mutable": false,
+          "attr": "label",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "multiple",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"tags\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "options",
+          "type": "any[]",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "any[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "mutable": false,
+          "attr": "placeholder",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"Select Tags\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "required",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "mutable": true,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "getChoices",
+          "returns": {
+            "type": "Promise<any>",
+            "docs": ""
+          },
+          "signature": "getChoices() => Promise<any>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "setValue",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setValue(value: any) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "fireenjinSelect",
+          "detail": "{ event: any; options?: any; option?: any; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "change",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ion-item",
+        "ion-label"
+      ],
+      "dependencyGraph": {
+        "fireenjin-select-tags": [
+          "ion-item",
+          "ion-label"
+        ],
+        "ion-item": [
+          "ion-icon",
+          "ion-ripple-effect"
+        ]
+      }
+    },
+    {
+      "filePath": "./src/components/my-component/my-component.tsx",
+      "encapsulation": "none",
+      "tag": "my-component",
+      "readme": "# my-component\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "first",
+          "type": "string",
+          "mutable": false,
+          "attr": "first",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "last",
+          "type": "string",
+          "mutable": false,
+          "attr": "last",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "middle",
+          "type": "string",
+          "mutable": false,
+          "attr": "middle",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "modifier",
+          "type": "string",
+          "mutable": false,
+          "attr": "modifier",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "clicked",
+          "detail": "void",
+          "bubbles": false,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ion-card",
+        "ion-chip"
+      ],
+      "dependencyGraph": {
+        "my-component": [
+          "ion-card",
+          "ion-chip"
+        ],
+        "ion-card": [
+          "ion-ripple-effect"
+        ],
+        "ion-chip": [
+          "ion-ripple-effect"
+        ]
+      }
+    }
+  ]
+}
