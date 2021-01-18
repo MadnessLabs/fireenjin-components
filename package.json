@@ -24,8 +24,8 @@
     "test:generate": "stencil test --spec --json --outputFile=src/jest-test-results.json",
     "test:generate:watch": "stencil test --spec --json --outputFile=src/jest-test-results.json --watch",
     "test:watch": "stencil test --spec --watch",
-    "presets:build": "fireenjin presets",
-    "presets:watch": "fireenjin presets watch"
+    "presets:build": "npx fireenjin presets",
+    "presets:watch": "npx fireenjin presets watch"
   },
   "husky": {
     "hooks": {
@@ -42,7 +42,6 @@
     "localforage": "^1.9.0"
   },
   "devDependencies": {
-    "@madnesslabs/fireenjin": "^1.4.5",
     "@stencil/eslint-plugin": "^0.3.1",
     "@types/chart.js": "^2.9.29",
     "@types/cleave.js": "^1.4.4",
