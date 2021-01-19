@@ -8,20 +8,24 @@ import {
   Prop,
   State,
   Watch,
-  h
+  h,
 } from "@stencil/core";
 import Choices from "choices.js";
 
 @Component({
   tag: "fireenjin-select-tags",
-  styleUrl: "select-tags.css"
+  styleUrl: "select-tags.css",
 })
 export class SelectTags implements ComponentInterface {
   choicesEl: any;
   itemEl: HTMLIonItemElement;
   inputEl: HTMLIonInputElement;
 
-  @Event() fireenjinSelect: EventEmitter<{ event; options?: any; option?: any }>;
+  @Event() fireenjinSelect: EventEmitter<{
+    event;
+    options?: any;
+    option?: any;
+  }>;
 
   @Prop() name = "tags";
   @Prop() label;
@@ -48,32 +52,41 @@ export class SelectTags implements ComponentInterface {
     }
 
     if (this.multiple) {
-      this.value = this.choices
-        .getValue()
-        .map(
-          choice =>
-            this.options.find(option => option.value === choice.value).value
+      try {
+        this.value = this.choices.getValue().map((choice) => 
+          this.options.find((option) => option.value === choice.value).value
         );
-      this.fireenjinSelect.emit({
-        event,
-        options: this.choices
-          .getValue()
-          .map(choice =>
-            this.options.find(option => option.value === choice.value)
-          )
-      });
+
+        this.fireenjinSelect.emit({
+          event,
+          options: this.choices
+            .getValue()
+            .map((choice) =>
+              this.options.find((option) => option.value === choice.value)
+            ),
+        });
+      } catch (error) {
+        console.log("Error setting value");
+      }
     } else {
       this.value = event.detail.value;
       this.fireenjinSelect.emit({
         event,
-        option: this.options.find(option => option.value === event.detail.value)
+        option: this.options.find(
+          (option) => option.value === event.detail.value
+        ),
       });
     }
   }
 
   @Method()
   async setValue(value) {
-    this.choices.setChoiceByValue(value);
+    try {
+      console.log(value);
+      this.choices.setChoiceByValue(value);
+    } catch (error) {
+      console.log("Error setting value...");
+    }
   }
 
   @Method()
@@ -83,44 +96,48 @@ export class SelectTags implements ComponentInterface {
 
   @Watch("value")
   async onValueChange(newValue, oldValue) {
-    if (!this.value || newValue === oldValue) return false;
+    if (!this.value || newValue === oldValue || !this.choices) return false;
+    console.log(this.value);
     await this.setValue(this.value);
   }
 
   @Watch("options")
   async onOptionsChange(newValue, oldValue) {
-    if (newValue === oldValue) return false;
+    if (newValue === oldValue || !this.choices) return false;
+    await this.choices.setChoices(newValue);
     setTimeout(() => {
       this.setValue(this.value);
     }, 200);
   }
 
-  componentDidLoad() {
-    this.choices = new Choices(this.choicesEl, {
-      placeholderValue: this.placeholder,
-      duplicateItemsAllowed: this.duplicates,
-      removeItemButton: this.multiple,
-      callbackOnCreateTemplates: template => {
-        return {
-          input: (...args) => {
-            console.log(args);
-            return Object.assign(
-              Choices.defaults.templates.input.call(this, ...args),
-              {
-                placeholder: this.placeholder + " +"
-              }
-            )},
-          item: (classNames, data) => {
-            return template(`
+  initChoices() {
+    try {
+      this.choices = new Choices(this.choicesEl, {
+        placeholderValue: this.placeholder,
+        duplicateItemsAllowed: this.duplicates,
+        removeItemButton: this.multiple,
+        callbackOnCreateTemplates: (template) => {
+          return {
+            input: (...args) => {
+              console.log(args);
+              return Object.assign(
+                Choices.defaults.templates.input.call(this, ...args),
+                {
+                  placeholder: this.placeholder + " +",
+                }
+              );
+            },
+            item: (classNames, data) => {
+              return template(`
                       <div class="${classNames.item} ${
-              data.highlighted
-                ? classNames.highlightedState
-                : classNames.itemSelectable
-            }" data-item data-deletable data-id="${data.id}" data-value="${
-              data.value
-            }" ${data.active ? 'aria-selected="true"' : ""} ${
-              data.disabled ? 'aria-disabled="true"' : ""
-            }>
+                data.highlighted
+                  ? classNames.highlightedState
+                  : classNames.itemSelectable
+              }" data-item data-deletable data-id="${data.id}" data-value="${
+                data.value
+              }" ${data.active ? 'aria-selected="true"' : ""} ${
+                data.disabled ? 'aria-disabled="true"' : ""
+              }>
                         <p class="choice-label-text">${data.label}</p>
                         ${
                           this.multiple
@@ -129,27 +146,35 @@ export class SelectTags implements ComponentInterface {
                         }
                       </div>
                     `);
-          },
-          choice: (classNames, data) => {
-            return template(`
+            },
+            choice: (classNames, data) => {
+              return template(`
                       <div class="${classNames.item} ${classNames.itemChoice} ${
-              data.disabled
-                ? classNames.itemDisabled
-                : classNames.itemSelectable
-            }" data-choice ${
-              data.disabled
-                ? 'data-choice-disabled aria-disabled="true"'
-                : "data-choice-selectable"
-            } data-id="${data.id}" data-value="${data.value}" ${
-              data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
-            }>
+                data.disabled
+                  ? classNames.itemDisabled
+                  : classNames.itemSelectable
+              }" data-choice ${
+                data.disabled
+                  ? 'data-choice-disabled aria-disabled="true"'
+                  : "data-choice-selectable"
+              } data-id="${data.id}" data-value="${data.value}" ${
+                data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
+              }>
                         <p class="choice-label-text">${data.label}</p>
                       </div>
                     `);
-          }
-        };
-      }
-    } as any);
+            },
+          };
+        },
+      } as any);
+    } catch (error) {
+      console.log("Error initializing choices...");
+    }
+  }
+
+  componentDidLoad() {
+    this.initChoices();
+
     if (!this.itemEl || !this.itemEl.shadowRoot) {
       return false;
     }
@@ -161,24 +186,20 @@ export class SelectTags implements ComponentInterface {
   render() {
     const OptionEl: any = "option";
     return (
-      <ion-item
-        ref={el => (this.itemEl = el)}
-        lines="full"
-      >
-        {this.label && (
-          <ion-label position="stacked">{this.label}</ion-label>
-        )}
+      <ion-item ref={(el) => (this.itemEl = el)} lines="full">
+        {this.label && <ion-label position="stacked">{this.label}</ion-label>}
         <select
           disabled={this.disabled}
           multiple={this.multiple}
           name={this.name}
           required={this.required}
-          ref={el => (this.choicesEl = el)}
+          ref={(el) => (this.choicesEl = el)}
         >
+          <slot />
           {!this.multiple && this.placeholder ? (
             <OptionEl placeholder>{this.placeholder}</OptionEl>
           ) : null}
-          {this.options.map(option => (
+          {this.options.map((option) => (
             <option
               selected={
                 this.multiple

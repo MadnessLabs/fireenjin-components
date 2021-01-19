@@ -17,6 +17,7 @@ export default {
     default: {
         name: "With Options",
         props: {
+            label: "Tags",
             multiple: true,
             options
         }
