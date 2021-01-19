@@ -43,7 +43,7 @@
     "localforage": "^1.9.0"
   },
   "devDependencies": {
-    "@madnesslabs/fireenjin": "^1.4.5",
+    "@madnesslabs/fireenjin": "^1.4.7",
     "@stencil/eslint-plugin": "^0.3.1",
     "@types/chart.js": "^2.9.29",
     "@types/cleave.js": "^1.4.4",
