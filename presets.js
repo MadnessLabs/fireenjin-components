@@ -1,4 +1,15 @@
-define("pagination/pagination.presets", ["require", "exports"], function (require, exports) {
+"use strict";
+function define(name, dependencies, callback) {
+    if (!name || !dependencies || !callback)
+        return;
+    var exports = {};
+    callback({}, exports);
+    if (!window.presets)
+        window.presets = {};
+    window.presets[name.split['/'].pop()] = exports["default"];
+}
+;
+define("src/components/pagination/pagination.presets", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
     exports["default"] = {
@@ -9,7 +20,7 @@ define("pagination/pagination.presets", ["require", "exports"], function (requir
         }
     };
 });
-define("select-tags/select-tags.presets", ["require", "exports"], function (require, exports) {
+define("src/components/select-tags/select-tags.presets", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
     var options = [
@@ -30,6 +41,7 @@ define("select-tags/select-tags.presets", ["require", "exports"], function (requ
         "default": {
             name: "With Options",
             props: {
+                label: "Tags",
                 multiple: true,
                 options: options
             }
