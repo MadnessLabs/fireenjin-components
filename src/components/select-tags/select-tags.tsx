@@ -27,7 +27,7 @@ export class SelectTags implements ComponentInterface {
   @Prop() label;
   @Prop() placeholder = "Select Tags";
   @Prop({ mutable: true }) value: any;
-  @Prop() options: any[] = [];
+  @Prop() options: { label: string; value: any }[] = [];
   @Prop() required: boolean;
   @Prop() multiple: boolean;
   @Prop() duplicates = false;
