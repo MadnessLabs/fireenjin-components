@@ -31,7 +31,7 @@ export class SelectTags implements ComponentInterface {
   @Prop() required: boolean;
   @Prop() multiple: boolean;
   @Prop() duplicates = false;
-  @Prop() info: string;
+  @Prop() disabled = false;
 
   @State() choices: any;
   @State() hasValue = false;
@@ -102,13 +102,14 @@ export class SelectTags implements ComponentInterface {
       removeItemButton: this.multiple,
       callbackOnCreateTemplates: template => {
         return {
-          input: (...args) =>
-            Object.assign(
+          input: (...args) => {
+            console.log(args);
+            return Object.assign(
               Choices.defaults.templates.input.call(this, ...args),
               {
                 placeholder: this.placeholder + " +"
               }
-            ),
+            )},
           item: (classNames, data) => {
             return template(`
                       <div class="${classNames.item} ${
@@ -163,17 +164,12 @@ export class SelectTags implements ComponentInterface {
       <ion-item
         ref={el => (this.itemEl = el)}
         lines="full"
-        class={{
-          "has-info-bubble": !!this.info
-        }}
       >
         {this.label && (
-          <ion-label position="stacked">
-            <span>{this.label}</span>
-            {this.info && <trackmygiving-info-button message={this.info} />}
-          </ion-label>
+          <ion-label position="stacked">{this.label}</ion-label>
         )}
         <select
+          disabled={this.disabled}
           multiple={this.multiple}
           name={this.name}
           required={this.required}
