@@ -82,7 +82,7 @@ export class SelectTags implements ComponentInterface {
 
   @Listen("keydown")
   async onKeyDown(event: any) {
-    if (event.key === "Enter" && this.allowAdding) {
+    if (event.key === "Enter" && this.allowAdding && event.target?.value?.length >= 1) {
       const value = event.target.value.toLocaleLowerCase();
       this.value = [...(this.value ? this.value : []), value];
       const option = {
@@ -90,7 +90,6 @@ export class SelectTags implements ComponentInterface {
         value,
         selected: true
       };
-      console.log(this.options);
       this.options.push(option);
       this.choices.setChoices([option]);
       this.choices.clearInput();
