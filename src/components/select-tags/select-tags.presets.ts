@@ -44,5 +44,15 @@ export default {
                 "important"
             ]
         }
+    },
+    withEndpoint: {
+        name: "Data from API",
+        props: {
+            allowAdding: true,
+            label: "Tags",
+            endpoint: "listRoles",
+            resultsKey: "roles",
+            limit: 100
+        }
     }
 }

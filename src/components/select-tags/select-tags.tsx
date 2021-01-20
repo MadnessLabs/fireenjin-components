@@ -21,25 +21,70 @@ export class SelectTags implements ComponentInterface {
   itemEl: HTMLIonItemElement;
   inputEl: HTMLIonInputElement;
 
-  @Event() fireenjinSelect: EventEmitter<{
+  @Event() ionChange: EventEmitter<{
     event;
-    options?: any;
-    option?: any;
+    name: string;
+    value: any;
   }>;
+  @Event() fireenjinFetch: EventEmitter;
 
+  @Prop() disableFetch = false;
   @Prop() name = "tags";
   @Prop() label;
   @Prop() placeholder = "Select Tags";
   @Prop({ mutable: true }) value: any;
-  @Prop() options: { label: string; value: any }[] = [];
+  @Prop({ mutable: true }) options: { label: string; value: any }[] = [];
   @Prop() required: boolean;
   @Prop() multiple: boolean;
   @Prop() duplicates = false;
   @Prop() disabled = false;
   @Prop() allowAdding = false;
+  @Prop() endpoint: string;
+  @Prop() resultsKey: string;
+  @Prop() limit = 15;
+  @Prop() orderBy?: string;
+  @Prop() orderDirection?: string;
+  @Prop() dataPropsMap: any;
+  @Prop({ mutable: true }) page? = 0;
+  @Prop({ mutable: true }) results: any[] = [];
+  @Prop() fetchData?: any;
+  @Prop() query?: string;
 
   @State() choices: any;
   @State() hasValue = false;
+  @State() paramData: {
+    query?: string;
+    limit?: number;
+    orderBy?: string;
+    orderDirection?: "asc" | "desc";
+    whereEqual?: string;
+    whereLessThan?: string;
+    whereLessThanOrEqual?: string;
+    whereGreaterThan?: string;
+    whereGreaterThanOrEqual?: string;
+    whereArrayContains?: string;
+    whereArrayContainsAny?: string;
+    whereIn?: string;
+    next?: string;
+    back?: string;
+  } = {};
+
+  @Listen("fireenjinSuccess", { target: "body" })
+  async onSuccess(event) {
+    if (event.detail.name === "selectTags") {
+      try {
+        if (this.page === 0) {
+          this.results = [];
+        }
+        this.page = event.detail?.data?.results?.page
+          ? event.detail.data.results.page
+          : this.page + 1;
+        await this.addResults(event.detail.data.results);
+      } catch (err) {
+        console.log("Error updating results!");
+      }
+    }
+  }
 
   @Listen("change")
   async onChange(event) {
@@ -58,24 +103,20 @@ export class SelectTags implements ComponentInterface {
           this.options.find((option) => option.value === choice.value).value
         );
 
-        this.fireenjinSelect.emit({
+        this.ionChange.emit({
           event,
-          options: this.choices
-            .getValue()
-            .map((choice) =>
-              this.options.find((option) => option.value === choice.value)
-            ),
+          name: this.name,
+          value: this.value
         });
       } catch (error) {
         console.log("Error setting value");
       }
     } else {
       this.value = event.detail.value;
-      this.fireenjinSelect.emit({
+      this.ionChange.emit({
         event,
-        option: this.options.find(
-          (option) => option.value === event.detail.value
-        ),
+        name: this.name,
+        value: this.value
       });
     }
   }
@@ -93,6 +134,11 @@ export class SelectTags implements ComponentInterface {
       this.options.push(option);
       this.choices.setChoices([option]);
       this.choices.clearInput();
+      this.ionChange.emit({
+        event,
+        name: this.name,
+        value: this.value
+      });
     }
   }
 
@@ -120,6 +166,74 @@ export class SelectTags implements ComponentInterface {
   async onOptionsChange(newValue, oldValue) {
     if (newValue === oldValue || !this.choices) return false;
     await this.choices.setChoices(newValue, this.value, this.label, true);
+  }
+
+  @Method()
+  async clearParamData(key?: string) {
+    if (key && this.paramData[key]) {
+      const paramData = this.paramData;
+      delete paramData[key];
+      this.paramData = paramData;
+    } else if (!key) {
+      this.paramData = {};
+    }
+
+    return this.paramData;
+  }
+
+  @Method()
+  async addResults(results: any[] = []) {
+    this.results = [...this.results, ...results];
+    this.options = this.results.map(result => ({
+      label: result.label ? result.label : result.name ? result.name : result.id ? result.id : null,
+      value: result.value ? result.value : result.id ? result.id : null
+    }));
+  }
+
+  @Method()
+  async clearResults() {
+    this.page = 0;
+    this.results = [];
+  }
+
+  @Method()
+  async getResults(
+    options: {
+      page?: number;
+      next?: boolean;
+      limit?: number;
+      paramData?: any;
+    } = {}
+  ) {
+    this.paramData = {
+      ...this.paramData,
+      limit: options.limit ? options.limit : this.limit,
+      orderBy: this.orderBy,
+      orderDirection: this.orderDirection,
+      ...(options?.paramData ? options.paramData : {}),
+    };
+
+    if (options.page) {
+      this.page = options.page;
+    }
+
+    if (this.query?.length > 1) {
+      this.paramData.query = this.query;
+    }
+
+    if (this.results?.length && this.results[this.results.length - 1]?.id) {
+      this.paramData.next = this.results[this.results.length - 1].id;
+    }
+
+    this.fireenjinFetch.emit({
+      name: "selectTags",
+      endpoint: this.endpoint,
+      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : this.resultsKey ? { [this.resultsKey]: "results" } : null,
+      disableFetch: this.disableFetch,
+      params: {
+        data: this.fetchData ? this.fetchData : this.paramData,
+      },
+    });
   }
 
   initChoices() {
@@ -185,6 +299,10 @@ export class SelectTags implements ComponentInterface {
 
   componentDidLoad() {
     this.initChoices();
+
+    if (this.endpoint) {
+      this.getResults();
+    }
 
     if (!this.itemEl || !this.itemEl.shadowRoot) {
       return false;
