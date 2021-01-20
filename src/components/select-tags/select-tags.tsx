@@ -85,13 +85,15 @@ export class SelectTags implements ComponentInterface {
     if (event.key === "Enter" && this.allowAdding) {
       const value = event.target.value.toLocaleLowerCase();
       this.value = [...(this.value ? this.value : []), value];
-      await this.choices.setChoices([...this.options, {
+      const option = {
         label: event.target.value,
-        value
-      }]);
-      setTimeout(() => {
-        this.setValue(value);
-      }, 200);
+        value,
+        selected: true
+      };
+      console.log(this.options);
+      this.options.push(option);
+      this.choices.setChoices([option]);
+      this.choices.clearInput();
     }
   }
 
@@ -118,10 +120,7 @@ export class SelectTags implements ComponentInterface {
   @Watch("options")
   async onOptionsChange(newValue, oldValue) {
     if (newValue === oldValue || !this.choices) return false;
-    await this.choices.setChoices(newValue);
-    setTimeout(() => {
-      this.setValue(this.value);
-    }, 200);
+    await this.choices.setChoices(newValue, this.value, this.label, true);
   }
 
   initChoices() {
