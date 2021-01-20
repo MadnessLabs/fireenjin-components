@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-01-19T21:31:21",
+  "timestamp": "2021-01-20T07:57:45",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.3.0",
@@ -1820,6 +1820,23 @@
       "usage": {},
       "props": [
         {
+          "name": "allowAdding",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "allow-adding",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "disabled",
           "type": "boolean",
           "mutable": false,
@@ -2006,6 +2023,11 @@
       "listeners": [
         {
           "event": "change",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "keydown",
           "capture": false,
           "passive": false
         }

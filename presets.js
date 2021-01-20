@@ -6,7 +6,7 @@ function define(name, dependencies, callback) {
     callback({}, exports);
     if (!window.presets)
         window.presets = {};
-    window.presets[name.split['/'].pop()] = exports["default"];
+    window.presets[name.split('/').pop()] = exports["default"];
 }
 ;
 define("src/components/pagination/pagination.presets", ["require", "exports"], function (require, exports) {
@@ -49,10 +49,23 @@ define("src/components/select-tags/select-tags.presets", ["require", "exports"],
         withValue: {
             name: "With Value",
             props: {
+                label: "Tags",
                 options: options,
                 multiple: true,
                 value: [
                     'important'
+                ]
+            }
+        },
+        withAdding: {
+            name: "With Adding",
+            props: {
+                allowAdding: true,
+                label: "Tags",
+                options: options,
+                multiple: true,
+                value: [
+                    "important"
                 ]
             }
         }
