@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-01-20T09:12:12",
+  "timestamp": "2021-01-20T19:28:37",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.3.0",
@@ -1837,6 +1837,39 @@
           "required": false
         },
         {
+          "name": "dataPropsMap",
+          "type": "any",
+          "mutable": false,
+          "attr": "data-props-map",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disableFetch",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-fetch",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "disabled",
           "type": "boolean",
           "mutable": false,
@@ -1871,6 +1904,38 @@
           "required": false
         },
         {
+          "name": "endpoint",
+          "type": "string",
+          "mutable": false,
+          "attr": "endpoint",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "fetchData",
+          "type": "any",
+          "mutable": false,
+          "attr": "fetch-data",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
           "name": "label",
           "type": "any",
           "mutable": false,
@@ -1881,6 +1946,23 @@
           "values": [
             {
               "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "mutable": false,
+          "attr": "limit",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "15",
+          "values": [
+            {
+              "type": "number"
             }
           ],
           "optional": false,
@@ -1922,7 +2004,7 @@
         {
           "name": "options",
           "type": "{ label: string; value: any; }[]",
-          "mutable": false,
+          "mutable": true,
           "reflectToAttr": false,
           "docs": "",
           "docsTags": [],
@@ -1933,6 +2015,55 @@
             }
           ],
           "optional": false,
+          "required": false
+        },
+        {
+          "name": "orderBy",
+          "type": "string",
+          "mutable": false,
+          "attr": "order-by",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "orderDirection",
+          "type": "string",
+          "mutable": false,
+          "attr": "order-direction",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "mutable": true,
+          "attr": "page",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": true,
           "required": false
         },
         {
@@ -1953,6 +2084,22 @@
           "required": false
         },
         {
+          "name": "query",
+          "type": "string",
+          "mutable": false,
+          "attr": "query",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
           "name": "required",
           "type": "boolean",
           "mutable": false,
@@ -1963,6 +2110,38 @@
           "values": [
             {
               "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "results",
+          "type": "any[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "any[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "resultsKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "results-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
             }
           ],
           "optional": false,
@@ -1987,12 +2166,56 @@
       ],
       "methods": [
         {
+          "name": "addResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "addResults(results?: any[]) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "clearParamData",
+          "returns": {
+            "type": "Promise<{ query?: string; limit?: number; orderBy?: string; orderDirection?: \"asc\" | \"desc\"; whereEqual?: string; whereLessThan?: string; whereLessThanOrEqual?: string; whereGreaterThan?: string; whereGreaterThanOrEqual?: string; whereArrayContains?: string; whereArrayContainsAny?: string; whereIn?: string; next?: string; back?: string; }>",
+            "docs": ""
+          },
+          "signature": "clearParamData(key?: string) => Promise<{ query?: string; limit?: number; orderBy?: string; orderDirection?: \"asc\" | \"desc\"; whereEqual?: string; whereLessThan?: string; whereLessThanOrEqual?: string; whereGreaterThan?: string; whereGreaterThanOrEqual?: string; whereArrayContains?: string; whereArrayContainsAny?: string; whereIn?: string; next?: string; back?: string; }>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "clearResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "clearResults() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
           "name": "getChoices",
           "returns": {
             "type": "Promise<any>",
             "docs": ""
           },
           "signature": "getChoices() => Promise<any>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "getResults",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "getResults(options?: { page?: number; next?: boolean; limit?: number; paramData?: any; }) => Promise<void>",
           "parameters": [],
           "docs": "",
           "docsTags": []
@@ -2011,8 +2234,17 @@
       ],
       "events": [
         {
-          "event": "fireenjinSelect",
-          "detail": "{ event: any; options?: any; option?: any; }",
+          "event": "fireenjinFetch",
+          "detail": "any",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "ionChange",
+          "detail": "{ event: any; name: string; value: any; }",
           "bubbles": true,
           "cancelable": true,
           "composed": true,
@@ -2021,6 +2253,12 @@
         }
       ],
       "listeners": [
+        {
+          "event": "fireenjinSuccess",
+          "target": "body",
+          "capture": false,
+          "passive": false
+        },
         {
           "event": "change",
           "capture": false,

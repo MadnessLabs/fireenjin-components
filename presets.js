@@ -68,6 +68,16 @@ define("src/components/select-tags/select-tags.presets", ["require", "exports"],
                     "important"
                 ]
             }
+        },
+        withEndpoint: {
+            name: "Data from API",
+            props: {
+                allowAdding: true,
+                label: "Tags",
+                endpoint: "listRoles",
+                resultsKey: "roles",
+                limit: 100
+            }
         }
     };
 });
