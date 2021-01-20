@@ -7,17 +7,18 @@
 
 ## Properties
 
-| Property      | Attribute     | Description | Type                               | Default         |
-| ------------- | ------------- | ----------- | ---------------------------------- | --------------- |
-| `disabled`    | `disabled`    |             | `boolean`                          | `false`         |
-| `duplicates`  | `duplicates`  |             | `boolean`                          | `false`         |
-| `label`       | `label`       |             | `any`                              | `undefined`     |
-| `multiple`    | `multiple`    |             | `boolean`                          | `undefined`     |
-| `name`        | `name`        |             | `string`                           | `"tags"`        |
-| `options`     | --            |             | `{ label: string; value: any; }[]` | `[]`            |
-| `placeholder` | `placeholder` |             | `string`                           | `"Select Tags"` |
-| `required`    | `required`    |             | `boolean`                          | `undefined`     |
-| `value`       | `value`       |             | `any`                              | `undefined`     |
+| Property      | Attribute      | Description | Type                               | Default         |
+| ------------- | -------------- | ----------- | ---------------------------------- | --------------- |
+| `allowAdding` | `allow-adding` |             | `boolean`                          | `false`         |
+| `disabled`    | `disabled`     |             | `boolean`                          | `false`         |
+| `duplicates`  | `duplicates`   |             | `boolean`                          | `false`         |
+| `label`       | `label`        |             | `any`                              | `undefined`     |
+| `multiple`    | `multiple`     |             | `boolean`                          | `undefined`     |
+| `name`        | `name`         |             | `string`                           | `"tags"`        |
+| `options`     | --             |             | `{ label: string; value: any; }[]` | `[]`            |
+| `placeholder` | `placeholder`  |             | `string`                           | `"Select Tags"` |
+| `required`    | `required`     |             | `boolean`                          | `undefined`     |
+| `value`       | `value`        |             | `any`                              | `undefined`     |
 
 
 ## Events

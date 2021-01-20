@@ -36,6 +36,7 @@ export class SelectTags implements ComponentInterface {
   @Prop() multiple: boolean;
   @Prop() duplicates = false;
   @Prop() disabled = false;
+  @Prop() allowAdding = false;
 
   @State() choices: any;
   @State() hasValue = false;
@@ -79,6 +80,20 @@ export class SelectTags implements ComponentInterface {
     }
   }
 
+  @Listen("keydown")
+  async onKeyDown(event: any) {
+    if (event.key === "Enter" && this.allowAdding) {
+      const value = event.target.value.toLocaleLowerCase();
+      await this.choices.setChoices([...this.options, {
+        label: event.target.value,
+        value
+      }]);
+      setTimeout(() => {
+        this.setValue(value);
+      }, 200);
+    }
+  }
+
   @Method()
   async setValue(value) {
     try {
@@ -119,7 +134,6 @@ export class SelectTags implements ComponentInterface {
         callbackOnCreateTemplates: (template) => {
           return {
             input: (...args) => {
-              console.log(args);
               return Object.assign(
                 Choices.defaults.templates.input.call(this, ...args),
                 {

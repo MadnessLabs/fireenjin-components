@@ -25,10 +25,23 @@ export default {
     withValue: {
         name: "With Value",
         props: {
+            label: "Tags",
             options,
             multiple: true,
             value: [
                 'important'
+            ]
+        }
+    },
+    withAdding: {
+        name: "With Adding",
+        props: {
+            withAdding: true,
+            label: "Tags",
+            options,
+            multiple: true,
+            value: [
+                "important"
             ]
         }
     }
