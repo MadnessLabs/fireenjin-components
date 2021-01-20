@@ -84,6 +84,7 @@ export class SelectTags implements ComponentInterface {
   async onKeyDown(event: any) {
     if (event.key === "Enter" && this.allowAdding) {
       const value = event.target.value.toLocaleLowerCase();
+      this.value = [...(this.value ? this.value : []), value];
       await this.choices.setChoices([...this.options, {
         label: event.target.value,
         value
@@ -97,7 +98,6 @@ export class SelectTags implements ComponentInterface {
   @Method()
   async setValue(value) {
     try {
-      console.log(value);
       this.choices.setChoiceByValue(value);
     } catch (error) {
       console.log("Error setting value...");
@@ -112,7 +112,6 @@ export class SelectTags implements ComponentInterface {
   @Watch("value")
   async onValueChange(newValue, oldValue) {
     if (!this.value || newValue === oldValue || !this.choices) return false;
-    console.log(this.value);
     await this.setValue(this.value);
   }
 

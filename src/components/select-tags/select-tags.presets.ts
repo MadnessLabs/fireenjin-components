@@ -36,7 +36,7 @@ export default {
     withAdding: {
         name: "With Adding",
         props: {
-            withAdding: true,
+            allowAdding: true,
             label: "Tags",
             options,
             multiple: true,
