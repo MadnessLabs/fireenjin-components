@@ -126,7 +126,9 @@ export class Pagination implements ComponentInterface {
       if (!results.length || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
         this.infiniteScrollEl.disabled = true;
       }
-      window.dispatchEvent(new window.Event("resize"));
+      setTimeout(() => {
+        window.dispatchEvent(new window.Event("resize"));
+      }, 200);
     }
   }
 
@@ -199,15 +201,6 @@ export class Pagination implements ComponentInterface {
       paramData?: any;
     } = {}
   ) {
-    this.paramData = {
-      ...this.paramData,
-      limit: options.limit ? options.limit : this.limit,
-      orderBy: this.orderBy,
-      orderDirection: this.orderDirection,
-      page: options.page ? options.page : this.page,
-      ...(options?.paramData ? options.paramData : {}),
-    };
-
     if (options.page) {
       this.page = options.page;
     }
@@ -215,6 +208,15 @@ export class Pagination implements ComponentInterface {
     if (options.next) {
       this.page = this.page + 1;
     }
+
+    this.paramData = {
+      ...this.paramData,
+      limit: options.limit ? options.limit : this.limit,
+      orderBy: this.orderBy,
+      orderDirection: this.orderDirection,
+      page: this.page,
+      ...(options?.paramData ? options.paramData : {}),
+    };
 
     if (this.query?.length > 1) {
       this.paramData.query = this.query;
@@ -246,7 +248,7 @@ export class Pagination implements ComponentInterface {
 
     if (Build.isBrowser) {
       this.getResults();
-
+      window.dispatchEvent(new window.Event("resize"));
       this.resizeInterval = setInterval(() => {
         window.dispatchEvent(new window.Event("resize"));
       }, 3000);
