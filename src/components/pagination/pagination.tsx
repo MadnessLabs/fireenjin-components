@@ -10,6 +10,7 @@ import {
   Watch,
   FunctionalComponent,
   State,
+  Build,
 } from "@stencil/core";
 import Debounce from "debounce-decorator";
 
@@ -20,6 +21,7 @@ import Debounce from "debounce-decorator";
 export class Pagination implements ComponentInterface {
   virtualScrollEl: HTMLIonVirtualScrollElement;
   infiniteScrollEl: HTMLIonInfiniteScrollElement;
+  resizeInterval: NodeJS.Timeout;
 
   @Event() fireenjinFetch: EventEmitter;
 
@@ -210,6 +212,10 @@ export class Pagination implements ComponentInterface {
       this.page = options.page;
     }
 
+    if (options.next) {
+      this.page = this.page + 1;
+    }
+
     if (this.query?.length > 1) {
       this.paramData.query = this.query;
     }
@@ -230,13 +236,27 @@ export class Pagination implements ComponentInterface {
   }
 
   componentDidLoad() {
-    this.getResults();
     if (this.collection) {
       this.resultsKey = !this.resultsKey ? `${this.collection}.results` : this.resultsKey;
       this.pageKey = !this.pageKey ? `${this.collection}.page` : this.pageKey;
       this.pageCountKey = !this.pageCountKey ? `${this.collection}.pageCount` : this.pageCountKey;
       this.resultCountKey = !this.resultCountKey ? `${this.collection}.resultCount` : this.resultCountKey;
       this.name = !this.name ? `${this.collection}Pagination` : this.name;
+    }
+
+    if (Build.isBrowser) {
+      this.getResults();
+
+      this.resizeInterval = setInterval(() => {
+        window.dispatchEvent(new window.Event("resize"));
+      }, 3000);
+    }
+    
+  }
+
+  disconnectedCallback() {
+    if (Build.isBrowser) {
+      clearInterval(this.resizeInterval);
     }
   }
 
