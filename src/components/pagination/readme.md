@@ -24,7 +24,10 @@
 | `orderBy`          | `order-by`           |             | `string`                   | `undefined`              |
 | `orderDirection`   | `order-direction`    |             | `string`                   | `undefined`              |
 | `page`             | `page`               |             | `number`                   | `0`                      |
+| `pageCountKey`     | `page-count-key`     |             | `string`                   | `undefined`              |
+| `pageKey`          | `page-key`           |             | `string`                   | `undefined`              |
 | `query`            | `query`              |             | `string`                   | `undefined`              |
+| `resultCountKey`   | `result-count-key`   |             | `string`                   | `undefined`              |
 | `results`          | --                   |             | `any[]`                    | `[]`                     |
 | `resultsKey`       | `results-key`        |             | `string`                   | `"results"`              |
 

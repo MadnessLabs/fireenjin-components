@@ -41,6 +41,9 @@ export class Pagination implements ComponentInterface {
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
   @Prop() resultsKey = "results";
+  @Prop() pageKey: string;
+  @Prop() pageCountKey: string;
+  @Prop() resultCountKey: string;
 
   @State() paramData: {
     query?: string;
@@ -90,8 +93,8 @@ export class Pagination implements ComponentInterface {
         if (this.page === 0) {
           this.results = [];
         }
-        this.page = event.detail?.data?.results?.page
-          ? event.detail.data.results.page
+        this.page = this.pageKey
+          ? this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data)
           : this.page + 1;
         await this.addResults(this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data));
       } catch (err) {
@@ -100,7 +103,7 @@ export class Pagination implements ComponentInterface {
 
       await this.infiniteScrollEl.complete();
       await this.virtualScrollEl.checkEnd();
-      if (!event.detail?.data?.results?.length) {
+      if (!(this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data).length) || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
         this.infiniteScrollEl.disabled = true;
       }
       window.dispatchEvent(new window.Event("resize"));
@@ -181,6 +184,7 @@ export class Pagination implements ComponentInterface {
       limit: options.limit ? options.limit : this.limit,
       orderBy: this.orderBy,
       orderDirection: this.orderDirection,
+      page: options.page ? options.page : null,
       ...(options?.paramData ? options.paramData : {}),
     };
 
@@ -192,7 +196,7 @@ export class Pagination implements ComponentInterface {
       this.paramData.query = this.query;
     }
 
-    if (this.results?.length && this.results[this.results.length - 1]?.id) {
+    if (options.next && this.results?.length && this.results[this.results.length - 1]?.id) {
       this.paramData.next = this.results[this.results.length - 1].id;
     }
 
