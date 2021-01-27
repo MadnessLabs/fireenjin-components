@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-01-27T03:51:02",
+  "timestamp": "2021-01-27T05:35:51",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.3.0",
@@ -1038,6 +1038,38 @@
           "required": false
         },
         {
+          "name": "pageCountKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "page-count-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "pageKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "page-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "query",
           "type": "string",
           "mutable": false,
@@ -1051,6 +1083,22 @@
             }
           ],
           "optional": true,
+          "required": false
+        },
+        {
+          "name": "resultCountKey",
+          "type": "string",
+          "mutable": false,
+          "attr": "result-count-key",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
           "required": false
         },
         {
