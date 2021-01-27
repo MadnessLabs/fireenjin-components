@@ -184,7 +184,7 @@ export class Pagination implements ComponentInterface {
       limit: options.limit ? options.limit : this.limit,
       orderBy: this.orderBy,
       orderDirection: this.orderDirection,
-      page: options.page ? options.page : null,
+      page: options.page ? options.page : this.page,
       ...(options?.paramData ? options.paramData : {}),
     };
 
