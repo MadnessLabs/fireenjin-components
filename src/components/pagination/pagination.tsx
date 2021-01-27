@@ -40,10 +40,22 @@ export class Pagination implements ComponentInterface {
   @Prop() groupBy: string;
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
-  @Prop() resultsKey = "results";
-  @Prop() pageKey: string;
-  @Prop() pageCountKey: string;
-  @Prop() resultCountKey: string;
+  @Prop({
+    mutable: true
+  }) resultsKey: string;
+  @Prop({
+    mutable: true
+  }) pageKey: string;
+  @Prop({
+    mutable: true
+  }) pageCountKey: string;
+  @Prop({
+    mutable: true
+  }) resultCountKey: string;
+  @Prop({
+    mutable: true
+  }) name = "pagination";
+  @Prop() collection: string;
 
   @State() paramData: {
     query?: string;
@@ -88,7 +100,13 @@ export class Pagination implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   async onSuccess(event) {
-    if (event.detail.name === "pagination") {
+    if (event.detail.name === this.name) {
+      let results;
+      try {
+        results = this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data);
+      } catch (error) {
+        console.log("Error getting results", event.detail, this.resultsKey);
+      }
       try {
         if (this.page === 0) {
           this.results = [];
@@ -96,14 +114,14 @@ export class Pagination implements ComponentInterface {
         this.page = this.pageKey
           ? this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data)
           : this.page + 1;
-        await this.addResults(this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data));
+        await this.addResults(results);
       } catch (err) {
         console.log("Error updating results!");
       }
 
       await this.infiniteScrollEl.complete();
       await this.virtualScrollEl.checkEnd();
-      if (!(this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data).length) || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
+      if (!results.length || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
         this.infiniteScrollEl.disabled = true;
       }
       window.dispatchEvent(new window.Event("resize"));
@@ -201,7 +219,7 @@ export class Pagination implements ComponentInterface {
     }
 
     this.fireenjinFetch.emit({
-      name: "pagination",
+      name: this.name,
       endpoint: this.endpoint,
       dataPropsMap: this.dataPropsMap ? this.dataPropsMap : null,
       disableFetch: this.disableFetch,
@@ -213,6 +231,13 @@ export class Pagination implements ComponentInterface {
 
   componentDidLoad() {
     this.getResults();
+    if (this.collection) {
+      this.resultsKey = !this.resultsKey ? `${this.collection}.results` : this.resultsKey;
+      this.pageKey = !this.pageKey ? `${this.collection}.page` : this.pageKey;
+      this.pageCountKey = !this.pageCountKey ? `${this.collection}.pageCount` : this.pageCountKey;
+      this.resultCountKey = !this.resultCountKey ? `${this.collection}.resultCount` : this.resultCountKey;
+      this.name = !this.name ? `${this.collection}Pagination` : this.name;
+    }
   }
 
   render() {
