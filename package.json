@@ -38,14 +38,14 @@
     "@stencil/core": "^2.3.0",
     "choices.js": "^9.0.1",
     "debounce-decorator": "^1.0.6",
-    "graphql": "^15.4.0",
+    "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "localforage": "^1.9.0"
   },
   "devDependencies": {
     "@madnesslabs/fireenjin": "^1.4.14",
     "@stencil/eslint-plugin": "^0.3.1",
-    "@types/chart.js": "^2.9.29",
+    "@types/chart.js": "^2.9.30",
     "@types/cleave.js": "^1.4.4",
     "@types/googlemaps": "^3.43.2",
     "@types/jest": "^26.0.20",
