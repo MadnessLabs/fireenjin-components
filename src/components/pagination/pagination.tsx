@@ -40,7 +40,7 @@ export class Pagination implements ComponentInterface {
   @Prop() groupBy: string;
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
-  @Prop() resultsKey?: string;
+  @Prop() resultsKey = "results";
 
   @State() paramData: {
     query?: string;
@@ -93,7 +93,7 @@ export class Pagination implements ComponentInterface {
         this.page = event.detail?.data?.results?.page
           ? event.detail.data.results.page
           : this.page + 1;
-        await this.addResults(event.detail.data.results);
+        await this.addResults(this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data));
       } catch (err) {
         console.log("Error updating results!");
       }
@@ -199,7 +199,7 @@ export class Pagination implements ComponentInterface {
     this.fireenjinFetch.emit({
       name: "pagination",
       endpoint: this.endpoint,
-      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : this.resultsKey ? { [this.resultsKey]: "results" } : null,
+      dataPropsMap: this.dataPropsMap ? this.dataPropsMap : null,
       disableFetch: this.disableFetch,
       params: {
         data: this.fetchData ? this.fetchData : this.paramData,
