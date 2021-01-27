@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-01-27T05:54:15",
+  "timestamp": "2021-01-27T07:28:02",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.3.0",
@@ -806,6 +806,22 @@
           "required": false
         },
         {
+          "name": "collection",
+          "type": "string",
+          "mutable": false,
+          "attr": "collection",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "dataPropsMap",
           "type": "any",
           "mutable": false,
@@ -989,6 +1005,23 @@
           "required": false
         },
         {
+          "name": "name",
+          "type": "string",
+          "mutable": true,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"pagination\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "orderBy",
           "type": "string",
           "mutable": false,
@@ -1040,7 +1073,7 @@
         {
           "name": "pageCountKey",
           "type": "string",
-          "mutable": false,
+          "mutable": true,
           "attr": "page-count-key",
           "reflectToAttr": false,
           "docs": "",
@@ -1056,7 +1089,7 @@
         {
           "name": "pageKey",
           "type": "string",
-          "mutable": false,
+          "mutable": true,
           "attr": "page-key",
           "reflectToAttr": false,
           "docs": "",
@@ -1088,7 +1121,7 @@
         {
           "name": "resultCountKey",
           "type": "string",
-          "mutable": false,
+          "mutable": true,
           "attr": "result-count-key",
           "reflectToAttr": false,
           "docs": "",
@@ -1120,12 +1153,11 @@
         {
           "name": "resultsKey",
           "type": "string",
-          "mutable": false,
+          "mutable": true,
           "attr": "results-key",
           "reflectToAttr": false,
           "docs": "",
           "docsTags": [],
-          "default": "\"results\"",
           "values": [
             {
               "type": "string"
