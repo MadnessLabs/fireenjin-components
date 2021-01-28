@@ -10,6 +10,7 @@
 | Property           | Attribute            | Description | Type                       | Default                  |
 | ------------------ | -------------------- | ----------- | -------------------------- | ------------------------ |
 | `approxItemHeight` | `approx-item-height` |             | `number`                   | `undefined`              |
+| `collection`       | `collection`         |             | `string`                   | `undefined`              |
 | `dataPropsMap`     | `data-props-map`     |             | `any`                      | `undefined`              |
 | `disableFetch`     | `disable-fetch`      |             | `boolean`                  | `false`                  |
 | `display`          | `display`            |             | `"grid" \| "list"`         | `"grid"`                 |
@@ -21,6 +22,7 @@
 | `listEl`           | --                   |             | `FunctionalComponent<any>` | `undefined`              |
 | `loadingSpinner`   | `loading-spinner`    |             | `string`                   | `"bubbles"`              |
 | `loadingText`      | `loading-text`       |             | `string`                   | `"Loading more data..."` |
+| `name`             | `name`               |             | `string`                   | `"pagination"`           |
 | `orderBy`          | `order-by`           |             | `string`                   | `undefined`              |
 | `orderDirection`   | `order-direction`    |             | `string`                   | `undefined`              |
 | `page`             | `page`               |             | `number`                   | `0`                      |
@@ -29,7 +31,7 @@
 | `query`            | `query`              |             | `string`                   | `undefined`              |
 | `resultCountKey`   | `result-count-key`   |             | `string`                   | `undefined`              |
 | `results`          | --                   |             | `any[]`                    | `[]`                     |
-| `resultsKey`       | `results-key`        |             | `string`                   | `"results"`              |
+| `resultsKey`       | `results-key`        |             | `string`                   | `undefined`              |
 
 
 ## Events

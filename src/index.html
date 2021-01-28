@@ -57,11 +57,22 @@
     <fireenjin-designer-gallery></fireenjin-designer-gallery>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        FireEnjin.init({
-          host: "http://localhost:4000",
-          functionsHost:
-            "https://us-central1-fireenjin-live.cloudfunctions.net",
-        });
+        var defaultWrapper = function (sdkFunction) { return sdkFunction(); };
+        FireEnjin.init(function(client, withWrapper) {
+            if (withWrapper === void 0) { withWrapper = defaultWrapper; }
+            return {
+              listUsers: function (variables) {
+                return withWrapper(function () { return client.request(graphql_1.print(exports.ListUsersDocument), variables); });
+              }
+            }
+          },
+          {
+            debug: true,
+            host: "http://localhost:4000",
+            functionsHost:
+              "https://us-central1-fireenjin-live.cloudfunctions.net",
+          }
+        );
         var firebaseConfig = {
           apiKey: "AIzaSyAz5C9TRxQ9bUkTwVaD6Yc-Iisw57UslPM",
           authDomain: "fireenjin-live.firebaseapp.com",

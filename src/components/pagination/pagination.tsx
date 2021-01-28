@@ -143,14 +143,14 @@ export class Pagination implements ComponentInterface {
   onResize() {
     if (
       this.display === "list" &&
-      this.virtualScrollEl.querySelector("ion-item")
+      this.virtualScrollEl?.querySelector("ion-item")
     ) {
       this.approxItemHeight = this.virtualScrollEl.querySelector(
         "ion-item"
       ).offsetHeight;
     } else if (
       this.display === "grid" &&
-      this.virtualScrollEl.querySelectorAll("ion-col")
+      this.virtualScrollEl?.querySelectorAll("ion-col")
     ) {
       let i;
       let lastCol;
@@ -273,7 +273,7 @@ export class Pagination implements ComponentInterface {
           {this.display === "grid" ? (
             <ion-grid>
               <ion-row>
-                {this.results.map((result) => (
+                {this.results.map((result) => typeof this.gridEl({ result }, null, null) === "string" ? (<ion-col innerHTML={this.gridEl({ result }, null, null) as any} />) : (
                   <ion-col>
                     {this.gridEl({ result }, null, null)}
                   </ion-col>
@@ -283,7 +283,7 @@ export class Pagination implements ComponentInterface {
           ) : (
             <ion-card>
               <ion-list>
-                {this.results.map((result) => this.listEl({ result }, null, null))}
+                {this.results.map((result) => typeof this.listEl({ result }, null, null) === "string" ? <div innerHTML={this.listEl({ result }, null, null) as any} /> : this.listEl({ result }, null, null))}
               </ion-list>
             </ion-card>
           )}

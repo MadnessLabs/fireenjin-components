@@ -28,6 +28,7 @@ if (window && !(window as any).FireEnjin) {
             headers?: any;
             functionsHost?: string;
             uploadUrl?: string;
+            debug?: boolean;
         } = {}
         ) => {
         client = new GraphQLClient(options.host, {
@@ -98,7 +99,7 @@ if (window && !(window as any).FireEnjin) {
             !event ||
             !event.detail ||
             !event.detail.endpoint ||
-            !sdk[event.detail.endpoint] ||
+            (!sdk[event.detail.endpoint] && !options.debug)  ||
             event.detail.disableSubmit
             )
             return false;
@@ -150,7 +151,7 @@ if (window && !(window as any).FireEnjin) {
             !event ||
             !event.detail ||
             !event.detail.endpoint ||
-            !sdk[event.detail.endpoint] ||
+            (!sdk[event.detail.endpoint] && !options.debug)  ||
             event.detail.disableFetch
             )
             return false;

@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@madnesslabs/fireenjin": "^1.4.14",
+    "@madnesslabs/fireenjin-designer": "^1.1.31",
     "@stencil/eslint-plugin": "^0.3.1",
     "@types/chart.js": "^2.9.30",
     "@types/cleave.js": "^1.4.4",
