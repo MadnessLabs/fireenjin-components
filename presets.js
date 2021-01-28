@@ -15,7 +15,30 @@ define("src/components/pagination/pagination.presets", ["require", "exports"], f
     exports["default"] = {
         list: {
             props: {
-                display: "grid"
+                display: "list",
+                endpoint: "listUsers",
+                limit: 15,
+                listEl: function (_a) {
+                    var result = _a.result;
+                    return "<h1>" + result.id + "</h1>";
+                },
+                collection: "users",
+                results: [
+                    { id: "001" },
+                    { id: "002" },
+                    { id: "003" }
+                ]
+            },
+            beforeHTML: function () { return "<h1>User List</h1>"; },
+            innerHTML: function (_component, props) { return "\n            <ion-content>\n                <fireenjin-pagination display=\"" + props.display + "\" endpoint=\"" + props.endpoint + "\" limit=\"" + props.limit + "\" collection=\"" + props.collection + "\"></fireenjin-pagination>\n            </ion-content>\n        "; },
+            hooks: {
+                onComponentDidLoad: function (_a) {
+                    var organismEl = _a.organismEl, props = _a.props;
+                    if (!organismEl.querySelector("fireenjin-pagination"))
+                        return;
+                    organismEl.querySelector("fireenjin-pagination").listEl = props.listEl;
+                    organismEl.querySelector("fireenjin-pagination").results = props.results;
+                }
             }
         }
     };
