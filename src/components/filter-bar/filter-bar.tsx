@@ -78,11 +78,13 @@ export class FilterBar implements ComponentInterface {
         this.filter = { ...this.filter };
       }
     }
+    this.filterPopoverEl.dismiss();
+    if (!this.paginationEl) return;
     await this.paginationEl.clearResults();
     this.paginationEl.getResults({
       paramData: event?.detail?.data ? event.detail.data : {},
     });
-    this.filterPopoverEl.dismiss();
+    
   }
 
   @Listen("ionChange", { target: "body" })
