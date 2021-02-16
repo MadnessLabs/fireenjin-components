@@ -218,7 +218,7 @@ export class Pagination implements ComponentInterface {
       ...(options?.paramData ? options.paramData : {}),
     };
 
-    if (this.query?.length > 1) {
+    if (this.query) {
       this.paramData.query = this.query;
     }
 
