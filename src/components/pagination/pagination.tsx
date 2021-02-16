@@ -201,7 +201,7 @@ export class Pagination implements ComponentInterface {
       paramData?: any;
     } = {}
   ) {
-    if (options.page) {
+    if (options.page || options.page === 0) {
       this.page = options.page;
     }
 
