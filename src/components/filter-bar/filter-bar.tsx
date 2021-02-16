@@ -92,8 +92,7 @@ export class FilterBar implements ComponentInterface {
       this.paginationEl.orderBy = event.detail.value;
     }
     if (event?.target?.tagName === "ION-SEARCHBAR") {
-      this.paginationEl.query = event.detail.value;
-      
+      this.paginationEl.query = event.detail.value ? event.detail.value : "";
     }
   }
 
