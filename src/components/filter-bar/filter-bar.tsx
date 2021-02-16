@@ -33,7 +33,6 @@ export class FilterBar implements ComponentInterface {
     label?: string;
     controls: Control[];
   };
-
   @Prop() paginationEl: any;
   @Prop() modeToggle = false;
   @Prop({
@@ -94,6 +93,7 @@ export class FilterBar implements ComponentInterface {
     }
     if (event?.target?.tagName === "ION-SEARCHBAR") {
       this.paginationEl.query = event.detail.value;
+      
     }
   }
 
