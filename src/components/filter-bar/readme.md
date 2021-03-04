@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type                                                                                                                                       | Default     |
-| -------------- | --------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `displayMode`  | `display-mode`  |             | `"grid" \| "list"`                                                                                                                         | `"grid"`    |
-| `filter`       | --              |             | `{ label?: string; controls: Control[]; }`                                                                                                 | `undefined` |
-| `modeToggle`   | `mode-toggle`   |             | `boolean`                                                                                                                                  | `false`     |
-| `paginationEl` | `pagination-el` |             | `any`                                                                                                                                      | `undefined` |
-| `sort`         | --              |             | `{ label?: string; value?: string; header?: string; subHeader?: string; message?: string; options: { label: string; value: string; }[]; }` | `undefined` |
+| Property        | Attribute        | Description | Type                                                                                                                                       | Default     |
+| --------------- | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `disableSearch` | `disable-search` |             | `boolean`                                                                                                                                  | `false`     |
+| `displayMode`   | `display-mode`   |             | `"grid" \| "list"`                                                                                                                         | `"grid"`    |
+| `filter`        | --               |             | `{ label?: string; controls: Control[]; }`                                                                                                 | `undefined` |
+| `modeToggle`    | `mode-toggle`    |             | `boolean`                                                                                                                                  | `false`     |
+| `paginationEl`  | `pagination-el`  |             | `any`                                                                                                                                      | `undefined` |
+| `sort`          | --               |             | `{ label?: string; value?: string; header?: string; subHeader?: string; message?: string; options: { label: string; value: string; }[]; }` | `undefined` |
 
 
 ## Methods
