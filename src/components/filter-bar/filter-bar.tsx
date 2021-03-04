@@ -38,6 +38,7 @@ export class FilterBar implements ComponentInterface {
   @Prop({
     mutable: true
   }) displayMode: "list" | "grid" = "grid";
+  @Prop() disableSearch = false;
 
   @State() selectOptions: any = {};
   @State() currentFilters: {
@@ -170,9 +171,9 @@ export class FilterBar implements ComponentInterface {
                 </ion-button>
               </ion-col>
             )}
-            <ion-col>
+            {!this.disableSearch && <ion-col>
               <ion-searchbar />
-            </ion-col>
+            </ion-col>}
             {this.filter?.controls?.length && (
               <ion-col class="filter-control">
                 <ion-card
