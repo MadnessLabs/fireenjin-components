@@ -1,9 +1,9 @@
 {
-  "timestamp": "2021-02-16T20:37:07",
+  "timestamp": "2021-03-04T03:20:18",
   "compiler": {
     "name": "@stencil/core",
-    "version": "2.3.0",
-    "typescriptVersion": "4.0.5"
+    "version": "2.4.0",
+    "typescriptVersion": "4.1.3"
   },
   "components": [
     {
@@ -15,6 +15,23 @@
       "docsTags": [],
       "usage": {},
       "props": [
+        {
+          "name": "disableSearch",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-search",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
         {
           "name": "displayMode",
           "type": "\"grid\" | \"list\"",
