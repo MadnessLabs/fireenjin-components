@@ -243,17 +243,17 @@ if (window && !(window as any).FireEnjin) {
             }
 
             if (
-            event?.target?.setLoading &&
-            typeof event?.target?.setLoading === "function"
-            ) {
-            event.target.setLoading(false);
-            }
-        });
+                event?.target?.setLoading &&
+                typeof event?.target?.setLoading === "function"
+                ) {
+                event.target.setLoading(false);
+                }
+            });
 
-        return {
-            client,
-            sdk
-        };
+            return {
+                client,
+                sdk
+            };
         },
         setHeader(key: string, value: string) {
         if (client) {
