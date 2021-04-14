@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-14T03:13:08",
+  "timestamp": "2021-04-14T07:49:15",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -957,23 +957,6 @@
           "required": false
         },
         {
-          "name": "hideCardWrapper",
-          "type": "boolean",
-          "mutable": false,
-          "attr": "hide-card-wrapper",
-          "reflectToAttr": false,
-          "docs": "",
-          "docsTags": [],
-          "default": "false",
-          "values": [
-            {
-              "type": "boolean"
-            }
-          ],
-          "optional": false,
-          "required": false
-        },
-        {
           "name": "limit",
           "type": "number",
           "mutable": false,
@@ -1284,23 +1267,23 @@
         "fireenjin-renderer"
       ],
       "dependencies": [
-        "ion-list",
         "ion-virtual-scroll",
         "ion-grid",
         "ion-row",
         "ion-col",
         "ion-card",
+        "ion-list",
         "ion-infinite-scroll",
         "ion-infinite-scroll-content"
       ],
       "dependencyGraph": {
         "fireenjin-pagination": [
-          "ion-list",
           "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
+          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
@@ -1426,12 +1409,12 @@
           "ion-item"
         ],
         "fireenjin-pagination": [
-          "ion-list",
           "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
+          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
