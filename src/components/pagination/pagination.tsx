@@ -102,6 +102,7 @@ export class Pagination implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   async onSuccess(event) {
+    console.log(event.detail);
     if (event.detail.name === this.name) {
       let results;
       try {
@@ -237,6 +238,12 @@ export class Pagination implements ComponentInterface {
     });
   }
 
+  componentWillLoad() {
+    if (Build.isBrowser) {
+      this.getResults();
+    }
+  }
+
   componentDidLoad() {
     if (this.collection) {
       this.resultsKey = !this.resultsKey ? `${this.collection}.results` : this.resultsKey;
@@ -247,7 +254,6 @@ export class Pagination implements ComponentInterface {
     }
 
     if (Build.isBrowser) {
-      this.getResults();
       window.dispatchEvent(new window.Event("resize"));
       this.resizeInterval = setInterval(() => {
         window.dispatchEvent(new window.Event("resize"));
