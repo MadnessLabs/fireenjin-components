@@ -104,7 +104,7 @@ export class Pagination implements ComponentInterface {
   async onSuccess(event) {
     console.log(event.detail);
     if (event.detail.name === this.name) {
-      let results;
+      let results = [];
       try {
         results = this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data);
       } catch (error) {
@@ -124,7 +124,7 @@ export class Pagination implements ComponentInterface {
 
       await this.infiniteScrollEl.complete();
       await this.virtualScrollEl.checkEnd();
-      if (!results.length || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
+      if (!results?.length || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
         this.infiniteScrollEl.disabled = true;
       }
       setTimeout(() => {
