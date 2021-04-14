@@ -42,7 +42,6 @@ export class Pagination implements ComponentInterface {
   @Prop() groupBy: string;
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
-  @Prop() hideCardWrapper = false;
   @Prop({
     mutable: true
   }) resultsKey: string;
@@ -264,9 +263,6 @@ export class Pagination implements ComponentInterface {
   }
 
   render() {
-    const ListEl = <ion-list>
-    {this.results.map((result) => typeof this.listEl({ result }, null, null) === "string" ? <div innerHTML={this.listEl({ result }, null, null) as any} /> : this.listEl({ result }, null, null))}
-  </ion-list>;
     return (
       <div class="pagination">
         <ion-virtual-scroll
@@ -284,7 +280,13 @@ export class Pagination implements ComponentInterface {
                 ))}
               </ion-row>
             </ion-grid>
-          ) : this.hideCardWrapper ? <ListEl /> : <ion-card><ListEl /></ion-card>}
+          ) : (
+            <ion-card>
+              <ion-list>
+                {this.results.map((result) => typeof this.listEl({ result }, null, null) === "string" ? <div innerHTML={this.listEl({ result }, null, null) as any} /> : this.listEl({ result }, null, null))}
+              </ion-list>
+            </ion-card>
+          )}
         </ion-virtual-scroll>
         <ion-infinite-scroll
           style={{ display: "block" }}
