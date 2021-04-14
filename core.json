@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-03-04T03:20:18",
+  "timestamp": "2021-04-14T03:13:08",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -957,6 +957,23 @@
           "required": false
         },
         {
+          "name": "hideCardWrapper",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "hide-card-wrapper",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "limit",
           "type": "number",
           "mutable": false,
@@ -1267,23 +1284,23 @@
         "fireenjin-renderer"
       ],
       "dependencies": [
+        "ion-list",
         "ion-virtual-scroll",
         "ion-grid",
         "ion-row",
         "ion-col",
         "ion-card",
-        "ion-list",
         "ion-infinite-scroll",
         "ion-infinite-scroll-content"
       ],
       "dependencyGraph": {
         "fireenjin-pagination": [
+          "ion-list",
           "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
-          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
@@ -1409,12 +1426,12 @@
           "ion-item"
         ],
         "fireenjin-pagination": [
+          "ion-list",
           "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
-          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
@@ -1429,6 +1446,101 @@
           "ion-ripple-effect"
         ]
       }
+    },
+    {
+      "filePath": "./src/components/resizer/resizer.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-resizer",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "direction",
+          "type": "\"bottom\" | \"bottomLeft\" | \"bottomRight\" | \"left\" | \"right\" | \"top\" | \"topLeft\" | \"topRight\"",
+          "mutable": false,
+          "attr": "direction",
+          "reflectToAttr": false,
+          "docs": "The resize direction",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "bottom",
+              "type": "string"
+            },
+            {
+              "value": "bottomLeft",
+              "type": "string"
+            },
+            {
+              "value": "bottomRight",
+              "type": "string"
+            },
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "value": "top",
+              "type": "string"
+            },
+            {
+              "value": "topLeft",
+              "type": "string"
+            },
+            {
+              "value": "topRight",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "onResizeStart",
+          "type": "(e: any, dir: Direction) => void",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "A callback fired w",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "(e: any, dir: Direction) => void"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "replaceStyles",
+          "type": "any",
+          "mutable": false,
+          "attr": "replace-styles",
+          "reflectToAttr": false,
+          "docs": "The styles to replace",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
     },
     {
       "filePath": "./src/components/select/select.tsx",
