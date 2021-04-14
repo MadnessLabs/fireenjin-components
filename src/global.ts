@@ -29,6 +29,7 @@ if (window && !(window as any).FireEnjin) {
             functionsHost?: string;
             uploadUrl?: string;
             debug?: boolean;
+            disableCache?: boolean;
         } = {}
         ) => {
         client = new GraphQLClient(options.host, {
@@ -206,7 +207,7 @@ if (window && !(window as any).FireEnjin) {
             if (options.onSuccess && typeof options.onSuccess === "function") {
                 options.onSuccess(response);
             }
-            if (!cachedData || (cachedData && !isEqual(cachedData, response))) {
+            if (!options.disableCache && (!cachedData || (cachedData && !isEqual(cachedData, response)))) {
                 document.body.dispatchEvent(
                 new CustomEvent("fireenjinSuccess", {
                     detail: {
