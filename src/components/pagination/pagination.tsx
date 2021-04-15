@@ -239,12 +239,6 @@ export class Pagination implements ComponentInterface {
   }
 
   componentWillLoad() {
-    if (Build.isBrowser) {
-      this.getResults();
-    }
-  }
-
-  componentDidLoad() {
     if (this.collection) {
       this.resultsKey = !this.resultsKey ? `${this.collection}.results` : this.resultsKey;
       this.pageKey = !this.pageKey ? `${this.collection}.page` : this.pageKey;
@@ -252,7 +246,12 @@ export class Pagination implements ComponentInterface {
       this.resultCountKey = !this.resultCountKey ? `${this.collection}.resultCount` : this.resultCountKey;
       this.name = !this.name ? `${this.collection}Pagination` : this.name;
     }
+    if (Build.isBrowser) {
+      this.getResults();
+    }
+  }
 
+  componentDidLoad() {
     if (Build.isBrowser) {
       window.dispatchEvent(new window.Event("resize"));
       this.resizeInterval = setInterval(() => {
