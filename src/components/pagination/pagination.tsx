@@ -22,11 +22,13 @@ export class Pagination implements ComponentInterface {
   virtualScrollEl: HTMLIonVirtualScrollElement;
   infiniteScrollEl: HTMLIonInfiniteScrollElement;
   resizeInterval: NodeJS.Timeout;
+  initailizedOnPath: string;
 
   @Event() fireenjinFetch: EventEmitter;
 
   @Prop() gridEl: FunctionalComponent<any>;
   @Prop() listEl: FunctionalComponent<any>;
+  @Prop() disablePageCheck = false;
   @Prop() disableFetch = false;
   @Prop({ mutable: true }) approxItemHeight: number;
   @Prop() endpoint?: string;
@@ -193,6 +195,7 @@ export class Pagination implements ComponentInterface {
     this.results = [];
   }
 
+  @Listen("ionRouteDidChange", { target: "body" })
   @Method()
   async getResults(
     options: {
@@ -202,6 +205,7 @@ export class Pagination implements ComponentInterface {
       paramData?: any;
     } = {}
   ) {
+    if (!this.disablePageCheck && window?.location?.pathname !== this.initailizedOnPath) return;
     if (options.page || options.page === 0) {
       this.page = options.page;
     }
@@ -253,6 +257,9 @@ export class Pagination implements ComponentInterface {
 
   componentDidLoad() {
     if (Build.isBrowser) {
+      if (window?.location?.pathname) {
+        this.initailizedOnPath = window.location.pathname;
+      }
       window.dispatchEvent(new window.Event("resize"));
       this.resizeInterval = setInterval(() => {
         window.dispatchEvent(new window.Event("resize"));
