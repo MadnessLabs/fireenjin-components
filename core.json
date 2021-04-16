@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-15T05:14:00",
+  "timestamp": "2021-04-16T22:05:07",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -872,6 +872,23 @@
           "required": false
         },
         {
+          "name": "disablePageCheck",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-page-check",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "display",
           "type": "\"grid\" | \"list\"",
           "mutable": false,
@@ -1258,6 +1275,12 @@
           "target": "window",
           "capture": false,
           "passive": true
+        },
+        {
+          "event": "ionRouteDidChange",
+          "target": "body",
+          "capture": false,
+          "passive": false
         }
       ],
       "styles": [],
