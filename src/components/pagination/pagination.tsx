@@ -264,6 +264,9 @@ export class Pagination implements ComponentInterface {
       this.resizeInterval = setInterval(() => {
         window.dispatchEvent(new window.Event("resize"));
       }, 3000);
+      if (!this.results?.length) {
+        this.getResults();
+      }
     }
     
   }
