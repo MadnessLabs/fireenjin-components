@@ -94,11 +94,6 @@ Type: `Promise<void>`
 ### Depends on
 
 - ion-virtual-scroll
-- ion-grid
-- ion-row
-- ion-col
-- ion-card
-- ion-list
 - ion-infinite-scroll
 - ion-infinite-scroll-content
 
@@ -106,14 +101,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   fireenjin-pagination --> ion-virtual-scroll
-  fireenjin-pagination --> ion-grid
-  fireenjin-pagination --> ion-row
-  fireenjin-pagination --> ion-col
-  fireenjin-pagination --> ion-card
-  fireenjin-pagination --> ion-list
   fireenjin-pagination --> ion-infinite-scroll
   fireenjin-pagination --> ion-infinite-scroll-content
-  ion-card --> ion-ripple-effect
   ion-infinite-scroll-content --> ion-spinner
   fireenjin-renderer --> fireenjin-pagination
   style fireenjin-pagination fill:#f9f,stroke:#333,stroke-width:4px
