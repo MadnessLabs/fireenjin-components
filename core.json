@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-18T03:19:22",
+  "timestamp": "2021-04-19T19:44:22",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -1291,27 +1291,14 @@
       ],
       "dependencies": [
         "ion-virtual-scroll",
-        "ion-grid",
-        "ion-row",
-        "ion-col",
-        "ion-card",
-        "ion-list",
         "ion-infinite-scroll",
         "ion-infinite-scroll-content"
       ],
       "dependencyGraph": {
         "fireenjin-pagination": [
           "ion-virtual-scroll",
-          "ion-grid",
-          "ion-row",
-          "ion-col",
-          "ion-card",
-          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
-        ],
-        "ion-card": [
-          "ion-ripple-effect"
         ],
         "ion-infinite-scroll-content": [
           "ion-spinner"
@@ -1433,16 +1420,8 @@
         ],
         "fireenjin-pagination": [
           "ion-virtual-scroll",
-          "ion-grid",
-          "ion-row",
-          "ion-col",
-          "ion-card",
-          "ion-list",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
-        ],
-        "ion-card": [
-          "ion-ripple-effect"
         ],
         "ion-infinite-scroll-content": [
           "ion-spinner"
@@ -1457,6 +1436,7 @@
       "filePath": "./src/components/resizer/resizer.tsx",
       "encapsulation": "none",
       "tag": "fireenjin-resizer",
+      "readme": "# fireenjin-resizer\n\n\n",
       "docs": "",
       "docsTags": [],
       "usage": {},
@@ -1507,21 +1487,6 @@
           "required": false
         },
         {
-          "name": "onResizeStart",
-          "type": "(e: any, dir: Direction) => void",
-          "mutable": false,
-          "reflectToAttr": false,
-          "docs": "A callback fired w",
-          "docsTags": [],
-          "values": [
-            {
-              "type": "(e: any, dir: Direction) => void"
-            }
-          ],
-          "optional": false,
-          "required": false
-        },
-        {
           "name": "replaceStyles",
           "type": "any",
           "mutable": false,
@@ -1535,6 +1500,48 @@
             }
           ],
           "optional": true,
+          "required": false
+        },
+        {
+          "name": "resizeStart",
+          "type": "(e: any, dir: \"top\" | \"right\" | \"bottom\" | \"left\" | \"topRight\" | \"bottomRight\" | \"bottomLeft\" | \"topLeft\") => void",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "A callback fired when resize starts",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "(e: any, dir: \"top\""
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "value": "bottom",
+              "type": "string"
+            },
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "topRight",
+              "type": "string"
+            },
+            {
+              "value": "bottomRight",
+              "type": "string"
+            },
+            {
+              "value": "bottomLeft",
+              "type": "string"
+            },
+            {
+              "type": "\"topLeft\") => void"
+            }
+          ],
+          "optional": false,
           "required": false
         }
       ],
