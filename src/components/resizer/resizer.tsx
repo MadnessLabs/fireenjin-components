@@ -68,13 +68,6 @@ const styles: { [key: string]: React.CSSProperties } = {
       cursor: 'nw-resize',
     },
   };
-  
-type Direction = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
-
-type OnStartCallback = (
-    e: any,
-    dir: Direction,
-  ) => void;
 
 @Component({
   tag: "fireenjin-resizer",
@@ -83,15 +76,18 @@ export class Resizer implements ComponentInterface {
   /**
    * The resize direction
    */
-  @Prop() direction: Direction;
+  @Prop() direction: 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
   /**
    * The styles to replace
    */
   @Prop() replaceStyles?: any;
   /**
-   * A callback fired w
+   * A callback fired when resize starts
    */
-  @Prop() onResizeStart: OnStartCallback;
+  @Prop() resizeStart: (
+    e: any,
+    dir: 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft',
+  ) => void;
 
   render() {
     return (
@@ -103,10 +99,10 @@ export class Resizer implements ComponentInterface {
             ...(this.replaceStyles || {}),
           }}
           onMouseDown={(e) => {
-            this.onResizeStart(e, this.direction);
+            this.resizeStart(e, this.direction);
           }}
           onTouchStart={ (e: React.TouchEvent<HTMLDivElement>) => {
-            this.onResizeStart(e, this.direction);
+            this.resizeStart(e, this.direction);
           }}
         >
           <slot />

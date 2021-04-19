@@ -13,6 +13,7 @@
 | `collection`       | `collection`         |             | `string`                   | `undefined`              |
 | `dataPropsMap`     | `data-props-map`     |             | `any`                      | `undefined`              |
 | `disableFetch`     | `disable-fetch`      |             | `boolean`                  | `false`                  |
+| `disablePageCheck` | `disable-page-check` |             | `boolean`                  | `false`                  |
 | `display`          | `display`            |             | `"grid" \| "list"`         | `"grid"`                 |
 | `endpoint`         | `endpoint`           |             | `string`                   | `undefined`              |
 | `fetchData`        | `fetch-data`         |             | `any`                      | `undefined`              |
