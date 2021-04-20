@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-20T00:11:31",
+  "timestamp": "2021-04-20T01:00:27",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -889,6 +889,23 @@
           "required": false
         },
         {
+          "name": "disableVirtualScroll",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disable-virtual-scroll",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "display",
           "type": "\"grid\" | \"list\"",
           "mutable": false,
@@ -1150,6 +1167,21 @@
             }
           ],
           "optional": true,
+          "required": false
+        },
+        {
+          "name": "renderItem",
+          "type": "(item: any, i: number) => any",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "(item: any, i: number) => any"
+            }
+          ],
+          "optional": false,
           "required": false
         },
         {
