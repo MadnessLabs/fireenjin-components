@@ -311,50 +311,48 @@ export class Pagination implements ComponentInterface {
     }
   }
 
-  render() {
-    const ScrollContainerEl = this.disableVirtualScroll ? (
-      <div />
+  renderResults() {
+    return this.display === "grid" ? (
+      <ion-grid>
+        <ion-row>
+          {this.results.map((result) =>
+            typeof this.gridEl({ result }, null, null) === "string" ? (
+              <ion-col innerHTML={this.gridEl({ result }, null, null) as any} />
+            ) : (
+              <ion-col>{this.gridEl({ result }, null, null)}</ion-col>
+            )
+          )}
+        </ion-row>
+      </ion-grid>
     ) : (
-      <ion-virtual-scroll
-        items={this.results}
-        approxItemHeight={this.approxItemHeight}
-        renderItem={this.renderItem}
-      />
+      <ion-card>
+        <ion-list>
+          {this.results.map((result) =>
+            typeof this.listEl({ result }, null, null) === "string" ? (
+              <div innerHTML={this.listEl({ result }, null, null) as any} />
+            ) : (
+              this.listEl({ result }, null, null)
+            )
+          )}
+        </ion-list>
+      </ion-card>
     );
+  }
 
+  render() {
     return (
       <div class="pagination">
-        <ScrollContainerEl ref={(el) => (this.virtualScrollEl = el)}>
-          {this.display === "grid" ? (
-            <ion-grid>
-              <ion-row>
-                {this.results.map((result) =>
-                  typeof this.gridEl({ result }, null, null) === "string" ? (
-                    <ion-col
-                      innerHTML={this.gridEl({ result }, null, null) as any}
-                    />
-                  ) : (
-                    <ion-col>{this.gridEl({ result }, null, null)}</ion-col>
-                  )
-                )}
-              </ion-row>
-            </ion-grid>
-          ) : (
-            <ion-card>
-              <ion-list>
-                {this.results.map((result) =>
-                  typeof this.listEl({ result }, null, null) === "string" ? (
-                    <div
-                      innerHTML={this.listEl({ result }, null, null) as any}
-                    />
-                  ) : (
-                    this.listEl({ result }, null, null)
-                  )
-                )}
-              </ion-list>
-            </ion-card>
-          )}
-        </ScrollContainerEl>
+        {this.disableVirtualScroll ? (
+          <div innerHTML={this.renderResults()} />
+        ) : (
+          <ion-virtual-scroll
+            items={this.results}
+            approxItemHeight={this.approxItemHeight}
+            renderItem={this.renderItem}
+            ref={(el) => (this.virtualScrollEl = el)}
+            innerHTML={this.renderResults()}
+          />
+        )}
         <ion-infinite-scroll
           style={{ display: "block" }}
           ref={(el) => (this.infiniteScrollEl = el)}
