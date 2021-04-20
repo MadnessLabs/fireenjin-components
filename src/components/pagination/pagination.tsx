@@ -45,21 +45,28 @@ export class Pagination implements ComponentInterface {
   @Prop() loadingSpinner = "bubbles";
   @Prop() loadingText = "Loading more data...";
   @Prop({
-    mutable: true
-  }) resultsKey: string;
+    mutable: true,
+  })
+  resultsKey: string;
   @Prop({
-    mutable: true
-  }) pageKey: string;
+    mutable: true,
+  })
+  pageKey: string;
   @Prop({
-    mutable: true
-  }) pageCountKey: string;
+    mutable: true,
+  })
+  pageCountKey: string;
   @Prop({
-    mutable: true
-  }) resultCountKey: string;
+    mutable: true,
+  })
+  resultCountKey: string;
   @Prop({
-    mutable: true
-  }) name = "pagination";
+    mutable: true,
+  })
+  name = "pagination";
   @Prop() collection: string;
+  @Prop() renderItem: (item: any, i: number) => any;
+  @Prop() disableVirtualScroll = false;
 
   @State() paramData: {
     query?: string;
@@ -104,11 +111,12 @@ export class Pagination implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   async onSuccess(event) {
-    console.log(event.detail);
     if (event.detail.name === this.name) {
       let results = [];
       try {
-        results = this.resultsKey.split('.').reduce((o,i)=>o[i], event.detail.data);
+        results = this.resultsKey
+          .split(".")
+          .reduce((o, i) => o[i], event.detail.data);
       } catch (error) {
         console.log("Error getting results", event.detail, this.resultsKey);
       }
@@ -117,7 +125,7 @@ export class Pagination implements ComponentInterface {
           this.results = [];
         }
         this.page = this.pageKey
-          ? this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data)
+          ? this.pageKey.split(".").reduce((o, i) => o[i], event.detail.data)
           : this.page + 1;
         await this.addResults(results);
       } catch (err) {
@@ -125,13 +133,23 @@ export class Pagination implements ComponentInterface {
       }
 
       await this.infiniteScrollEl.complete();
-      await this.virtualScrollEl.checkEnd();
-      if (!results?.length || (this.pageCountKey && this.pageKey && this.pageKey.split('.').reduce((o,i)=>o[i], event.detail.data) === this.pageCountKey.split('.').reduce((o,i)=>o[i], event.detail.data))) {
+      if (
+        !results?.length ||
+        (this.pageCountKey &&
+          this.pageKey &&
+          this.pageKey.split(".").reduce((o, i) => o[i], event.detail.data) ===
+            this.pageCountKey
+              .split(".")
+              .reduce((o, i) => o[i], event.detail.data))
+      ) {
         this.infiniteScrollEl.disabled = true;
       }
-      setTimeout(() => {
-        window.dispatchEvent(new window.Event("resize"));
-      }, 200);
+      if (!this.disableVirtualScroll) {
+        await this.virtualScrollEl.checkEnd();
+        setTimeout(() => {
+          window.dispatchEvent(new window.Event("resize"));
+        }, 200);
+      }
     }
   }
 
@@ -144,6 +162,7 @@ export class Pagination implements ComponentInterface {
 
   @Listen("resize", { target: "window" })
   onResize() {
+    if (this.disableVirtualScroll) return;
     if (
       this.display === "list" &&
       this.virtualScrollEl?.querySelector("ion-item")
@@ -205,7 +224,11 @@ export class Pagination implements ComponentInterface {
       paramData?: any;
     } = {}
   ) {
-    if (!this.disablePageCheck && window?.location?.pathname !== this.initailizedOnPath) return;
+    if (
+      !this.disablePageCheck &&
+      window?.location?.pathname !== this.initailizedOnPath
+    )
+      return;
     if (options.page || options.page === 0) {
       this.page = options.page;
     }
@@ -227,7 +250,11 @@ export class Pagination implements ComponentInterface {
       this.paramData.query = this.query;
     }
 
-    if (options.next && this.results?.length && this.results[this.results.length - 1]?.id) {
+    if (
+      options.next &&
+      this.results?.length &&
+      this.results[this.results.length - 1]?.id
+    ) {
       this.paramData.next = this.results[this.results.length - 1].id;
     }
 
@@ -244,10 +271,16 @@ export class Pagination implements ComponentInterface {
 
   componentWillLoad() {
     if (this.collection) {
-      this.resultsKey = !this.resultsKey ? `${this.collection}.results` : this.resultsKey;
+      this.resultsKey = !this.resultsKey
+        ? `${this.collection}.results`
+        : this.resultsKey;
       this.pageKey = !this.pageKey ? `${this.collection}.page` : this.pageKey;
-      this.pageCountKey = !this.pageCountKey ? `${this.collection}.pageCount` : this.pageCountKey;
-      this.resultCountKey = !this.resultCountKey ? `${this.collection}.resultCount` : this.resultCountKey;
+      this.pageCountKey = !this.pageCountKey
+        ? `${this.collection}.pageCount`
+        : this.pageCountKey;
+      this.resultCountKey = !this.resultCountKey
+        ? `${this.collection}.resultCount`
+        : this.resultCountKey;
       this.name = !this.name ? `${this.collection}Pagination` : this.name;
     }
     if (Build.isBrowser) {
@@ -260,50 +293,68 @@ export class Pagination implements ComponentInterface {
       if (window?.location?.pathname) {
         this.initailizedOnPath = window.location.pathname;
       }
-      window.dispatchEvent(new window.Event("resize"));
-      this.resizeInterval = setInterval(() => {
+      if (!this.disableVirtualScroll) {
         window.dispatchEvent(new window.Event("resize"));
-      }, 3000);
+        this.resizeInterval = setInterval(() => {
+          window.dispatchEvent(new window.Event("resize"));
+        }, 3000);
+      }
       if (!this.results?.length) {
         this.getResults();
       }
     }
-    
   }
 
   disconnectedCallback() {
-    if (Build.isBrowser) {
+    if (Build.isBrowser && !this.disableVirtualScroll) {
       clearInterval(this.resizeInterval);
     }
   }
 
   render() {
+    const ScrollContainerEl = this.disableVirtualScroll ? (
+      <div />
+    ) : (
+      <ion-virtual-scroll
+        items={this.results}
+        approxItemHeight={this.approxItemHeight}
+        renderItem={this.renderItem}
+      />
+    );
+
     return (
       <div class="pagination">
-        <ion-virtual-scroll
-          ref={(el) => (this.virtualScrollEl = el)}
-          items={this.results}
-          approxItemHeight={this.approxItemHeight}
-          renderItem={(result, i) => console.log(result, i)}
-        >
+        <ScrollContainerEl ref={(el) => (this.virtualScrollEl = el)}>
           {this.display === "grid" ? (
             <ion-grid>
               <ion-row>
-                {this.results.map((result) => typeof this.gridEl({ result }, null, null) === "string" ? (<ion-col innerHTML={this.gridEl({ result }, null, null) as any} />) : (
-                  <ion-col>
-                    {this.gridEl({ result }, null, null)}
-                  </ion-col>
-                ))}
+                {this.results.map((result) =>
+                  typeof this.gridEl({ result }, null, null) === "string" ? (
+                    <ion-col
+                      innerHTML={this.gridEl({ result }, null, null) as any}
+                    />
+                  ) : (
+                    <ion-col>{this.gridEl({ result }, null, null)}</ion-col>
+                  )
+                )}
               </ion-row>
             </ion-grid>
           ) : (
             <ion-card>
               <ion-list>
-                {this.results.map((result) => typeof this.listEl({ result }, null, null) === "string" ? <div innerHTML={this.listEl({ result }, null, null) as any} /> : this.listEl({ result }, null, null))}
+                {this.results.map((result) =>
+                  typeof this.listEl({ result }, null, null) === "string" ? (
+                    <div
+                      innerHTML={this.listEl({ result }, null, null) as any}
+                    />
+                  ) : (
+                    this.listEl({ result }, null, null)
+                  )
+                )}
               </ion-list>
             </ion-card>
           )}
-        </ion-virtual-scroll>
+        </ScrollContainerEl>
         <ion-infinite-scroll
           style={{ display: "block" }}
           ref={(el) => (this.infiniteScrollEl = el)}

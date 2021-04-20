@@ -7,32 +7,34 @@
 
 ## Properties
 
-| Property           | Attribute            | Description | Type                       | Default                  |
-| ------------------ | -------------------- | ----------- | -------------------------- | ------------------------ |
-| `approxItemHeight` | `approx-item-height` |             | `number`                   | `undefined`              |
-| `collection`       | `collection`         |             | `string`                   | `undefined`              |
-| `dataPropsMap`     | `data-props-map`     |             | `any`                      | `undefined`              |
-| `disableFetch`     | `disable-fetch`      |             | `boolean`                  | `false`                  |
-| `disablePageCheck` | `disable-page-check` |             | `boolean`                  | `false`                  |
-| `display`          | `display`            |             | `"grid" \| "list"`         | `"grid"`                 |
-| `endpoint`         | `endpoint`           |             | `string`                   | `undefined`              |
-| `fetchData`        | `fetch-data`         |             | `any`                      | `undefined`              |
-| `gridEl`           | --                   |             | `FunctionalComponent<any>` | `undefined`              |
-| `groupBy`          | `group-by`           |             | `string`                   | `undefined`              |
-| `limit`            | `limit`              |             | `number`                   | `undefined`              |
-| `listEl`           | --                   |             | `FunctionalComponent<any>` | `undefined`              |
-| `loadingSpinner`   | `loading-spinner`    |             | `string`                   | `"bubbles"`              |
-| `loadingText`      | `loading-text`       |             | `string`                   | `"Loading more data..."` |
-| `name`             | `name`               |             | `string`                   | `"pagination"`           |
-| `orderBy`          | `order-by`           |             | `string`                   | `undefined`              |
-| `orderDirection`   | `order-direction`    |             | `string`                   | `undefined`              |
-| `page`             | `page`               |             | `number`                   | `0`                      |
-| `pageCountKey`     | `page-count-key`     |             | `string`                   | `undefined`              |
-| `pageKey`          | `page-key`           |             | `string`                   | `undefined`              |
-| `query`            | `query`              |             | `string`                   | `undefined`              |
-| `resultCountKey`   | `result-count-key`   |             | `string`                   | `undefined`              |
-| `results`          | --                   |             | `any[]`                    | `[]`                     |
-| `resultsKey`       | `results-key`        |             | `string`                   | `undefined`              |
+| Property               | Attribute                | Description | Type                            | Default                  |
+| ---------------------- | ------------------------ | ----------- | ------------------------------- | ------------------------ |
+| `approxItemHeight`     | `approx-item-height`     |             | `number`                        | `undefined`              |
+| `collection`           | `collection`             |             | `string`                        | `undefined`              |
+| `dataPropsMap`         | `data-props-map`         |             | `any`                           | `undefined`              |
+| `disableFetch`         | `disable-fetch`          |             | `boolean`                       | `false`                  |
+| `disablePageCheck`     | `disable-page-check`     |             | `boolean`                       | `false`                  |
+| `disableVirtualScroll` | `disable-virtual-scroll` |             | `boolean`                       | `false`                  |
+| `display`              | `display`                |             | `"grid" \| "list"`              | `"grid"`                 |
+| `endpoint`             | `endpoint`               |             | `string`                        | `undefined`              |
+| `fetchData`            | `fetch-data`             |             | `any`                           | `undefined`              |
+| `gridEl`               | --                       |             | `FunctionalComponent<any>`      | `undefined`              |
+| `groupBy`              | `group-by`               |             | `string`                        | `undefined`              |
+| `limit`                | `limit`                  |             | `number`                        | `undefined`              |
+| `listEl`               | --                       |             | `FunctionalComponent<any>`      | `undefined`              |
+| `loadingSpinner`       | `loading-spinner`        |             | `string`                        | `"bubbles"`              |
+| `loadingText`          | `loading-text`           |             | `string`                        | `"Loading more data..."` |
+| `name`                 | `name`                   |             | `string`                        | `"pagination"`           |
+| `orderBy`              | `order-by`               |             | `string`                        | `undefined`              |
+| `orderDirection`       | `order-direction`        |             | `string`                        | `undefined`              |
+| `page`                 | `page`                   |             | `number`                        | `0`                      |
+| `pageCountKey`         | `page-count-key`         |             | `string`                        | `undefined`              |
+| `pageKey`              | `page-key`               |             | `string`                        | `undefined`              |
+| `query`                | `query`                  |             | `string`                        | `undefined`              |
+| `renderItem`           | --                       |             | `(item: any, i: number) => any` | `undefined`              |
+| `resultCountKey`       | `result-count-key`       |             | `string`                        | `undefined`              |
+| `results`              | --                       |             | `any[]`                         | `[]`                     |
+| `resultsKey`           | `results-key`            |             | `string`                        | `undefined`              |
 
 
 ## Events
@@ -94,6 +96,11 @@ Type: `Promise<void>`
 ### Depends on
 
 - ion-virtual-scroll
+- ion-grid
+- ion-row
+- ion-col
+- ion-card
+- ion-list
 - ion-infinite-scroll
 - ion-infinite-scroll-content
 
@@ -101,8 +108,14 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   fireenjin-pagination --> ion-virtual-scroll
+  fireenjin-pagination --> ion-grid
+  fireenjin-pagination --> ion-row
+  fireenjin-pagination --> ion-col
+  fireenjin-pagination --> ion-card
+  fireenjin-pagination --> ion-list
   fireenjin-pagination --> ion-infinite-scroll
   fireenjin-pagination --> ion-infinite-scroll-content
+  ion-card --> ion-ripple-effect
   ion-infinite-scroll-content --> ion-spinner
   fireenjin-renderer --> fireenjin-pagination
   style fireenjin-pagination fill:#f9f,stroke:#333,stroke-width:4px
