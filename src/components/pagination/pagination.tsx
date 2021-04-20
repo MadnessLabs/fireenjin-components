@@ -284,9 +284,9 @@ export class Pagination implements ComponentInterface {
           ref={(el) => (this.virtualScrollEl = el)}
           items={this.results}
           approxItemHeight={this.approxItemHeight}
-          renderItem={(result) => <div innerHTML={this.display === "grid" ? this.gridEl({ result }, null, null) as any : this.listEl({ result }, null, null) as any} />}
+          renderItem={(result, i) => console.log(result, i)}
         >
-          {/* {this.display === "grid" ? (
+          {this.display === "grid" ? (
             <ion-grid>
               <ion-row>
                 {this.results.map((result) => typeof this.gridEl({ result }, null, null) === "string" ? (<ion-col innerHTML={this.gridEl({ result }, null, null) as any} />) : (
@@ -302,7 +302,7 @@ export class Pagination implements ComponentInterface {
                 {this.results.map((result) => typeof this.listEl({ result }, null, null) === "string" ? <div innerHTML={this.listEl({ result }, null, null) as any} /> : this.listEl({ result }, null, null))}
               </ion-list>
             </ion-card>
-          )} */}
+          )}
         </ion-virtual-scroll>
         <ion-infinite-scroll
           style={{ display: "block" }}
