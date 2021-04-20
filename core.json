@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-20T01:00:27",
+  "timestamp": "2021-04-20T01:13:57",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -1322,23 +1322,23 @@
         "fireenjin-renderer"
       ],
       "dependencies": [
-        "ion-virtual-scroll",
         "ion-grid",
         "ion-row",
         "ion-col",
         "ion-card",
         "ion-list",
+        "ion-virtual-scroll",
         "ion-infinite-scroll",
         "ion-infinite-scroll-content"
       ],
       "dependencyGraph": {
         "fireenjin-pagination": [
-          "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
           "ion-list",
+          "ion-virtual-scroll",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
@@ -1464,12 +1464,12 @@
           "ion-item"
         ],
         "fireenjin-pagination": [
-          "ion-virtual-scroll",
           "ion-grid",
           "ion-row",
           "ion-col",
           "ion-card",
           "ion-list",
+          "ion-virtual-scroll",
           "ion-infinite-scroll",
           "ion-infinite-scroll-content"
         ],
