@@ -343,15 +343,16 @@ export class Pagination implements ComponentInterface {
     return (
       <div class="pagination">
         {this.disableVirtualScroll ? (
-          <div innerHTML={this.renderResults()} />
+          <div>{this.renderResults()}</div>
         ) : (
           <ion-virtual-scroll
             items={this.results}
             approxItemHeight={this.approxItemHeight}
             renderItem={this.renderItem}
             ref={(el) => (this.virtualScrollEl = el)}
-            innerHTML={this.renderResults()}
-          />
+          >
+            {this.renderResults()}
+          </ion-virtual-scroll>
         )}
         <ion-infinite-scroll
           style={{ display: "block" }}
