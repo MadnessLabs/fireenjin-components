@@ -264,7 +264,7 @@ export class Pagination implements ComponentInterface {
       dataPropsMap: this.dataPropsMap ? this.dataPropsMap : null,
       disableFetch: this.disableFetch,
       params: {
-        data: this.fetchData ? this.fetchData : this.paramData,
+        data: {...(this.fetchData ? this.fetchData : {}), ...this.paramData},
       },
     });
   }
