@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-22T06:31:21",
+  "timestamp": "2021-04-23T06:47:04",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -1167,6 +1167,23 @@
             }
           ],
           "optional": true,
+          "required": false
+        },
+        {
+          "name": "removeDuplicates",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "remove-duplicates",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
           "required": false
         },
         {
