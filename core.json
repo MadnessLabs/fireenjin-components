@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-23T20:59:28",
+  "timestamp": "2021-04-23T21:43:00",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -796,6 +796,138 @@
           "fireenjin-form"
         ]
       }
+    },
+    {
+      "filePath": "./src/components/json-editor/json-editor.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-json-editor",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "mutable": false,
+          "attr": "label",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "mode",
+          "type": "\"code\" | \"tree\"",
+          "mutable": false,
+          "attr": "mode",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"tree\"",
+          "values": [
+            {
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "value": "tree",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "\"json\"",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "mutable": true,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "set",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "set(value: any) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "update",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "update(value: any, lastValue: any) => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "ionChange",
+          "detail": "any",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "ionInput",
+          "detail": "any",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
     },
     {
       "filePath": "./src/components/pagination/pagination.tsx",
@@ -2400,6 +2532,7 @@
           "reflectToAttr": false,
           "docs": "",
           "docsTags": [],
+          "default": "false",
           "values": [
             {
               "type": "boolean"

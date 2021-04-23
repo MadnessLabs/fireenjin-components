@@ -101,6 +101,13 @@ define("src/components/filter-bar/filter-bar.presets", ["require", "exports"], f
         }
     };
 });
+define("src/components/json-editor/json-editor.presets", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports["default"] = {
+        "default": {}
+    };
+});
 define("src/components/pagination/pagination.presets", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
