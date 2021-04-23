@@ -67,6 +67,7 @@ export class Pagination implements ComponentInterface {
   @Prop() collection: string;
   @Prop() renderItem: (item: any, i: number) => any;
   @Prop() disableVirtualScroll = false;
+  @Prop() removeDuplicates = false;
 
   @State() paramData: {
     query?: string;
@@ -205,7 +206,12 @@ export class Pagination implements ComponentInterface {
 
   @Method()
   async addResults(results: any[] = []) {
-    this.results = [...this.results, ...results];
+    if (this.removeDuplicates) {
+      const newResultIds = results.map(result => result.id);
+      this.results = [...this.results.filter(result => !newResultIds.includes(result.id)), ...results];
+    } else {
+      this.results = [...this.results, ...results];
+    }
   }
 
   @Method()
@@ -282,9 +288,6 @@ export class Pagination implements ComponentInterface {
         ? `${this.collection}.resultCount`
         : this.resultCountKey;
       this.name = !this.name ? `${this.collection}Pagination` : this.name;
-    }
-    if (Build.isBrowser) {
-      this.getResults();
     }
   }
 
