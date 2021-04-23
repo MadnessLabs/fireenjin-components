@@ -239,8 +239,6 @@ export class SelectTags implements ComponentInterface {
   initChoices() {
     try {
       this.choices = new Choices(this.choicesEl, {
-        items: this.options,
-        choices: this.multiple ? this.value : [this.value],
         placeholderValue: this.placeholder,
         duplicateItemsAllowed: this.duplicates,
         removeItemButton: this.multiple,
@@ -330,6 +328,18 @@ export class SelectTags implements ComponentInterface {
           {!this.multiple && this.placeholder ? (
             <OptionEl placeholder>{this.placeholder}</OptionEl>
           ) : null}
+          {this.options.map((option) => (
+            <option
+              selected={
+                this.multiple
+                  ? this.value && this.value.indexOf(option.value) >= 0
+                  : option.value + "" === this.value + ""
+              }
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
         </select>
       </ion-item>
     );
