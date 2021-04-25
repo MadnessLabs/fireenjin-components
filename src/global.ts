@@ -119,6 +119,7 @@ if (window && !(window as any).FireEnjin) {
                 detail: {
                     event: event.detail?.event,
                     data,
+                    target: event.target,
                     name: event.detail.name,
                     endpoint: event.detail.endpoint
                 }
@@ -133,6 +134,7 @@ if (window && !(window as any).FireEnjin) {
                 detail: {
                     event: event?.detail?.event,
                     error: err,
+                    target: event.target,
                     name: event?.detail?.name,
                     endpoint: event?.detail?.endpoint
                 }
@@ -211,12 +213,12 @@ if (window && !(window as any).FireEnjin) {
                 document.body.dispatchEvent(
                 new CustomEvent("fireenjinSuccess", {
                     detail: {
-                    event: event.detail?.event,
-                    target: event.target,
-                    cached: false,
-                    data,
-                    name: event.detail.name,
-                    endpoint: event.detail.endpoint
+                        event: event.detail?.event,
+                        target: event.target,
+                        cached: false,
+                        data,
+                        name: event.detail.name,
+                        endpoint: event.detail.endpoint
                     }
                 })
                 );
