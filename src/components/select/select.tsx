@@ -10,6 +10,7 @@ import {
   h,
   Build,
   State,
+  Element,
 } from "@stencil/core";
 
 @Component({
@@ -17,7 +18,7 @@ import {
   styleUrl: "select.css",
 })
 export class Select implements ComponentInterface {
-  selectEl: any;
+  @Element() selectEl: HTMLFireenjinSelectElement;
 
   @Event() fireenjinFetch: EventEmitter;
 
@@ -98,6 +99,9 @@ export class Select implements ComponentInterface {
     this.results = event?.detail?.data?.results
       ? event.detail.data.results
       : [];
+    setTimeout(() => {
+      this.value = this.value;
+    }, 200);
   }
 
   fetchData() {
