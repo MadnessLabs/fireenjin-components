@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-04-28T02:36:52",
+  "timestamp": "2021-05-04T06:31:21",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -236,14 +236,14 @@
       "props": [
         {
           "name": "beforeSubmit",
-          "type": "(data: any) => Promise<any>",
+          "type": "(data: any, options?: any) => Promise<any>",
           "mutable": false,
           "reflectToAttr": false,
           "docs": "A method that runs before form submission to allow editing of formData",
           "docsTags": [],
           "values": [
             {
-              "type": "(data: any) => Promise<any>"
+              "type": "(data: any, options?: any) => Promise<any>"
             }
           ],
           "optional": false,
@@ -693,7 +693,7 @@
             "type": "Promise<void>",
             "docs": ""
           },
-          "signature": "submit(event?: any) => Promise<void>",
+          "signature": "submit(event?: any, options?: { manual: boolean; }) => Promise<void>",
           "parameters": [],
           "docs": "Emit fireenjinSubmit event with form data",
           "docsTags": [
