@@ -77,7 +77,7 @@ export class Form implements ComponentInterface {
   /**
    * A method that runs before form submission to allow editing of formData
    */
-  @Prop() beforeSubmit: (data: any) => Promise<any>;
+  @Prop() beforeSubmit: (data: any, options?: any) => Promise<any>;
   /**
    * Should the form disable the loader on submit
    */
@@ -218,13 +218,15 @@ export class Form implements ComponentInterface {
    * @param event The form submit event
    */
   @Method()
-  async submit(event?) {
-    event.preventDefault();
+  async submit(event?, options = {
+    manual: false 
+  }) {
+    if (event) event.preventDefault();
     await this.checkFormValidity();
     this.loading = !this.disableLoader;
     const data =
       this.beforeSubmit && typeof this.beforeSubmit === "function"
-        ? await this.beforeSubmit(this.formData)
+        ? await this.beforeSubmit(this.formData, options)
         : this.formData;
     this.fireenjinSubmit.emit({
       event,
