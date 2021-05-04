@@ -199,7 +199,7 @@ export class Form implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   async onSuccess(event) {
-    if (event.detail.target === this.fireenjinFormEl) {
+    if (event.detail.target === this.fireenjinFormEl && this.findDataMap) {
       this.formData = await this.mapFormData(
         this.findDataMap,
         event.detail?.data ? event.detail.data : {}
