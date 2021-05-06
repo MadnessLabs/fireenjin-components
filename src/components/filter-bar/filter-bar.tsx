@@ -87,7 +87,7 @@ export class FilterBar implements ComponentInterface {
     
   }
 
-  @Listen("ionChange", { target: "body" })
+  @Listen("ionChange")
   onChange(event) {
     if (event?.target?.name === "orderBy") {
       this.paginationEl.orderBy = event.detail.value;
