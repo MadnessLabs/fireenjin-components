@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-05-04T07:09:18",
+  "timestamp": "2021-05-07T00:01:17",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -175,7 +175,6 @@
         },
         {
           "event": "ionChange",
-          "target": "body",
           "capture": false,
           "passive": false
         }
