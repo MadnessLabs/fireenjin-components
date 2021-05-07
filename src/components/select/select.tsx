@@ -88,8 +88,10 @@ export class Select implements ComponentInterface {
     label?: string;
     value?: any;
     disabled?: boolean;
+    payload?: any;
   }[] = [];
   @Prop() resultsKey?: string;
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @State() results: any[] = [];
 
@@ -131,7 +133,7 @@ export class Select implements ComponentInterface {
       <Host>
         <ion-item>
           {this.icon && <ion-icon slot="start" name={this.icon} />}
-          {this.label && <ion-label>{this.label}</ion-label>}
+          {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
           <ion-select
             disabled={this.disabled}
             selectedText={this.selectedText}
