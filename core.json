@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-05-07T00:01:17",
+  "timestamp": "2021-05-07T04:48:07",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.4.0",
@@ -1942,6 +1942,31 @@
           "required": false
         },
         {
+          "name": "labelPosition",
+          "type": "\"fixed\" | \"floating\" | \"stacked\"",
+          "mutable": false,
+          "attr": "label-position",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "fixed",
+              "type": "string"
+            },
+            {
+              "value": "floating",
+              "type": "string"
+            },
+            {
+              "value": "stacked",
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
           "name": "limit",
           "type": "number",
           "mutable": false,
@@ -2041,7 +2066,7 @@
         },
         {
           "name": "options",
-          "type": "{ label?: string; value?: any; disabled?: boolean; }[]",
+          "type": "{ label?: string; value?: any; disabled?: boolean; payload?: any; }[]",
           "mutable": true,
           "reflectToAttr": false,
           "docs": "",
@@ -2049,7 +2074,7 @@
           "default": "[]",
           "values": [
             {
-              "type": "{ label?: string; value?: any; disabled?: boolean; }[]"
+              "type": "{ label?: string; value?: any; disabled?: boolean; payload?: any; }[]"
             }
           ],
           "optional": false,
