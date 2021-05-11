@@ -19,12 +19,12 @@ graph TD;
   fireenjin-renderer --> ion-content
   fireenjin-renderer --> fireenjin-pagination
   fireenjin-renderer --> ion-item
-  fireenjin-pagination --> ion-virtual-scroll
   fireenjin-pagination --> ion-grid
   fireenjin-pagination --> ion-row
   fireenjin-pagination --> ion-col
   fireenjin-pagination --> ion-card
   fireenjin-pagination --> ion-list
+  fireenjin-pagination --> ion-virtual-scroll
   fireenjin-pagination --> ion-infinite-scroll
   fireenjin-pagination --> ion-infinite-scroll-content
   ion-card --> ion-ripple-effect

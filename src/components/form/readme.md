@@ -9,7 +9,7 @@
 
 | Property             | Attribute              | Description                                                            | Type                                           | Default     |
 | -------------------- | ---------------------- | ---------------------------------------------------------------------- | ---------------------------------------------- | ----------- |
-| `beforeSubmit`       | --                     | A method that runs before form submission to allow editing of formData | `(data: any) => Promise<any>`                  | `undefined` |
+| `beforeSubmit`       | --                     | A method that runs before form submission to allow editing of formData | `(data: any, options?: any) => Promise<any>`   | `undefined` |
 | `confirmExit`        | `confirm-exit`         | Confirm leaving the page when the form is filled                       | `boolean`                                      | `false`     |
 | `disableEnterButton` | `disable-enter-button` | Should the enter button binding be disabled                            | `boolean`                                      | `false`     |
 | `disableLoader`      | `disable-loader`       | Should the form disable the loader on submit                           | `boolean`                                      | `false`     |
@@ -95,7 +95,7 @@ Type: `Promise<void>`
 
 
 
-### `submit(event?: any) => Promise<void>`
+### `submit(event?: any, options?: { manual: boolean; }) => Promise<void>`
 
 Emit fireenjinSubmit event with form data
 

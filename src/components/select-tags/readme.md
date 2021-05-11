@@ -26,7 +26,7 @@
 | `page`           | `page`            |             | `number`                           | `0`             |
 | `placeholder`    | `placeholder`     |             | `string`                           | `"Select Tags"` |
 | `query`          | `query`           |             | `string`                           | `undefined`     |
-| `required`       | `required`        |             | `boolean`                          | `undefined`     |
+| `required`       | `required`        |             | `boolean`                          | `false`         |
 | `results`        | --                |             | `any[]`                            | `[]`            |
 | `resultsKey`     | `results-key`     |             | `string`                           | `undefined`     |
 | `value`          | `value`           |             | `any`                              | `undefined`     |

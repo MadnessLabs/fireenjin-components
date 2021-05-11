@@ -31,6 +31,7 @@
 | `pageCountKey`         | `page-count-key`         |             | `string`                        | `undefined`              |
 | `pageKey`              | `page-key`               |             | `string`                        | `undefined`              |
 | `query`                | `query`                  |             | `string`                        | `undefined`              |
+| `removeDuplicates`     | `remove-duplicates`      |             | `boolean`                       | `false`                  |
 | `renderItem`           | --                       |             | `(item: any, i: number) => any` | `undefined`              |
 | `resultCountKey`       | `result-count-key`       |             | `string`                        | `undefined`              |
 | `results`              | --                       |             | `any[]`                         | `[]`                     |
@@ -95,24 +96,24 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ion-virtual-scroll
 - ion-grid
 - ion-row
 - ion-col
 - ion-card
 - ion-list
+- ion-virtual-scroll
 - ion-infinite-scroll
 - ion-infinite-scroll-content
 
 ### Graph
 ```mermaid
 graph TD;
-  fireenjin-pagination --> ion-virtual-scroll
   fireenjin-pagination --> ion-grid
   fireenjin-pagination --> ion-row
   fireenjin-pagination --> ion-col
   fireenjin-pagination --> ion-card
   fireenjin-pagination --> ion-list
+  fireenjin-pagination --> ion-virtual-scroll
   fireenjin-pagination --> ion-infinite-scroll
   fireenjin-pagination --> ion-infinite-scroll-content
   ion-card --> ion-ripple-effect
