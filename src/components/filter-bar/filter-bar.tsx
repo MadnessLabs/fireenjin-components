@@ -98,6 +98,16 @@ export class FilterBar implements ComponentInterface {
   }
 
   @Method()
+  async createFilterPopover(event?) {
+    return this.filterPopoverEl = await popoverController.create({
+      component: "fireenjin-popover-filter",
+      componentProps: this.filter,
+      event: event ? event : null,
+      cssClass: "fireenjin-popover-filter-wrapper",
+    });
+  }
+
+  @Method()
   async togglePaginationDisplay() {
     this.displayMode = this.displayMode === "grid" ? "list" : "grid";
     this.paginationEl.display = this.displayMode;
@@ -105,12 +115,7 @@ export class FilterBar implements ComponentInterface {
 
   @Method()
   async openFilterPopover(event) {
-    this.filterPopoverEl = await popoverController.create({
-      component: "fireenjin-popover-filter",
-      componentProps: this.filter,
-      event,
-      cssClass: "fireenjin-popover-filter-wrapper",
-    });
+    await this.createFilterPopover(event);
     this.filterPopoverEl.present();
   }
 
@@ -149,6 +154,12 @@ export class FilterBar implements ComponentInterface {
         }
       })
     );
+  }
+
+  async componentDidLoad() {
+    if (this.filter) {
+      await this.createFilterPopover();
+    }
   }
 
   render() {

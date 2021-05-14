@@ -29,6 +29,16 @@ Type: `Promise<void>`
 
 
 
+### `createFilterPopover(event?: any) => Promise<HTMLIonPopoverElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLIonPopoverElement>`
+
+
+
 ### `openFilterPopover(event: any) => Promise<void>`
 
 

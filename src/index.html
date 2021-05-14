@@ -18,10 +18,7 @@
     <meta name="msapplication-tap-highlight" content="no" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-title"
-      content="FireEnjin Components"
-    />
+    <meta name="apple-mobile-web-app-title" content="FireEnjin Components" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
     <meta http-equiv="x-ua-compatible" content="IE=Edge" />
@@ -39,7 +36,7 @@
       href="/assets/icon/apple-touch-icon.png"
     />
     <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico" />
-    
+
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
     <!-- Add Firebase products that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-auth.js"></script>
@@ -57,22 +54,6 @@
     <fireenjin-designer-gallery></fireenjin-designer-gallery>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        var defaultWrapper = function (sdkFunction) { return sdkFunction(); };
-        FireEnjin.init(function(client, withWrapper) {
-            if (withWrapper === void 0) { withWrapper = defaultWrapper; }
-            return {
-              listUsers: function (variables) {
-                return withWrapper(function () { return client.request(graphql_1.print(exports.ListUsersDocument), variables); });
-              }
-            }
-          },
-          {
-            debug: true,
-            host: "http://localhost:4000",
-            functionsHost:
-              "https://us-central1-fireenjin-live.cloudfunctions.net",
-          }
-        );
         var firebaseConfig = {
           apiKey: "AIzaSyAz5C9TRxQ9bUkTwVaD6Yc-Iisw57UslPM",
           authDomain: "fireenjin-live.firebaseapp.com",
@@ -81,10 +62,85 @@
           storageBucket: "fireenjin-live.appspot.com",
           messagingSenderId: "756564610596",
           appId: "1:756564610596:web:4fdf5a6ddfd319a93392b1",
-          measurementId: "G-Q0ZHGFCQFN"
+          measurementId: "G-Q0ZHGFCQFN",
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+      });
+      document.addEventListener("fireenjinFetch", function (event) {
+        if (event?.detail?.endpoint === "listLocations") {
+          setTimeout(() => {
+            document.body.dispatchEvent(
+              new CustomEvent("fireenjinSuccess", {
+                detail: {
+                  name: "select",
+                  endpoint: "listLocations",
+                  target: event.target,
+                  data: {
+                    results: [
+                      {
+                        id: "kQs2TZlebsel1c5yQnWM",
+                        type: "corporate",
+                        name: "St. Louis",
+                        photo:
+                          "https://firebasestorage.googleapis.com/v0/b/ftms-ca85b.appspot.com/o/undefined%2F2021-05-02T10%3A18%3A17.118Z.jpeg?alt=media&token=af30d334-68e6-4cc9-97a6-cedf247125e5",
+                        phone: null,
+                        address: null,
+                        tags: null,
+                      },
+                      {
+                        id: "jRNPVFGmnxeStVDHFbsa",
+                        type: "franchise",
+                        name: "Chicago",
+                        photo:
+                          "https://firebasestorage.googleapis.com/v0/b/ftms-ca85b.appspot.com/o/undefined%2F2021-05-02T10%3A07%3A21.450Z.png?alt=media&token=bff053e9-2093-4cd6-b4d2-67a3abbabc44",
+                        phone: null,
+                        address: null,
+                        tags: null,
+                      },
+                      {
+                        id: "UymVZ9A2UM6bEDlOM98z",
+                        type: null,
+                        name: "Robert",
+                        photo: "/assets/svg/ft-buildings.svg",
+                        phone: "+13143133351",
+                        address: null,
+                        tags: null,
+                      },
+                      {
+                        id: "TGjRNPVFDHFbsamnxeSt",
+                        type: "corporate",
+                        name: "St. Louis",
+                        photo: "/assets/svg/ft-buildings.svg",
+                        phone: null,
+                        address: null,
+                        tags: null,
+                      },
+                      {
+                        id: "HGN99S2cpfFjdaMlsGPU",
+                        type: "franchise",
+                        name: "Jeffco",
+                        photo: null,
+                        phone: null,
+                        address: null,
+                        tags: null,
+                      },
+                      {
+                        id: "D4FPVbsajRNSFGmnxet5",
+                        type: "corporate",
+                        name: "Southern Illinois",
+                        photo: null,
+                        phone: null,
+                        address: null,
+                        tags: null,
+                      },
+                    ],
+                  },
+                },
+              })
+            );
+          }, 2000);
+        }
       });
     </script>
     <script src="/presets.js"></script>

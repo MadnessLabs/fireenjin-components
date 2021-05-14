@@ -12,12 +12,11 @@ export default {
             label: "Company",
             endpoint: "listCompanies",
             icon: "business",
-            dataPropsMap: {
-              companies: "results",
-            },
+            resultsKey: "locations.results"
           },
           {
             name: "locationId",
+            value: "TGjRNPVFDHFbsamnxeSt",
             label: "Location",
             endpoint: "listLocations",
             icon: "business",
