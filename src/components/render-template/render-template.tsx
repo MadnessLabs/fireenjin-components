@@ -26,6 +26,12 @@ export class RenderTemplate implements ComponentInterface {
 
   componentWillLoad() {
     if (!(window as any)?.Handlebars) injectScript('https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js');
+    if (this.templateId) this.fireenjinFetch.emit({
+      endpoint: "findTemplate",
+      params: {
+        id: this.templateId
+      }
+    });
   }
 
   componentDidLoad() {
@@ -57,7 +63,7 @@ export class RenderTemplate implements ComponentInterface {
 
   @Watch("template")
   onTemplate() {
-    this.renderTemplate();
+    backoff(10, this.renderTemplate.bind(this));
   }
 
   render() {
