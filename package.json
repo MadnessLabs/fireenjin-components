@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "stencil build",
+    "build:prerender": "stencil build --prerender",
     "deploy:build": "fireenjin env github && npm run docs && npm run presets:build",
     "dev": " stencil build --docs --dev --watch --serve",
     "docs": " stencil build --docs",
@@ -41,7 +42,7 @@
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "localforage": "^1.9.0",
-    "svelte-jsoneditor": "0.0.15"
+    "svelte-jsoneditor": "0.0.21"
   },
   "devDependencies": {
     "@madnesslabs/fireenjin": "^1.4.14",
@@ -51,7 +52,6 @@
     "@types/cleave.js": "^1.4.4",
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^26.0.20",
-    "eslint-config-airbnb-typescript": "^10.0.2",
     "gh-pages": "^3.1.0",
     "husky": "^4.3.8",
     "jest": "^26.6.3",

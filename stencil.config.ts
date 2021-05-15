@@ -25,6 +25,7 @@ export const config: Config = {
     {
       type: "www",
       serviceWorker: null,
+      baseUrl: "https://fireenjin.com",
     },
     {
       type: "docs-readme",
