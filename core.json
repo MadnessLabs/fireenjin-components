@@ -1,9 +1,9 @@
 {
-  "timestamp": "2021-05-15T05:58:18",
+  "timestamp": "2021-05-15T08:00:31",
   "compiler": {
     "name": "@stencil/core",
-    "version": "2.4.0",
-    "typescriptVersion": "4.1.3"
+    "version": "2.5.2",
+    "typescriptVersion": "4.2.3"
   },
   "components": [
     {
@@ -817,6 +817,23 @@
       "usage": {},
       "props": [
         {
+          "name": "editorOptions",
+          "type": "any",
+          "mutable": false,
+          "attr": "editor-options",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "{}",
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "label",
           "type": "string",
           "mutable": false,
@@ -889,6 +906,17 @@
         }
       ],
       "methods": [
+        {
+          "name": "get",
+          "returns": {
+            "type": "Promise<any>",
+            "docs": ""
+          },
+          "signature": "get() => Promise<any>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
         {
           "name": "set",
           "returns": {
