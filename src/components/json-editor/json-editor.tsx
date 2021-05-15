@@ -31,7 +31,7 @@ export class JsonEditor implements ComponentInterface {
   @Watch("value")
   @Method()
   async update(value, lastValue) {
-    if (!this.editor || lastValue === value) return;
+    if (!this.editor || lastValue === value || !Build?.isBrowser) return;
     this.editor.update(value);
   }
 
@@ -42,19 +42,20 @@ export class JsonEditor implements ComponentInterface {
   }
 
   componentDidLoad() {
-    if (!Build?.isBrowser) return; 
-    this.editor = new JSONEditor({
-      target: this.editorEl,
-      props: {
-        json: this.value ? this.value : {},
-        mode: this.mode ? this.mode : "tree",
-        onChange: (content) => {
-          this.value = content.json;
-          this.ionChange.emit();
-          this.ionInput.emit();
+    if (Build.isBrowser) {
+      this.editor = new JSONEditor({
+        target: this.editorEl,
+        props: {
+          json: this.value ? this.value : {},
+          mode: this.mode ? this.mode : "tree",
+          onChange: (content) => {
+            this.value = content.json;
+            this.ionChange.emit();
+            this.ionInput.emit();
+          },
         },
-      },
-    });
+      });
+    }
   }
 
   render() {
