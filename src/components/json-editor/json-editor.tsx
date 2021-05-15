@@ -1,4 +1,4 @@
-import { JSONEditor } from "svelte-jsoneditor";
+import JSONEditor from "jsoneditor";
 import {
   Component,
   ComponentInterface,
@@ -15,6 +15,7 @@ import {
 @Component({
   tag: "fireenjin-json-editor",
   styleUrl: "json-editor.css",
+  assetsDirs: ["assets"]
 })
 export class JsonEditor implements ComponentInterface {
   editorEl;
@@ -27,12 +28,19 @@ export class JsonEditor implements ComponentInterface {
   @Prop({ mutable: true }) value;
   @Prop() label: string;
   @Prop() mode: "tree" | "code" = "tree";
+  @Prop() editorOptions: any = {};
 
   @Watch("value")
   @Method()
   async update(value, lastValue) {
     if (!this.editor || lastValue === value || !Build?.isBrowser) return;
     this.editor.update(value);
+  }
+
+  @Method()
+  async get() {
+    if (!this.editor) return;
+    return this.editor.get();
   }
 
   @Method()
@@ -43,17 +51,15 @@ export class JsonEditor implements ComponentInterface {
 
   componentDidLoad() {
     if (Build.isBrowser) {
-      this.editor = new JSONEditor({
-        target: this.editorEl,
-        props: {
-          json: this.value ? this.value : {},
-          mode: this.mode ? this.mode : "tree",
-          onChange: (content) => {
-            this.value = content.json;
-            this.ionChange.emit();
-            this.ionInput.emit();
-          },
+      this.editor = new JSONEditor(this.editorEl, {
+        json: this.value ? this.value : {},
+        mode: this.mode ? this.mode : "tree",
+        onChange: (content) => {
+          this.value = content.json;
+          this.ionChange.emit();
+          this.ionInput.emit();
         },
+        ...this.editorOptions
       });
     }
   }

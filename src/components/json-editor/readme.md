@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type               | Default     |
-| -------- | --------- | ----------- | ------------------ | ----------- |
-| `label`  | `label`   |             | `string`           | `undefined` |
-| `mode`   | `mode`    |             | `"code" \| "tree"` | `"tree"`    |
-| `name`   | `name`    |             | `string`           | `"json"`    |
-| `value`  | `value`   |             | `any`              | `undefined` |
+| Property        | Attribute        | Description | Type               | Default     |
+| --------------- | ---------------- | ----------- | ------------------ | ----------- |
+| `editorOptions` | `editor-options` |             | `any`              | `{}`        |
+| `label`         | `label`          |             | `string`           | `undefined` |
+| `mode`          | `mode`           |             | `"code" \| "tree"` | `"tree"`    |
+| `name`          | `name`           |             | `string`           | `"json"`    |
+| `value`         | `value`          |             | `any`              | `undefined` |
 
 
 ## Events
@@ -24,6 +25,16 @@
 
 
 ## Methods
+
+### `get() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
 
 ### `set(value: any) => Promise<void>`
 
