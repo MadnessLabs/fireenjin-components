@@ -24,12 +24,11 @@ define("src/components/filter-bar/filter-bar.presets", ["require", "exports"], f
                             label: "Company",
                             endpoint: "listCompanies",
                             icon: "business",
-                            dataPropsMap: {
-                                companies: "results"
-                            }
+                            resultsKey: "locations.results"
                         },
                         {
                             name: "locationId",
+                            value: "TGjRNPVFDHFbsamnxeSt",
                             label: "Location",
                             endpoint: "listLocations",
                             icon: "business",
@@ -137,6 +136,25 @@ define("src/components/pagination/pagination.presets", ["require", "exports"], f
                         return;
                     organismEl.querySelector("fireenjin-pagination").listEl = props.listEl;
                     organismEl.querySelector("fireenjin-pagination").results = props.results;
+                }
+            }
+        }
+    };
+});
+define("src/components/render-template/render-template.presets", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports["default"] = {
+        "default": {
+            name: "Default",
+            props: {
+                template: {
+                    html: "<p>testing {{user.firstName}}</p>"
+                },
+                data: {
+                    user: {
+                        firstName: "Bobby"
+                    }
                 }
             }
         }
