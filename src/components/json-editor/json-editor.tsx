@@ -9,6 +9,7 @@ import {
   h,
   Watch,
   Method,
+  Build,
 } from "@stencil/core";
 
 @Component({
@@ -41,6 +42,7 @@ export class JsonEditor implements ComponentInterface {
   }
 
   componentDidLoad() {
+    if (!Build?.isBrowser) return; 
     this.editor = new JSONEditor({
       target: this.editorEl,
       props: {

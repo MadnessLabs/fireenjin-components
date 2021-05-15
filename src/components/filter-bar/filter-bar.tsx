@@ -1,5 +1,6 @@
 import { popoverController } from "@ionic/core";
 import {
+  Build,
   Component,
   ComponentInterface,
   h,
@@ -157,7 +158,7 @@ export class FilterBar implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    if (this.filter) {
+    if (this.filter && Build.isBrowser) {
       await this.createFilterPopover();
     }
   }
