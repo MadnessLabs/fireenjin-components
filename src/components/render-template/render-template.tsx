@@ -9,9 +9,11 @@ import {
   State,
   Listen,
 } from "@stencil/core";
+import backoff from "../../helpers/backoff";
+import injectScript from "../../helpers/injectScript";
 
 @Component({
-  tag: "fireenjin-render-template",
+  tag: "fireenjin-render-template"
 })
 export class RenderTemplate implements ComponentInterface {
   @Event() fireenjinFetch: EventEmitter;
@@ -22,13 +24,24 @@ export class RenderTemplate implements ComponentInterface {
 
   @State() html = "";
 
+  componentWillLoad() {
+    if (!(window as any)?.Handlebars) injectScript('https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js');
+  }
+
+  componentDidLoad() {
+    backoff(10, this.renderTemplate.bind(this));
+  }
+
+  renderTemplate() {
+    this.html = (window as any).Handlebars.compile(this.template?.html ? this.template?.html : "")(this.data ? this.data : {});
+  }
+
   @Listen("fireenjinSuccess", { target: "body" })
   onSuccess(event) {
     if (event?.detail?.endpoint === "findTemplate") {
       this.template = event?.detail?.data?.template
         ? event.detail.data.template
         : null;
-      this.html = this.template?.html ? this.template.html : "";
     }
   }
 
@@ -40,6 +53,11 @@ export class RenderTemplate implements ComponentInterface {
         id: this.templateId,
       },
     });
+  }
+
+  @Watch("template")
+  onTemplate() {
+    this.renderTemplate();
   }
 
   render() {
