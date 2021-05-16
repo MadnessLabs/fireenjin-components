@@ -59,8 +59,12 @@ export class JsonEditor implements ComponentInterface {
           this.ionChange.emit();
           this.ionInput.emit();
         },
+        value: this.value,
         ...this.editorOptions
       });
+      if (this.value) {
+        this.set(this.value);
+      }
     }
   }
 
