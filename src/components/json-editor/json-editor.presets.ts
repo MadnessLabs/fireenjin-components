@@ -5,7 +5,7 @@ export default {
         props: {
             value: {
                 test: {
-                    da: true
+                    asdf: true
                 }
             }
         }
