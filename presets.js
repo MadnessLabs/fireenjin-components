@@ -104,7 +104,15 @@ define("src/components/json-editor/json-editor.presets", ["require", "exports"],
     "use strict";
     exports.__esModule = true;
     exports["default"] = {
-        "default": {}
+        "default": {
+            props: {
+                value: {
+                    test: {
+                        asdf: true
+                    }
+                }
+            }
+        }
     };
 });
 define("src/components/pagination/pagination.presets", ["require", "exports"], function (require, exports) {
