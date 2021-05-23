@@ -30,19 +30,13 @@ export class JsonEditor implements ComponentInterface {
   @Prop() mode: "tree" | "code" = "tree";
   @Prop() editorOptions: any = {};
 
-  @Watch("value")
-  @Method()
-  async update(value, lastValue) {
-    if (!this.editor || lastValue === value || !Build?.isBrowser) return;
-    this.editor.update(value);
-  }
-
   @Method()
   async get() {
     if (!this.editor) return;
     return this.editor.get();
   }
 
+  @Watch("value")
   @Method()
   async set(value) {
     if (!this.editor) return;
