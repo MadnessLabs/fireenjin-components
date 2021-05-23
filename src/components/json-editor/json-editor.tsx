@@ -54,8 +54,8 @@ export class JsonEditor implements ComponentInterface {
       this.editor = new JSONEditor(this.editorEl, {
         json: this.value ? this.value : {},
         mode: this.mode ? this.mode : "tree",
-        onChange: (content) => {
-          this.value = content.json;
+        onChange: () => {
+          this.value = this.editor.get();
           this.ionChange.emit();
           this.ionInput.emit();
         },
