@@ -22,6 +22,7 @@ export class RenderTemplate implements ComponentInterface {
   @Prop() templateId: string;
   @Prop() data: any = {};
   @Prop({ mutable: true }) template: any = {};
+  @Prop({ mutable: true }) partials: {id: string; html: string;}[]; 
 
   @State() html = "";
 
@@ -37,6 +38,19 @@ export class RenderTemplate implements ComponentInterface {
 
   componentDidLoad() {
     backoff(10, this.renderTemplate.bind(this));
+    this.setPartials();
+  }
+
+  @Method()
+  async setPartials(partials?: {id: string; html: string; }[]) {
+    const localPartials = JSON.parse(localStorage.getItem(
+      "enjin-editor-partials"
+    ));
+    this.partials = partials ? partials : localPartials ? localPartials : [];
+    for (const partial of this.partials) {
+      if (!partial.html) continue;
+      (window as any).Handlebars.registerPartial(partial.id, partial.html);
+    }
   }
 
   @Method()
