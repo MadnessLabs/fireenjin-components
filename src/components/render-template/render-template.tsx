@@ -38,7 +38,9 @@ export class RenderTemplate implements ComponentInterface {
 
   componentDidLoad() {
     backoff(10, this.renderTemplate.bind(this));
-    backoff(10, this.setPartials.bind(this));
+    if (this.partials) {
+      this.setPartials(this.partials);
+    }
   }
 
   @Method()
@@ -88,6 +90,11 @@ export class RenderTemplate implements ComponentInterface {
   @Watch("template")
   onTemplate() {
     backoff(10, this.renderTemplate.bind(this));
+  }
+
+  @Watch("partials")
+  onPartials() {
+    this.setPartials(this.partials);
   }
 
   render() {
