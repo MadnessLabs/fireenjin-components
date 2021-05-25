@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-05-23T23:43:20",
+  "timestamp": "2021-05-25T15:15:42",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.5.2",
@@ -1673,7 +1673,19 @@
           "required": false
         }
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "renderTemplate",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "renderTemplate() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
       "events": [
         {
           "event": "fireenjinFetch",
