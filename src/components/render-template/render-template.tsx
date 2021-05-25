@@ -8,6 +8,7 @@ import {
   Watch,
   State,
   Listen,
+  Method,
 } from "@stencil/core";
 import backoff from "../../helpers/backoff";
 import injectScript from "../../helpers/injectScript";
@@ -38,7 +39,8 @@ export class RenderTemplate implements ComponentInterface {
     backoff(10, this.renderTemplate.bind(this));
   }
 
-  renderTemplate() {
+  @Method()
+  async renderTemplate() {
     this.html = (window as any).Handlebars.compile(this.template?.html ? this.template?.html : "")(this.data ? this.data : {});
   }
 
@@ -59,6 +61,11 @@ export class RenderTemplate implements ComponentInterface {
         id: this.templateId,
       },
     });
+  }
+
+  @Watch("data")
+  onData() {
+    backoff(10, this.renderTemplate.bind(this));
   }
 
   @Watch("template")
