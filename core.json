@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-05-25T15:15:42",
+  "timestamp": "2021-05-25T18:05:23",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.5.2",
@@ -1640,6 +1640,21 @@
           "required": false
         },
         {
+          "name": "partials",
+          "type": "{ id: string; html: string; }[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "{ id: string; html: string; }[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
           "name": "template",
           "type": "any",
           "mutable": true,
@@ -1681,6 +1696,17 @@
             "docs": ""
           },
           "signature": "renderTemplate() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "setPartials",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setPartials(partials?: { id: string; html: string; }[]) => Promise<void>",
           "parameters": [],
           "docs": "",
           "docsTags": []
