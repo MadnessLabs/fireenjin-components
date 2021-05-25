@@ -9,7 +9,6 @@ import {
   State,
   Listen,
   Method,
-  Build,
 } from "@stencil/core";
 import backoff from "../../helpers/backoff";
 import injectScript from "../../helpers/injectScript";
@@ -39,12 +38,12 @@ export class RenderTemplate implements ComponentInterface {
 
   componentDidLoad() {
     backoff(10, this.renderTemplate.bind(this));
-    this.setPartials();
+    backoff(10, this.setPartials.bind(this));
   }
 
   @Method()
   async setPartials(partials?: {id: string; html: string; }[]) {
-    const localPartials = Build.isBrowser ? JSON.parse(localStorage.getItem(
+    const localPartials = localStorage?.getItem ? JSON.parse(localStorage.getItem(
       "enjin-editor-partials"
     )) : null;
     this.partials = partials ? partials : localPartials ? localPartials : [];
@@ -52,7 +51,7 @@ export class RenderTemplate implements ComponentInterface {
       if (!partial.html) continue;
       (window as any).Handlebars.registerPartial(partial.id, partial.html);
     }
-    if (Build.isBrowser) {
+    if (localStorage?.setItem) {
       localStorage.setItem("enjin-editor-partials", JSON.stringify(this.partials));
     }
   }
