@@ -68,6 +68,7 @@ export class Pagination implements ComponentInterface {
   @Prop() renderItem: (item: any, i: number) => any;
   @Prop() disableVirtualScroll = false;
   @Prop() removeDuplicates = false;
+  @Prop() fetchParams: any;
 
   @State() paramData: {
     query?: string;
@@ -270,6 +271,7 @@ export class Pagination implements ComponentInterface {
       dataPropsMap: this.dataPropsMap ? this.dataPropsMap : null,
       disableFetch: this.disableFetch,
       params: {
+        ...(this.fetchParams ? this.fetchParams : {}),
         data: {...(this.fetchData ? this.fetchData : {}), ...this.paramData},
       },
     });
