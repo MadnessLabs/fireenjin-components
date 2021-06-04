@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-05-25T18:39:02",
+  "timestamp": "2021-06-04T06:22:33",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.5.2",
@@ -1117,6 +1117,22 @@
             }
           ],
           "optional": true,
+          "required": false
+        },
+        {
+          "name": "fetchParams",
+          "type": "any",
+          "mutable": false,
+          "attr": "fetch-params",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "any"
+            }
+          ],
+          "optional": false,
           "required": false
         },
         {
