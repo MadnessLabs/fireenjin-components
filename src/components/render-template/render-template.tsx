@@ -65,7 +65,7 @@ export class RenderTemplate implements ComponentInterface {
 
   @Listen("fireenjinSuccess", { target: "body" })
   onSuccess(event) {
-    if (event?.detail?.endpoint === "findTemplate") {
+    if (event?.detail?.endpoint === "findTemplate" && event.detail?.data?.template?.id === this.templateId) {
       this.template = event?.detail?.data?.template
         ? event.detail.data.template
         : null;
