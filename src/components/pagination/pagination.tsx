@@ -90,6 +90,7 @@ export class Pagination implements ComponentInterface {
   @Debounce(1000)
   @Watch("query")
   onQuery() {
+    this.infiniteScrollEl.disabled = false;
     this.results = [];
     this.getResults({
       page: 0,
@@ -99,6 +100,7 @@ export class Pagination implements ComponentInterface {
   @Watch("orderBy")
   onOrderBy() {
     this.results = [];
+    this.infiniteScrollEl.disabled = false;
     this.getResults({
       page: 0,
     });
@@ -106,6 +108,7 @@ export class Pagination implements ComponentInterface {
 
   @Watch("display")
   onDisplay() {
+    this.infiniteScrollEl.disabled = false;
     setTimeout(async () => {
       window.dispatchEvent(new window.Event("resize"));
     }, 2000);
@@ -202,6 +205,8 @@ export class Pagination implements ComponentInterface {
       this.paramData = {};
     }
 
+    this.infiniteScrollEl.disabled = false;
+
     return this.paramData;
   }
 
@@ -213,12 +218,14 @@ export class Pagination implements ComponentInterface {
     } else {
       this.results = [...this.results, ...results];
     }
+    this.infiniteScrollEl.disabled = false;
   }
 
   @Method()
   async clearResults() {
     this.page = 0;
     this.results = [];
+    this.infiniteScrollEl.disabled = false;
   }
 
   @Listen("ionRouteDidChange", { target: "body" })
