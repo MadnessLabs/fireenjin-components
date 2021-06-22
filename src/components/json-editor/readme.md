@@ -46,16 +46,6 @@ Type: `Promise<void>`
 
 
 
-### `update(value: any, lastValue: any) => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 
 ----------------------------------------------
 

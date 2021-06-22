@@ -18,6 +18,7 @@
 | `display`              | `display`                |             | `"grid" \| "list"`              | `"grid"`                 |
 | `endpoint`             | `endpoint`               |             | `string`                        | `undefined`              |
 | `fetchData`            | `fetch-data`             |             | `any`                           | `undefined`              |
+| `fetchParams`          | `fetch-params`           |             | `any`                           | `undefined`              |
 | `gridEl`               | --                       |             | `FunctionalComponent<any>`      | `undefined`              |
 | `groupBy`              | `group-by`               |             | `string`                        | `undefined`              |
 | `limit`                | `limit`                  |             | `number`                        | `undefined`              |

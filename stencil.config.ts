@@ -23,6 +23,9 @@ export const config: Config = {
       type: "dist",
     },
     {
+      type: "dist-hydrate-script",
+    },
+    {
       type: "www",
       serviceWorker: null,
       baseUrl: "https://fireenjin.com",

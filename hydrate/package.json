@@ -1,0 +1,6 @@
+{
+  "name": "@madnesslabs/fireenjin-components/hydrate",
+  "description": "fireenjin component hydration app.",
+  "main": "index.js",
+  "types": "index.d.ts"
+}
