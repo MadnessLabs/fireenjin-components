@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-06-22T17:33:34",
+  "timestamp": "2021-07-10T03:00:52",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.5.2",
@@ -866,6 +866,41 @@
             {
               "value": "tree",
               "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "modes",
+          "type": "(\"tree\" | \"code\" | \"form\" | \"text\" | \"view\" | \"preview\")[]",
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "default": "[\"tree\", \"code\"]",
+          "values": [
+            {
+              "type": "(\"tree\""
+            },
+            {
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "value": "form",
+              "type": "string"
+            },
+            {
+              "value": "text",
+              "type": "string"
+            },
+            {
+              "value": "view",
+              "type": "string"
+            },
+            {
+              "type": "\"preview\")[]"
             }
           ],
           "optional": false,
