@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type               | Default     |
-| --------------- | ---------------- | ----------- | ------------------ | ----------- |
-| `editorOptions` | `editor-options` |             | `any`              | `{}`        |
-| `label`         | `label`          |             | `string`           | `undefined` |
-| `mode`          | `mode`           |             | `"code" \| "tree"` | `"tree"`    |
-| `name`          | `name`           |             | `string`           | `"json"`    |
-| `value`         | `value`          |             | `any`              | `undefined` |
+| Property        | Attribute        | Description | Type                                                              | Default            |
+| --------------- | ---------------- | ----------- | ----------------------------------------------------------------- | ------------------ |
+| `editorOptions` | `editor-options` |             | `any`                                                             | `{}`               |
+| `label`         | `label`          |             | `string`                                                          | `undefined`        |
+| `mode`          | `mode`           |             | `"code" \| "tree"`                                                | `"tree"`           |
+| `modes`         | --               |             | `("tree" \| "code" \| "form" \| "text" \| "view" \| "preview")[]` | `["tree", "code"]` |
+| `name`          | `name`           |             | `string`                                                          | `"json"`           |
+| `value`         | `value`          |             | `any`                                                             | `undefined`        |
 
 
 ## Events

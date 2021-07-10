@@ -28,6 +28,7 @@ export class JsonEditor implements ComponentInterface {
   @Prop({ mutable: true }) value;
   @Prop() label: string;
   @Prop() mode: "tree" | "code" = "tree";
+  @Prop() modes: ("code" | "form" | "text" | "tree" | "view" | "preview")[] = ["tree", "code"];
   @Prop() editorOptions: any = {};
 
   @Method()
@@ -39,14 +40,17 @@ export class JsonEditor implements ComponentInterface {
   @Watch("value")
   @Method()
   async set(value) {
-    if (!this.editor) return;
-    this.editor.set(value);
+    try { 
+      if (!this.editor?.get || JSON.stringify(this.editor.get()) === JSON.stringify(value)) return;
+      this.editor.set(value);
+    } catch { }
   }
 
   componentDidLoad() {
     if (Build.isBrowser) {
       this.editor = new JSONEditor(this.editorEl, {
         json: this.value ? this.value : {},
+        modes: this.modes ? this.modes : ["tree", "code"],
         mode: this.mode ? this.mode : "tree",
         onChange: () => {
           this.value = this.editor.get();
