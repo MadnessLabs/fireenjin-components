@@ -151,14 +151,16 @@ export class Select implements ComponentInterface {
               message: this.message,
             }}
           >
-            {(this.options ? this.options : []).map((option) => (
-              <ion-select-option
+            {(this.options ? this.options : []).map((option) => this.optionEl ? (
+                this.optionEl(option)
+              ) : (
+                <ion-select-option
                 value={option.value}
                 disabled={option.disabled}
               >
                 {option.label}
               </ion-select-option>
-            ))}
+              ))}
             {(this.results ? this.results : []).map((result) =>
               this.optionEl ? (
                 this.optionEl(result)
