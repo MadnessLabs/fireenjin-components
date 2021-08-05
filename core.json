@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-07-10T03:00:52",
+  "timestamp": "2021-08-05T02:03:38",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.5.2",
@@ -381,7 +381,7 @@
           "mutable": false,
           "attr": "find-data-map",
           "reflectToAttr": false,
-          "docs": "",
+          "docs": "The data map to find",
           "docsTags": [],
           "values": [
             {
@@ -486,6 +486,22 @@
           "values": [
             {
               "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "method",
+          "type": "string",
+          "mutable": false,
+          "attr": "method",
+          "reflectToAttr": false,
+          "docs": "The HTTP method to use when submitting the form",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
             }
           ],
           "optional": false,
