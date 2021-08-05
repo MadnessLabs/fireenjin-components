@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-08-05T02:24:41",
+  "timestamp": "2021-08-05T02:52:22",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.6.0",
@@ -244,6 +244,38 @@
       "docsTags": [],
       "usage": {},
       "props": [
+        {
+          "name": "action",
+          "type": "string",
+          "mutable": false,
+          "attr": "action",
+          "reflectToAttr": false,
+          "docs": "The action to use for the form",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "apiUrl",
+          "type": "string",
+          "mutable": false,
+          "attr": "api-url",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
         {
           "name": "beforeSubmit",
           "type": "(data: any, options?: any) => Promise<any>",
@@ -499,6 +531,7 @@
           "reflectToAttr": false,
           "docs": "The HTTP method to use when submitting the form",
           "docsTags": [],
+          "default": "\"post\"",
           "values": [
             {
               "type": "string"
