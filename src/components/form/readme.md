@@ -17,13 +17,14 @@
 | `documentId`         | `document-id`          | The id of the document being edited                                    | `string`                                       | `undefined` |
 | `endpoint`           | `endpoint`             | The endpoint that form submission should link to                       | `string`                                       | `undefined` |
 | `excludeData`        | --                     | The data to exclude from the form submit event                         | `string[]`                                     | `[]`        |
-| `findDataMap`        | `find-data-map`        |                                                                        | `any`                                          | `undefined` |
+| `findDataMap`        | `find-data-map`        | The data map to find                                                   | `any`                                          | `undefined` |
 | `findEndpoint`       | `find-endpoint`        | The endpoint to get data to fill the form                              | `string`                                       | `undefined` |
 | `findParams`         | `find-params`          | The form params                                                        | `any`                                          | `undefined` |
 | `formData`           | `form-data`            | The data from the form being filled out                                | `any`                                          | `{}`        |
 | `hasChanged`         | `has-changed`          | Has the form fields been changed                                       | `boolean`                                      | `false`     |
 | `hideControls`       | `hide-controls`        | Should the form controls be hidden?                                    | `boolean`                                      | `false`     |
 | `loading`            | `loading`              | Is the component currently loading                                     | `boolean`                                      | `false`     |
+| `method`             | `method`               | The HTTP method to use when submitting the form                        | `string`                                       | `undefined` |
 | `name`               | `name`                 | The name of the form used for ID and name                              | `string`                                       | `undefined` |
 | `resetButton`        | `reset-button`         | What the reset button says                                             | `string`                                       | `"Cancel"`  |
 | `resetButtonColor`   | `reset-button-color`   | What color the reset button is                                         | `string`                                       | `"dark"`    |
