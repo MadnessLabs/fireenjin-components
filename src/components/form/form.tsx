@@ -116,7 +116,12 @@ export class Form implements ComponentInterface {
   /**
    * The HTTP method to use when submitting the form
    */
-  @Prop() method: string;
+  @Prop() method: string = "post";
+  /**
+   * The action to use for the form
+   */
+   @Prop() action: string;
+   @Prop() apiUrl: string;
 
   /**
    * Emitted on load with endpoint
@@ -383,7 +388,7 @@ export class Form implements ComponentInterface {
         ref={(el) => (this.formEl = el as HTMLFormElement)}
         name={this.name}
         id={this.name}
-        action={this.endpoint}
+        action={this.action ? this.action : `${this.apiUrl ? this.apiUrl : "http://localhost:4000"}/${this.endpoint}`}
         method={this.method}
         onReset={(event) => this.reset(event)}
         onSubmit={(event) => this.submit(event)}
