@@ -110,9 +110,13 @@ export class Form implements ComponentInterface {
    */
   @Prop() findParams: any;
   /**
-   * 
+   * The data map to find
    */
   @Prop() findDataMap: any;
+  /**
+   * The HTTP method to use when submitting the form
+   */
+  @Prop() method: string;
 
   /**
    * Emitted on load with endpoint
@@ -379,6 +383,8 @@ export class Form implements ComponentInterface {
         ref={(el) => (this.formEl = el as HTMLFormElement)}
         name={this.name}
         id={this.name}
+        action={this.endpoint}
+        method={this.method}
         onReset={(event) => this.reset(event)}
         onSubmit={(event) => this.submit(event)}
         class={{ "is-loading": this.loading }}
