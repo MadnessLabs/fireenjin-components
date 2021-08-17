@@ -257,7 +257,11 @@ export class Form implements ComponentInterface {
       this.formEl.reset();
       return false;
     }
-    this.formData = {};
+    if (this.disableReset) {
+      event.preventDefault();
+    } else {
+      this.formData = {};
+    }
     this.fireenjinReset.emit({
       event,
       id: this.documentId,
