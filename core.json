@@ -1,5 +1,5 @@
 {
-  "timestamp": "2021-08-17T21:08:20",
+  "timestamp": "2021-08-19T17:27:06",
   "compiler": {
     "name": "@stencil/core",
     "version": "2.6.0",
@@ -855,6 +855,200 @@
           "fireenjin-form"
         ]
       }
+    },
+    {
+      "filePath": "./src/components/graph/graph.tsx",
+      "encapsulation": "none",
+      "tag": "fireenjin-graph",
+      "readme": "# fireenjin-graph\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "datasets",
+          "type": "ChartDataset<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint)[]>[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "The dataset to render graph with",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "ChartDataset<keyof ChartTypeRegistry, (number"
+            },
+            {
+              "type": "ScatterDataPoint"
+            },
+            {
+              "type": "BubbleDataPoint)[]>[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "string[]",
+          "mutable": true,
+          "reflectToAttr": false,
+          "docs": "The labels for the graph",
+          "docsTags": [],
+          "default": "[]",
+          "values": [
+            {
+              "type": "string[]"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "The title of the graph",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "\"bar\" | \"bubble\" | \"doughnut\" | \"line\" | \"pie\" | \"polarArea\" | \"radar\" | \"scatter\"",
+          "mutable": false,
+          "attr": "type",
+          "reflectToAttr": false,
+          "docs": "The type of graph to generate",
+          "docsTags": [],
+          "default": "\"bar\"",
+          "values": [
+            {
+              "value": "bar",
+              "type": "string"
+            },
+            {
+              "value": "bubble",
+              "type": "string"
+            },
+            {
+              "value": "doughnut",
+              "type": "string"
+            },
+            {
+              "value": "line",
+              "type": "string"
+            },
+            {
+              "value": "pie",
+              "type": "string"
+            },
+            {
+              "value": "polarArea",
+              "type": "string"
+            },
+            {
+              "value": "radar",
+              "type": "string"
+            },
+            {
+              "value": "scatter",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "refresh",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "refresh() => Promise<void>",
+          "parameters": [],
+          "docs": "Refresh the graph",
+          "docsTags": []
+        },
+        {
+          "name": "removeChart",
+          "returns": {
+            "type": "Promise<boolean>",
+            "docs": ""
+          },
+          "signature": "removeChart() => Promise<boolean>",
+          "parameters": [],
+          "docs": "Destroy the ChartJS instance and reset chart on state",
+          "docsTags": []
+        },
+        {
+          "name": "setDatasets",
+          "returns": {
+            "type": "Promise<any>",
+            "docs": ""
+          },
+          "signature": "setDatasets(datasets: ChartDataset[]) => Promise<any>",
+          "parameters": [],
+          "docs": "Set the list datasets for the graph",
+          "docsTags": [
+            {
+              "name": "param",
+              "text": "datasets The datasets to render"
+            }
+          ]
+        },
+        {
+          "name": "setLabels",
+          "returns": {
+            "type": "Promise<any>",
+            "docs": ""
+          },
+          "signature": "setLabels(labels: string[]) => Promise<any>",
+          "parameters": [],
+          "docs": "Set the list labels for the graph",
+          "docsTags": [
+            {
+              "name": "param",
+              "text": "labels The labels for the graph"
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "event": "fireenjinGraphClick",
+          "detail": "{ event: any; item?: any; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the graph is clicked",
+          "docsTags": []
+        },
+        {
+          "event": "fireenjinGraphTooltip",
+          "detail": "{ event: { afterBody: any[]; backgroundColor: string; beforeBody: any[]; body: any[]; bodyFontColor: string; bodyFontSize: number; bodySpacing: number; borderColor: string; borderWidth: number; caretPadding: number; caretSize: number; caretX: number; caretY: number; cornerRadius: number; dataPoints: any[]; displayColors: boolean; footer: any[]; footerFontColor: string; footerFontSize: number; footerMarginTop: number; footerSpacing: number; height: number; labelStyle: TooltipLabelStyle; labelTextColors: string[]; legendBackgroundColor: string; opacity: number; title: string[]; titleFontColor: string; titleFontSize: number; titleMarinBottom: number; titleSpacing: number; width: number; x: number; xAlign: number; xPadding: number; y: number; yAlign: number; yPadding: number; }; }",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a tooltip is shown over the graph",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
     },
     {
       "filePath": "./src/components/json-editor/json-editor.tsx",
