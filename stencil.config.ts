@@ -1,21 +1,19 @@
-import { Config } from '@stencil/core';
+import { Config } from "@stencil/core";
 // import typescript from "rollup-plugin-typescript";
 
-const { namespace } = require('./package.json');
+const { namespace } = require("./package.json");
 
 export const config: Config = {
   namespace,
-  buildEs5: false,
   taskQueue: "async",
-  plugins: [
-  ],
+  plugins: [],
   rollupPlugins: {
     // before: [typescript()],
   },
-  globalStyle: 'src/css/global.css',
+  globalStyle: "src/css/global.css",
   globalScript: "src/global.ts",
   devServer: {
-    reloadStrategy: 'hmr',
+    reloadStrategy: "hmr",
     openBrowser: false,
   },
   outputTargets: [

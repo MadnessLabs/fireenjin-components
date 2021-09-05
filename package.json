@@ -2,14 +2,13 @@
   "name": "@madnesslabs/fireenjin-components",
   "namespace": "fireenjin",
   "version": "1.0.4",
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.js",
-  "es2015": "./dist/esm/index.mjs",
-  "es2017": "./dist/esm/index.mjs",
-  "types": "./dist/types/components.d.ts",
-  "unpkg": "./dist/fireenjin/fireenjin.js",
-  "collection:main": "./dist/collection/index.js",
-  "collection": "./dist/collection/collection-manifest.json",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection:main": "dist/collection/index.js",
+  "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/"
   ],
@@ -29,32 +28,25 @@
     "presets:build": "fireenjin presets",
     "presets:watch": "fireenjin presets watch"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": ""
-    }
-  },
   "dependencies": {
-    "@ionic/core": "^5.6.13",
-    "@stencil/core": "^2.6.0",
+    "@ionic/core": "^5.7.0",
+    "@stencil/core": "^2.8.0",
     "chart.js": "^3.5.1",
     "choices.js": "^9.0.1",
     "debounce-decorator": "^1.0.6",
-    "graphql": "^15.5.1",
+    "graphql": "^15.5.2",
     "graphql-request": "^3.5.0",
-    "jsoneditor": "^9.5.3",
-    "localforage": "^1.9.0"
+    "jsoneditor": "^9.5.5",
+    "localforage": "^1.10.0"
   },
   "devDependencies": {
-    "@madnesslabs/fireenjin": "^1.4.23",
-    "@madnesslabs/fireenjin-designer": "^1.1.31",
+    "@madnesslabs/fireenjin": "^1.4.26",
+    "@madnesslabs/fireenjin-designer": "^1.1.34",
     "@stencil/eslint-plugin": "^0.3.1",
-    "@types/chart.js": "^2.9.34",
     "@types/cleave.js": "^1.4.5",
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^26.0.24",
-    "gh-pages": "^3.2.3",
-    "husky": "^4.3.8",
+    "husky": "^7.0.2",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
     "npm-run-all": "^4.1.5"
