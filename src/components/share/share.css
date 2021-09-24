@@ -1,0 +1,39 @@
+fireenjin-share ion-item:hover {
+  cursor: pointer;
+}
+
+fireenjin-share .share-twitter ion-icon {
+  color: #1da1f3;
+}
+
+fireenjin-share .share-twitter ion-icon svg {
+  fill: #1da1f3;
+}
+
+fireenjin-share .share-twitter:hover .item {
+  color: #1da1f3;
+}
+
+fireenjin-share .share-facebook ion-icon {
+  color: #3b5998;
+}
+
+fireenjin-share .share-facebook ion-icon svg {
+  fill: #3b5998;
+}
+
+fireenjin-share .share-facebook:hover .item {
+  color: #3b5998;
+}
+
+fireenjin-share .share-google ion-icon {
+  color: #dd4b38;
+}
+
+fireenjin-share .share-google ion-icon svg {
+  fill: #dd4b38;
+}
+
+fireenjin-share .share-google:hover .item {
+  color: #dd4b38;
+}

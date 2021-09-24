@@ -48,6 +48,19 @@ Type: `Promise<void>`
 
 
 
+## Dependencies
+
+### Used by
+
+ - [fireenjin-input-json](../input-json)
+
+### Graph
+```mermaid
+graph TD;
+  fireenjin-input-json --> fireenjin-json-editor
+  style fireenjin-json-editor fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

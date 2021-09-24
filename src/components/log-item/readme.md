@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property      | Attribute      | Description | Type     | Default     |
@@ -13,6 +14,7 @@
 | `resolveTime` | `resolve-time` |             | `number` | `undefined` |
 | `type`        | `type`         |             | `string` | `undefined` |
 
+
 ## Dependencies
 
 ### Depends on
@@ -22,10 +24,9 @@
 - ion-grid
 - ion-row
 - ion-col
-- fireenjin-json-viewer
+- [fireenjin-json-viewer](../json-viewer)
 
 ### Graph
-
 ```mermaid
 graph TD;
   fireenjin-log-item --> ion-item
@@ -39,6 +40,6 @@ graph TD;
   style fireenjin-log-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
