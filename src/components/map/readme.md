@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                     | Description                         | Type                                                                                                                                  |
-| ------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `floodteamMapMarkerClick` | When a marker on the map is clicked | `CustomEvent<{ marker: Marker; location: { position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }; }>` |
+| Event              | Description                         | Type                                                                                                                                                                 |
+| ------------------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fireenjinTrigger` | When a marker on the map is clicked | `CustomEvent<{ trigger: string; payload: { marker: Marker; location: { position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }; }; }>` |
 
 
 ## Methods
