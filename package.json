@@ -29,8 +29,11 @@
     "presets:watch": "fireenjin presets watch"
   },
   "dependencies": {
-    "@ionic/core": "^5.7.0",
-    "@stencil/core": "^2.8.0",
+    "@googlemaps/js-api-loader": "^1.12.3",
+    "@ionic-native/core": "^5.36.0",
+    "@ionic-native/geolocation": "^5.36.0",
+    "@ionic/core": "^5.8.1",
+    "@stencil/core": "^2.8.1",
     "chart.js": "^3.5.1",
     "choices.js": "^9.0.1",
     "debounce-decorator": "^1.0.6",

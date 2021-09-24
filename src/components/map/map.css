@@ -1,0 +1,19 @@
+fireenjin-map {
+  position: relative;
+  display: block;
+}
+fireenjin-map #map {
+  display: block;
+  height: 0px;
+  width: 100%;
+  margin: 0 auto;
+  opacity: 0;
+  transition: all ease 0.5s;
+}
+fireenjin-map.map-is-visible #map {
+  height: var(--map-height, 300px);
+  opacity: 1;
+}
+fireenjin-map.map-is-visible tmg-search {
+  margin: -35px auto 0;
+}
