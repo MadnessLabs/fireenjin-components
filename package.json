@@ -44,8 +44,7 @@
     "graphql-request": "^3.5.0",
     "json-formatter-js": "^2.3.4",
     "jsoneditor": "^9.5.5",
-    "localforage": "^1.10.0",
-    "rollup-plugin-typescript": "^1.0.1"
+    "localforage": "^1.10.0"
   },
   "devDependencies": {
     "@madnesslabs/fireenjin": "^1.4.26",

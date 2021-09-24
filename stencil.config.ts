@@ -1,5 +1,4 @@
 import { Config } from "@stencil/core";
-import typescript from "rollup-plugin-typescript";
 
 const { namespace } = require("./package.json");
 
@@ -7,9 +6,7 @@ export const config: Config = {
   namespace,
   taskQueue: "async",
   plugins: [],
-  rollupPlugins: {
-    before: [typescript()],
-  },
+  rollupPlugins: {},
   globalStyle: "src/css/global.css",
   globalScript: "src/global.ts",
   devServer: {
