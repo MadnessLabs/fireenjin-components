@@ -1,5 +1,4 @@
 import { Geolocation } from "@ionic-native/geolocation";
-import { Loader } from "@googlemaps/js-api-loader"
 import {
   Component,
   ComponentInterface,
@@ -33,17 +32,20 @@ export class Map implements ComponentInterface {
   /**
    * When a marker on the map is clicked
    */
-  @Event() floodteamMapMarkerClick: EventEmitter<{
-    marker: google.maps.Marker;
-    location: {
-      position: {
-        lat: number;
-        lng: number;
+  @Event() fireenjinTrigger: EventEmitter<{
+    trigger: string;
+    payload: {
+      marker: google.maps.Marker;
+      location: {
+        position: {
+          lat: number;
+          lng: number;
+        };
+        name: string;
+        icon: string;
+        payload?: any;
       };
-      name: string;
-      icon: string;
-      payload?: any;
-    };
+    }
   }>;
 
   /**
@@ -200,9 +202,12 @@ export class Map implements ComponentInterface {
   ) {
     this.map.setZoom(12);
     this.map.setCenter(marker.getPosition());
-    this.floodteamMapMarkerClick.emit({
-      marker,
-      location,
+    this.fireenjinTrigger.emit({
+      trigger: "markerClick",
+      payload: {
+        marker,
+        location,
+      }
     });
   }
 
@@ -255,15 +260,19 @@ export class Map implements ComponentInterface {
   async loadGoogleMaps() {
     return new Promise((resolve, reject) => {
       try {
-        const loader = new Loader({
-          apiKey: this.apiKey,
-          version: "weekly",
-          ...this.optins,
-        });
+        // Create the script tag, set the appropriate attributes
+        var script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&callback=initMap`;
+        script.async = true;
 
-        loader.load().then(() => {
+        // Attach your callback function to the `window` object
+        (window as any).initMap = () => {
+          // JS API is loaded and available
           resolve({});
-        });
+        };
+
+        // Append the 'script' element to 'head'
+        document.head.appendChild(script);
       } catch (error) {
         reject(error)
       }

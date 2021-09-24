@@ -1,0 +1,6 @@
+fireenjin-json-viewer {
+  padding: 10px;
+  display: block;
+  background: var(--ion-color-base-shade);
+  border-radius: 10px;
+}
