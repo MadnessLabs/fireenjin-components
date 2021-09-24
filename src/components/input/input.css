@@ -1,0 +1,116 @@
+fireenjin-input .invalid {
+  --border-color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input .invalid ion-label {
+  color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input .valid {
+  --border-color: var(--ion-color-success) !important;
+}
+
+fireenjin-input .valid ion-label {
+  color: var(--ion-color-success) !important;
+}
+
+fireenjin-input ion-label {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  display: block;
+  background: transparent;
+  text-align: left;
+  padding: 0 0 8px 0;
+  font-family: var(--theme-font-primary);
+}
+
+fireenjin-input ion-item {
+  position: relative;
+  box-shadow: none !important;
+  --background: var(--background);
+  font-size: inherit;
+  text-align: inherit;
+  --min-height: var(--item-min-height, 48px) !important;
+}
+
+fireenjin-input ion-item ion-input {
+  border: none;
+  box-shadow: none !important;
+  font-size: inherit;
+  outline: none !important;
+  --padding-top: 15px;
+  width: 85% !important;
+  margin-right: auto;
+  text-align: left;
+  --padding-top: var(--input-padding-top, 10px) !important;
+  --padding-bottom: var(--input-padding-bottom, 10px) !important;
+  --padding-start: var(--input-padding-start, 0px) !important;
+  --padding-end: var(--input-padding-end, 0px) !important;
+}
+
+fireenjin-input ion-item ion-icon[slot="start"] {
+  margin: auto 10px 10px auto;
+  fill: var(--ion-text-color);
+}
+
+fireenjin-input ion-item.item-has-focus {
+  --border-width: 0;
+  border-color: var(--ion-color-primary);
+}
+
+fireenjin-input ion-item.item-has-focus ion-label {
+  color: var(--ion-color-primary) !important;
+}
+
+fireenjin-input ion-item .edit ion-button {
+  text-decoration: none;
+  position: absolute;
+  right: 0px;
+  top: 3px;
+}
+
+fireenjin-input ion-item .edit ion-button .button-inner {
+  font-size: 14px;
+  color: var(--ion-color-primary);
+  padding-right: 25px;
+}
+
+fireenjin-input ion-item .edit ion-button ion-icon {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  color: var(--ion-color-primary);
+}
+
+fireenjin-input .input-password input {
+  width: calc(100% - 60px) !important;
+}
+
+fireenjin-input .input-icon ion-icon {
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  height: 35px;
+  width: 35px;
+  color: var(--ion-color-dark);
+}
+
+fireenjin-input .input-icon ion-icon:hover {
+  cursor: pointer;
+  color: var(--ion-color-primary);
+}
+
+fireenjin-input .input-password ion-icon {
+  top: 25px;
+}
+
+fireenjin-input .input-card.item-has-focus {
+  border-bottom: 2px solid var(--ion-color-primary);
+  --border-color: transparent !important;
+}
+
+fireenjin-input #card-number {
+  padding: 12px 0 8px 0;
+  width: 100%;
+}
