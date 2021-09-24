@@ -21,7 +21,7 @@ fireenjin-input ion-label {
   background: transparent;
   text-align: left;
   padding: 0 0 8px 0;
-  font-family: var(--theme-font-primary);
+  font-family: var(--ion-font-family);
 }
 
 fireenjin-input ion-item {

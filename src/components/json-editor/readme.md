@@ -12,7 +12,7 @@
 | `editorOptions` | `editor-options` |             | `any`                                                             | `{}`               |
 | `label`         | `label`          |             | `string`                                                          | `undefined`        |
 | `mode`          | `mode`           |             | `"code" \| "tree"`                                                | `"tree"`           |
-| `modes`         | --               |             | `("tree" \| "code" \| "form" \| "text" \| "view" \| "preview")[]` | `["tree", "code"]` |
+| `modes`         | --               |             | `("text" \| "tree" \| "code" \| "form" \| "view" \| "preview")[]` | `["tree", "code"]` |
 | `name`          | `name`           |             | `string`                                                          | `"json"`           |
 | `value`         | `value`          |             | `any`                                                             | `undefined`        |
 

@@ -14,6 +14,3 @@ fireenjin-map.map-is-visible #map {
   height: var(--map-height, 300px);
   opacity: 1;
 }
-fireenjin-map.map-is-visible tmg-search {
-  margin: -35px auto 0;
-}

@@ -1,0 +1,105 @@
+fireenjin-input-address ion-label {
+  font-size: 12px;
+  font-weight: bold;
+  font-family: arial;
+  display: block;
+  background: transparent;
+  text-align: left;
+  padding: 0 0 8px 0;
+}
+
+fireenjin-input-address .invalid .input-wrapper {
+  border-bottom-color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input-address .invalid .label {
+  color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input-address ion-item {
+  position: relative;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+fireenjin-input-address ion-item.is-hidden {
+  display: none;
+}
+
+fireenjin-input-address ion-item ion-label {
+  color: var(--ion-color-medium) !important;
+}
+
+fireenjin-input-address ion-item ion-input {
+  border: none;
+  box-shadow: none !important;
+  outline: none !important;
+  font-size: 16px;
+  font-weight: normal !important;
+}
+
+fireenjin-input-address ion-item.item-has-focus {
+  --border-width: 0;
+  border-color: var(--ion-color-primary);
+}
+
+fireenjin-input-address ion-item.item-has-focus ion-label {
+  color: var(--ion-color-primary) !important;
+}
+
+fireenjin-input-address ion-input.autocomplete-field {
+  --padding-top: 13px !important;
+}
+
+fireenjin-input-address ion-button {
+  text-decoration: none;
+  position: absolute;
+  right: 0px;
+  top: 3px;
+  z-index: 3;
+}
+
+fireenjin-input-address ion-button .button-inner {
+  font-size: 14px;
+  color: var(--ion-color-primary);
+  padding-right: 25px;
+}
+
+fireenjin-input-address ion-button ion-icon {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  color: var(--ion-color-primary);
+}
+
+fireenjin-input-address .manual-fields {
+  width: 100%;
+  padding-top: 5px;
+}
+
+fireenjin-input-address .manual-fields ion-input {
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --padding-start: 17px;
+}
+
+fireenjin-input-address .manual-fields ion-grid floodbot-state-autocomplete,
+fireenjin-input-address .manual-fields ion-grid ion-input {
+  display: block;
+  min-width: 150px;
+}
+
+fireenjin-input-address .autocomplete-field {
+  display: block;
+  padding-top: 8px;
+}
+
+fireenjin-input-address .manual-fields ion-grid,
+fireenjin-input-address .manual-fields ion-grid ion-row ion-col {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+fireenjin-input-address .manual-fields ion-input:not(.zip-input) {
+  border-bottom: 1px solid var(--ion-color-light-shade, #eee) !important;
+}

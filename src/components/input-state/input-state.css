@@ -1,0 +1,6 @@
+fireenjin-input-state ion-select {
+  color: var(--ion-color-dark);
+  font-family: var(--ion-font-family);
+  --padding-start: 0;
+  max-width: auto;
+}

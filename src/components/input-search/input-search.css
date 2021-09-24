@@ -1,0 +1,40 @@
+fireenjin-input-search .search-input ion-label {
+  color: var(--ion-color-medium) !important;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: arial;
+  display: block;
+  background: transparent;
+  text-align: left;
+  padding: 0 0 8px 0;
+  font-family: var(--ion-font-family);
+}
+
+fireenjin-input-search ion-icon {
+  color: var(--ion-text-color);
+}
+
+fireenjin-input-search .search-input ion-icon[slot="start"] {
+  margin-right: 5px;
+}
+
+fireenjin-input-search .search-input [slot="end"] {
+  margin-left: 5px;
+}
+
+fireenjin-input-search .invalid {
+  --border-color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input-search .invalid ion-label {
+  color: var(--ion-color-danger) !important;
+}
+
+fireenjin-input-search .valid {
+  --border-color: var(--ion-color-success) !important;
+}
+
+fireenjin-input-search .valid ion-label {
+  color: var(--ion-color-success) !important;
+}
