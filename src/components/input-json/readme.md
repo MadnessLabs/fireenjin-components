@@ -1,9 +1,6 @@
-# floodteam-input-json
-
-
+# fireenjin-input-json
 
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -12,7 +9,6 @@
 | `label`  | `label`   |             | `string` | `undefined` |
 | `name`   | `name`    |             | `string` | `"json"`    |
 | `value`  | `value`   |             | `any`    | `{}`        |
-
 
 ## Dependencies
 
@@ -23,6 +19,7 @@
 - fireenjin-json-editor
 
 ### Graph
+
 ```mermaid
 graph TD;
   trackmygiving-input-json --> ion-item
@@ -33,6 +30,6 @@ graph TD;
   style trackmygiving-input-json fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

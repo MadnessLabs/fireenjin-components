@@ -36,6 +36,7 @@
     "chart.js": "^3.5.1",
     "choices.js": "^9.0.1",
     "cleave.js": "^1.6.0",
+    "date-fns": "^2.24.0",
     "debounce-decorator": "^1.0.6",
     "graphql": "^15.5.2",
     "graphql-request": "^3.5.0",

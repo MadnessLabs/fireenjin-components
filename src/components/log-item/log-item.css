@@ -1,0 +1,24 @@
+fireenjin-log-item {
+  display: block;
+}
+
+fireenjin-log-item ion-label {
+  margin-top: 0;
+}
+
+fireenjin-log-item fireenjin-json-viewer {
+  max-height: 60px;
+  display: block;
+  overflow: hidden;
+  transition: all ease 0.3s;
+}
+
+fireenjin-log-item:hover fireenjin-json-viewer {
+  cursor: pointer;
+  max-height: none;
+}
+
+fireenjin-log-item h3 {
+  color: var(--ion-color-medium);
+  text-indent: 10px;
+}
