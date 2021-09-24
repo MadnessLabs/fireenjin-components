@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.slot-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--progress-font-size, inherit) !important;
+  font-weight: var(--progress-font-weight, inherit) !important;
+  color: inherit;
+}
+
+circle {
+  transition: stroke-dashoffset 0.35s;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+
+#track {
+  stroke: var(--progress-track-stroke, var(--ion-color-medium, grey));
+}
+
+#progress {
+  stroke: var(--progress-stroke, var(--ion-color-primary, blue));
+}
