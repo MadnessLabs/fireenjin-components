@@ -1,0 +1,28 @@
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  text-align: center;
+  width: var(
+    --star-rating-width,
+    calc(
+      (var(--star-rating-size, 25px) * var(--star-rating-max, 5)) +
+        var(--star-rating-spacing, -10px)
+    )
+  );
+}
+.star-rating input {
+  display: none;
+}
+.star-rating > label {
+  color: var(--star-rating-default, #fff);
+  font-size: var(--star-rating-size, 25px);
+  cursor: pointer;
+}
+.star-rating .star-active {
+  color: var(--star-rating-active, var(--ion-color-warning-shade, #f90));
+}
+.star-rating:not(.is-disabled) label:hover,
+.star-rating:not(.is-disabled) label:hover ~ label {
+  color: var(--star-rating-hover, var(--ion-color-warning-tint, #fc0));
+}
