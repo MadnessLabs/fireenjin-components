@@ -20997,6 +20997,38 @@ class App {
   }; }
 }
 
+const avatarCss = "fireenjin-avatar{position:relative}fireenjin-avatar .avatar-image{display:block;border-radius:4px;border:1px solid var(--ion-color-light-shade);background-color:var(--ion-color-light);background-size:cover;background-position:center;font-weight:bolder;text-align:center;color:var(--ion-color-medium);text-decoration:none}";
+
+class Avatar$1 {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+  }
+  render() {
+    var _a, _b, _c;
+    return (hAsync("div", { class: "avatar-image", style: {
+        backgroundImage: !((_a = this.src) === null || _a === void 0 ? void 0 : _a.length) && this.initials
+          ? `url('https://avatars.dicebear.com/api/initials/${this.initials}.svg')`
+          : `url('${((_b = this.src) === null || _b === void 0 ? void 0 : _b.length) ? this.src : ((_c = this.fallback) === null || _c === void 0 ? void 0 : _c.length) ? this.fallback : "/assets/images/default-icon.png"}')`,
+        height: this.size ? this.size : "50px",
+        width: this.size ? this.size : "50px"
+      } }));
+  }
+  static get style() { return avatarCss; }
+  static get cmpMeta() { return {
+    "$flags$": 0,
+    "$tagName$": "fireenjin-avatar",
+    "$members$": {
+      "src": [1],
+      "size": [1],
+      "initials": [1],
+      "fallback": [1]
+    },
+    "$listeners$": undefined,
+    "$lazyBundleId$": "-",
+    "$attrsToReflect$": []
+  }; }
+}
+
 const avatarIosCss = "/*!@:host*/.sc-ion-avatar-ios-h{border-radius:var(--border-radius);display:block}/*!@::slotted(ion-img),\n::slotted(img)*/.sc-ion-avatar-ios-s>ion-img,.sc-ion-avatar-ios-s>img{border-radius:var(--border-radius);width:100%;height:100%;object-fit:cover;overflow:hidden}/*!@:host*/.sc-ion-avatar-ios-h{--border-radius:50%;width:48px;height:48px}";
 
 const avatarMdCss = "/*!@:host*/.sc-ion-avatar-md-h{border-radius:var(--border-radius);display:block}/*!@::slotted(ion-img),\n::slotted(img)*/.sc-ion-avatar-md-s>ion-img,.sc-ion-avatar-md-s>img{border-radius:var(--border-radius);width:100%;height:100%;object-fit:cover;overflow:hidden}/*!@:host*/.sc-ion-avatar-md-h{--border-radius:50%;width:64px;height:64px}";
@@ -53014,6 +53046,34 @@ class SplitPane {
   }; }
 }
 
+const tabCss$1 = "fireenjin-tab .tab-wrapper{opacity:0;pointer-events:none;height:0;display:block;transition:0.3s ease opacity;overflow:hidden}fireenjin-tab .tab-wrapper.tab-selected{opacity:1;pointer-events:all;height:auto;overflow:auto}";
+
+class Tab$1 {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.selected = false;
+  }
+  render() {
+    return (hAsync("div", { class: {
+        "tab-selected": this.selected,
+        "tab-deselected": !this.selected,
+        "tab-wrapper": true,
+      } }, hAsync("slot", null)));
+  }
+  static get style() { return tabCss$1; }
+  static get cmpMeta() { return {
+    "$flags$": 4,
+    "$tagName$": "fireenjin-tab",
+    "$members$": {
+      "tab": [1],
+      "selected": [4]
+    },
+    "$listeners$": undefined,
+    "$lazyBundleId$": "-",
+    "$attrsToReflect$": []
+  }; }
+}
+
 const tabCss = "/*!@:host(.tab-hidden)*/.tab-hidden.sc-ion-tab-h{display:none !important}";
 
 class Tab {
@@ -53272,6 +53332,60 @@ class TabButton {
       "target": [1]
     },
     "$listeners$": [[8, "ionTabBarChanged", "onTabBarChanged"]],
+    "$lazyBundleId$": "-",
+    "$attrsToReflect$": []
+  }; }
+}
+
+const tabsCss$1 = "fireenjin-tabs .tabs-bar{display:block;background-color:var(--ion-color-light-tint);text-align:center;font-family:var(--ion-font-family);font-weight:bold;color:var(--ion-color-dark);text-transform:capitalize;font-size:18px;padding:0}fireenjin-tabs .tabs-bar ion-col{padding:15px 0}fireenjin-tabs .tabs-bar ion-col:hover{cursor:pointer;color:var(--ion-color-primary)}fireenjin-tabs .tabs-bar ion-col.selected{background-color:var(--ion-color-primary-contrast);color:var(--ion-color-primary)}";
+
+class Tabs$1 {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.fireenjinTabChange = createEvent(this, "fireenjinTabChange", 7);
+    this.tabs = [];
+  }
+  componentDidLoad() {
+  }
+  setSelectedTab() {
+    const tabs = this.tabsWrapperEl.querySelectorAll("fireenjin-tab");
+    const newTabs = [];
+    for (let i = 0; i < tabs.length; ++i) {
+      if (tabs[i].selected && (window.location.hash === "" || !this.hash)) {
+        this.selected = tabs[i].tab;
+      }
+      else if (this.hash &&
+        window.location.hash === "#" + tabs[i].tab.toLowerCase()) {
+        this.selected = tabs[i].tab;
+      }
+      newTabs.push({ name: tabs[i].tab });
+    }
+    return newTabs;
+  }
+  tabClick(tab) {
+    const tabs = this.tabsWrapperEl.querySelectorAll("fireenjin-tab");
+    this.selected = tab.name;
+    for (let i = 0; i < tabs.length; ++i) {
+      tabs[i].selected = this.selected === tabs[i].tab;
+    }
+    if (this.hash) {
+      window.location.hash = `#${tab.name}`;
+    }
+    this.fireenjinTabChange.emit({ tab });
+  }
+  render() {
+    return (hAsync("div", { ref: (el) => (this.tabsWrapperEl = el), class: "tabs-wrapper" }, hAsync("ion-grid", { class: "tabs-bar" }, hAsync("ion-row", null, this.tabs.map((tab) => (hAsync("ion-col", { class: this.selected === tab.name ? "selected" : "", onClick: () => this.tabClick(tab) }, tab.name))))), hAsync("div", { class: "tabs-content" }, hAsync("slot", null))));
+  }
+  static get style() { return tabsCss$1; }
+  static get cmpMeta() { return {
+    "$flags$": 4,
+    "$tagName$": "fireenjin-tabs",
+    "$members$": {
+      "hash": [4],
+      "selected": [1025],
+      "tabs": [32]
+    },
+    "$listeners$": undefined,
     "$lazyBundleId$": "-",
     "$attrsToReflect$": []
   }; }
@@ -54940,6 +55054,7 @@ registerComponents([
   ActionSheet,
   Alert,
   App,
+  Avatar$1,
   Avatar,
   BackButton,
   Backdrop,
@@ -55026,9 +55141,11 @@ registerComponents([
   Slides,
   Spinner,
   SplitPane,
+  Tab$1,
   Tab,
   TabBar,
   TabButton,
+  Tabs$1,
   Tabs,
   Text,
   Textarea,
