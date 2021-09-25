@@ -43489,15 +43489,15 @@ class Map$1 {
     const mapMarker = new google.maps.Marker({
       position: marker.position,
       map: this.map,
-      title: marker.name,
-      icon: {
+      title: (marker === null || marker === void 0 ? void 0 : marker.name) || "",
+      icon: (marker === null || marker === void 0 ? void 0 : marker.icon) ? {
         url: marker.icon,
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(15, 15),
         scaledSize: new google.maps.Size(34, 34),
         shape: { coords: [17, 17, 18], type: "circle" },
         optimized: false,
-      },
+      } : null,
     });
     mapMarker.addListener("click", () => {
       this.onMarkerClick(mapMarker, marker);
@@ -43517,15 +43517,8 @@ class Map$1 {
    * @param markers A list of map markers
    */
   async setMarkers(markers = []) {
+    this.markers = markers;
     await this.clearMarkers();
-    this.markers =
-      typeof markers === "string"
-        ? JSON.parse(markers)
-        : markers.length > 0
-          ? markers
-          : this.mapEl.getAttribute("markers")
-            ? JSON.parse(this.mapEl.getAttribute("markers"))
-            : [];
     if (this.markers.length >= 1) {
       this.markers.map(this.addMarker.bind(this));
     }
@@ -43541,7 +43534,10 @@ class Map$1 {
    * Clear the markers off of the map
    */
   async clearMarkers() {
-    for (let i = 0; i < this.markers.length; i++) {
+    var _a;
+    for (let i = 0; i < this.mapMarkers.length; i++) {
+      if (!((_a = this.mapMarkers[i]) === null || _a === void 0 ? void 0 : _a.setMap))
+        continue;
       this.mapMarkers[i].setMap(null);
     }
     this.mapMarkers = [];

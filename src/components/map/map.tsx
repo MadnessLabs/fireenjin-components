@@ -106,15 +106,15 @@ export class Map implements ComponentInterface {
     const mapMarker = new google.maps.Marker({
       position: marker.position,
       map: this.map,
-      title: marker.name,
-      icon: {
+      title: marker?.name || "",
+      icon: marker?.icon ? {
         url: marker.icon,
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(15, 15),
         scaledSize: new google.maps.Size(34, 34),
         shape: { coords: [17, 17, 18], type: "circle" },
         optimized: false,
-      } as any,
+      } : null as any,
     });
     mapMarker.addListener("click", () => {
       this.onMarkerClick(mapMarker, marker);
@@ -149,15 +149,8 @@ export class Map implements ComponentInterface {
       payload?: any;
     }[] = []
   ) {
+    this.markers = markers;
     await this.clearMarkers();
-    this.markers =
-      typeof markers === "string"
-        ? JSON.parse(markers)
-        : markers.length > 0
-          ? markers
-          : this.mapEl.getAttribute("markers")
-            ? JSON.parse(this.mapEl.getAttribute("markers"))
-            : [];
     if (this.markers.length >= 1) {
       this.markers.map(this.addMarker.bind(this));
     }
@@ -179,7 +172,8 @@ export class Map implements ComponentInterface {
    */
   @Method()
   async clearMarkers() {
-    for (let i = 0; i < this.markers.length; i++) {
+    for (let i = 0; i < this.mapMarkers.length; i++) {
+      if (!this.mapMarkers[i]?.setMap) continue;
       this.mapMarkers[i].setMap(null);
     }
     this.mapMarkers = [];
