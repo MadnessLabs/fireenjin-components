@@ -45871,6 +45871,10 @@ class Pagination$1 {
     if (this.query || this.query === "") {
       this.paramData.query = this.query;
     }
+    if (this.page === 0) {
+      this.paramData.next = null;
+      this.paramData.back = null;
+    }
     if (options.next &&
       ((_b = this.results) === null || _b === void 0 ? void 0 : _b.length) &&
       ((_c = this.results[this.results.length - 1]) === null || _c === void 0 ? void 0 : _c.id)) {
@@ -50585,7 +50589,7 @@ class SearchBar {
     this.updateCurrentFilters();
   }
   async onTrigger(event) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     if (((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.trigger) === "set" && ((_c = (_b = event === null || event === void 0 ? void 0 : event.detail) === null || _b === void 0 ? void 0 : _b.payload) === null || _c === void 0 ? void 0 : _c.name)) {
       for (const [i, control] of this.filter.controls.entries()) {
         if (!(control === null || control === void 0 ? void 0 : control.name) || ((_e = (_d = event === null || event === void 0 ? void 0 : event.detail) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.name) !== (control === null || control === void 0 ? void 0 : control.name))
@@ -50595,6 +50599,9 @@ class SearchBar {
         this.currentFilters[control.name] = controlData;
         this.filter = Object.assign({}, this.filter);
       }
+      if (!((_h = this.paginationEl) === null || _h === void 0 ? void 0 : _h.clearParamData))
+        return;
+      await this.paginationEl.clearParamData();
     }
   }
   onSuccess(event) {

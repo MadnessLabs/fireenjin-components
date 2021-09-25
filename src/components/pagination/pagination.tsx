@@ -39,7 +39,7 @@ export class Pagination implements ComponentInterface {
   @Prop() orderDirection?: string;
   @Prop() dataPropsMap: any;
   @Prop() display: "list" | "grid" = "grid";
-  @Prop({ mutable: true }) page? = 0;
+  @Prop({ mutable: true }) page?= 0;
   @Prop({ mutable: true }) results: any[] = [];
   @Prop() groupBy: string;
   @Prop() loadingSpinner = "bubbles";
@@ -143,9 +143,9 @@ export class Pagination implements ComponentInterface {
         (this.pageCountKey &&
           this.pageKey &&
           this.pageKey.split(".").reduce((o, i) => o[i], event.detail.data) ===
-            this.pageCountKey
-              .split(".")
-              .reduce((o, i) => o[i], event.detail.data))
+          this.pageCountKey
+            .split(".")
+            .reduce((o, i) => o[i], event.detail.data))
       ) {
         this.infiniteScrollEl.disabled = true;
       }
@@ -264,6 +264,11 @@ export class Pagination implements ComponentInterface {
       this.paramData.query = this.query;
     }
 
+    if (this.page === 0) {
+      this.paramData.next = null;
+      this.paramData.back = null;
+    }
+
     if (
       options.next &&
       this.results?.length &&
@@ -279,7 +284,7 @@ export class Pagination implements ComponentInterface {
       disableFetch: this.disableFetch,
       params: {
         ...(this.fetchParams ? this.fetchParams : {}),
-        data: {...(this.fetchData ? this.fetchData : {}), ...this.paramData},
+        data: { ...(this.fetchData ? this.fetchData : {}), ...this.paramData },
       },
     });
   }

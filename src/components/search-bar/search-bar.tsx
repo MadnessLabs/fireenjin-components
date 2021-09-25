@@ -70,6 +70,9 @@ export class SearchBar implements ComponentInterface {
         this.currentFilters[control.name] = controlData;
         this.filter = { ...this.filter };
       }
+      if (!this.paginationEl) return;
+      await this.paginationEl.clearResults();
+      await this.paginationEl.getResults();
     }
   }
 
