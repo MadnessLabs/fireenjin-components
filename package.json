@@ -50,6 +50,7 @@
     "@madnesslabs/fireenjin": "^1.4.26",
     "@madnesslabs/fireenjin-designer": "^1.1.34",
     "@stencil/eslint-plugin": "^0.3.1",
+    "@stripe/stripe-js": "^1.18.0",
     "@types/cleave.js": "^1.4.5",
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^26.0.24",

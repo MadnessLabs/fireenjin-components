@@ -1,6 +1,4 @@
-# floodteam-search-bar
-
-
+# fireenjin-search-bar
 
 <!-- Auto Generated Below -->
 
@@ -73,16 +71,16 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
-  floodteam-search-bar --> ion-searchbar
-  floodteam-search-bar --> ion-chip
-  floodteam-search-bar --> ion-icon
-  floodteam-search-bar --> ion-label
-  floodteam-search-bar --> ion-button
-  floodteam-search-bar --> ion-badge
+  fireenjin-search-bar --> ion-searchbar
+  fireenjin-search-bar --> ion-chip
+  fireenjin-search-bar --> ion-icon
+  fireenjin-search-bar --> ion-label
+  fireenjin-search-bar --> ion-button
+  fireenjin-search-bar --> ion-badge
   ion-searchbar --> ion-icon
   ion-chip --> ion-ripple-effect
   ion-button --> ion-ripple-effect
-  style floodteam-search-bar fill:#f9f,stroke:#333,stroke-width:4px
+  style fireenjin-search-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

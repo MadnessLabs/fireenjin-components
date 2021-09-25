@@ -14,7 +14,7 @@ import {
 import { filterControl } from "../../typings";
 
 @Component({
-  tag: "floodteam-search-bar",
+  tag: "fireenjin-search-bar",
   styleUrl: "search-bar.css",
 })
 export class SearchBar implements ComponentInterface {

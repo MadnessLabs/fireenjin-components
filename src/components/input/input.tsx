@@ -15,7 +15,7 @@ import {
 } from "@stencil/core";
 import Cleave from "cleave.js";
 import "cleave.js/dist/addons/cleave-phone.us";
-declare var Stripe;
+import { loadStripe } from '@stripe/stripe-js';
 
 @Component({
   tag: "fireenjin-input",
@@ -291,7 +291,7 @@ export class Input implements ComponentInterface {
       console.log("Stripe Key prop is required to create card field.");
       return false;
     }
-    this.stripe = Stripe(this.stripeKey);
+    this.stripe = (window?.Stripe ? window.Stripe : loadStripe)(this.stripeKey);
     const elements = this.stripe.elements({
       fonts: this.stripeElements.fonts
         ? this.stripeElements.fonts
