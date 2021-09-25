@@ -23591,1327 +23591,6 @@ class FabList {
   }; }
 }
 
-const getName = (iconName, icon, mode, ios, md) => {
-  // default to "md" if somehow the mode wasn't set
-  mode = (mode && toLower(mode)) === 'ios' ? 'ios' : 'md';
-  // if an icon was passed in using the ios or md attributes
-  // set the iconName to whatever was passed in
-  if (ios && mode === 'ios') {
-    iconName = toLower(ios);
-  }
-  else if (md && mode === 'md') {
-    iconName = toLower(md);
-  }
-  else {
-    if (!iconName && icon && !isSrc(icon)) {
-      iconName = icon;
-    }
-    if (isStr(iconName)) {
-      iconName = toLower(iconName);
-    }
-  }
-  if (!isStr(iconName) || iconName.trim() === '') {
-    return null;
-  }
-  // only allow alpha characters and dash
-  const invalidChars = iconName.replace(/[a-z]|-|\d/gi, '');
-  if (invalidChars !== '') {
-    return null;
-  }
-  return iconName;
-};
-const isSrc = (str) => str.length > 0 && /(\/|\.)/.test(str);
-const isStr = (val) => typeof val === 'string';
-const toLower = (val) => val.toLowerCase();
-
-const LIFECYCLE_WILL_ENTER = 'ionViewWillEnter';
-const LIFECYCLE_DID_ENTER = 'ionViewDidEnter';
-const LIFECYCLE_WILL_LEAVE = 'ionViewWillLeave';
-const LIFECYCLE_DID_LEAVE = 'ionViewDidLeave';
-const LIFECYCLE_WILL_UNLOAD = 'ionViewWillUnload';
-
-const iosTransitionAnimation$1 = () => Promise.resolve().then(function () { return ios_transition; });
-const mdTransitionAnimation$1 = () => Promise.resolve().then(function () { return md_transition; });
-const transition$2 = (opts) => {
-  return new Promise((resolve, reject) => {
-    writeTask(() => {
-      beforeTransition(opts);
-      runTransition(opts).then(result => {
-        if (result.animation) {
-          result.animation.destroy();
-        }
-        afterTransition(opts);
-        resolve(result);
-      }, error => {
-        afterTransition(opts);
-        reject(error);
-      });
-    });
-  });
-};
-const beforeTransition = (opts) => {
-  const enteringEl = opts.enteringEl;
-  const leavingEl = opts.leavingEl;
-  setZIndex(enteringEl, leavingEl, opts.direction);
-  if (opts.showGoBack) {
-    enteringEl.classList.add('can-go-back');
-  }
-  else {
-    enteringEl.classList.remove('can-go-back');
-  }
-  setPageHidden(enteringEl, false);
-  /**
-   * When transitioning, the page should not
-   * respond to click events. This resolves small
-   * issues like users double tapping the ion-back-button.
-   * These pointer events are removed in `afterTransition`.
-   */
-  enteringEl.style.setProperty('pointer-events', 'none');
-  if (leavingEl) {
-    setPageHidden(leavingEl, false);
-    leavingEl.style.setProperty('pointer-events', 'none');
-  }
-};
-const runTransition = async (opts) => {
-  const animationBuilder = await getAnimationBuilder(opts);
-  const ani = (animationBuilder && Build.isBrowser)
-    ? animation(animationBuilder, opts)
-    : noAnimation(opts); // fast path for no animation
-  return ani;
-};
-const afterTransition = (opts) => {
-  const enteringEl = opts.enteringEl;
-  const leavingEl = opts.leavingEl;
-  enteringEl.classList.remove('ion-page-invisible');
-  enteringEl.style.removeProperty('pointer-events');
-  if (leavingEl !== undefined) {
-    leavingEl.classList.remove('ion-page-invisible');
-    leavingEl.style.removeProperty('pointer-events');
-  }
-};
-const getAnimationBuilder = async (opts) => {
-  if (!opts.leavingEl || !opts.animated || opts.duration === 0) {
-    return undefined;
-  }
-  if (opts.animationBuilder) {
-    return opts.animationBuilder;
-  }
-  const getAnimation = (opts.mode === 'ios')
-    ? (await iosTransitionAnimation$1()).iosTransitionAnimation
-    : (await mdTransitionAnimation$1()).mdTransitionAnimation;
-  return getAnimation;
-};
-const animation = async (animationBuilder, opts) => {
-  await waitForReady(opts, true);
-  const trans = animationBuilder(opts.baseEl, opts);
-  fireWillEvents(opts.enteringEl, opts.leavingEl);
-  const didComplete = await playTransition(trans, opts);
-  if (opts.progressCallback) {
-    opts.progressCallback(undefined);
-  }
-  if (didComplete) {
-    fireDidEvents(opts.enteringEl, opts.leavingEl);
-  }
-  return {
-    hasCompleted: didComplete,
-    animation: trans
-  };
-};
-const noAnimation = async (opts) => {
-  const enteringEl = opts.enteringEl;
-  const leavingEl = opts.leavingEl;
-  await waitForReady(opts, false);
-  fireWillEvents(enteringEl, leavingEl);
-  fireDidEvents(enteringEl, leavingEl);
-  return {
-    hasCompleted: true
-  };
-};
-const waitForReady = async (opts, defaultDeep) => {
-  const deep = opts.deepWait !== undefined ? opts.deepWait : defaultDeep;
-  const promises = deep ? [
-    deepReady(opts.enteringEl),
-    deepReady(opts.leavingEl),
-  ] : [
-    shallowReady(opts.enteringEl),
-    shallowReady(opts.leavingEl),
-  ];
-  await Promise.all(promises);
-  await notifyViewReady(opts.viewIsReady, opts.enteringEl);
-};
-const notifyViewReady = async (viewIsReady, enteringEl) => {
-  if (viewIsReady) {
-    await viewIsReady(enteringEl);
-  }
-};
-const playTransition = (trans, opts) => {
-  const progressCallback = opts.progressCallback;
-  const promise = new Promise(resolve => {
-    trans.onFinish((currentStep) => resolve(currentStep === 1));
-  });
-  // cool, let's do this, start the transition
-  if (progressCallback) {
-    // this is a swipe to go back, just get the transition progress ready
-    // kick off the swipe animation start
-    trans.progressStart(true);
-    progressCallback(trans);
-  }
-  else {
-    // only the top level transition should actually start "play"
-    // kick it off and let it play through
-    // ******** DOM WRITE ****************
-    trans.play();
-  }
-  // create a callback for when the animation is done
-  return promise;
-};
-const fireWillEvents = (enteringEl, leavingEl) => {
-  lifecycle(leavingEl, LIFECYCLE_WILL_LEAVE);
-  lifecycle(enteringEl, LIFECYCLE_WILL_ENTER);
-};
-const fireDidEvents = (enteringEl, leavingEl) => {
-  lifecycle(enteringEl, LIFECYCLE_DID_ENTER);
-  lifecycle(leavingEl, LIFECYCLE_DID_LEAVE);
-};
-const lifecycle = (el, eventName) => {
-  if (el) {
-    const ev = new CustomEvent(eventName, {
-      bubbles: false,
-      cancelable: false,
-    });
-    el.dispatchEvent(ev);
-  }
-};
-const shallowReady = (el) => {
-  if (el) {
-    return new Promise(resolve => componentOnReady(el, resolve));
-  }
-  return Promise.resolve();
-};
-const deepReady = async (el) => {
-  const element = el;
-  if (element) {
-    if (element.componentOnReady != null) {
-      const stencilEl = await element.componentOnReady();
-      if (stencilEl != null) {
-        return;
-      }
-    }
-    await Promise.all(Array.from(element.children).map(deepReady));
-  }
-};
-const setPageHidden = (el, hidden) => {
-  if (hidden) {
-    el.setAttribute('aria-hidden', 'true');
-    el.classList.add('ion-page-hidden');
-  }
-  else {
-    el.hidden = false;
-    el.removeAttribute('aria-hidden');
-    el.classList.remove('ion-page-hidden');
-  }
-};
-const setZIndex = (enteringEl, leavingEl, direction) => {
-  if (enteringEl !== undefined) {
-    enteringEl.style.zIndex = (direction === 'back')
-      ? '99'
-      : '101';
-  }
-  if (leavingEl !== undefined) {
-    leavingEl.style.zIndex = '100';
-  }
-};
-const getIonPageElement = (element) => {
-  if (element.classList.contains('ion-page')) {
-    return element;
-  }
-  const ionPage = element.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs');
-  if (ionPage) {
-    return ionPage;
-  }
-  // idk, return the original element so at least something animates and we don't have a null pointer
-  return element;
-};
-
-const DURATION = 540;
-const getClonedElement = (tagName) => {
-  return document.querySelector(`${tagName}.ion-cloned-element`);
-};
-const shadow = (el) => {
-  return el.shadowRoot || el;
-};
-const getLargeTitle = (refEl) => {
-  const tabs = (refEl.tagName === 'ION-TABS') ? refEl : refEl.querySelector('ion-tabs');
-  const query = 'ion-content ion-header:not(.header-collapse-condense-inactive) ion-title.title-large';
-  if (tabs != null) {
-    const activeTab = tabs.querySelector('ion-tab:not(.tab-hidden), .ion-page:not(.ion-page-hidden)');
-    return (activeTab != null) ? activeTab.querySelector(query) : null;
-  }
-  return refEl.querySelector(query);
-};
-const getBackButton = (refEl, backDirection) => {
-  const tabs = (refEl.tagName === 'ION-TABS') ? refEl : refEl.querySelector('ion-tabs');
-  let buttonsList = [];
-  if (tabs != null) {
-    const activeTab = tabs.querySelector('ion-tab:not(.tab-hidden), .ion-page:not(.ion-page-hidden)');
-    if (activeTab != null) {
-      buttonsList = activeTab.querySelectorAll('ion-buttons');
-    }
-  }
-  else {
-    buttonsList = refEl.querySelectorAll('ion-buttons');
-  }
-  for (const buttons of buttonsList) {
-    const parentHeader = buttons.closest('ion-header');
-    const activeHeader = parentHeader && !parentHeader.classList.contains('header-collapse-condense-inactive');
-    const backButton = buttons.querySelector('ion-back-button');
-    const buttonsCollapse = buttons.classList.contains('buttons-collapse');
-    const startSlot = buttons.slot === 'start' || buttons.slot === '';
-    if (backButton !== null && startSlot && ((buttonsCollapse && activeHeader && backDirection) || !buttonsCollapse)) {
-      return backButton;
-    }
-  }
-  return null;
-};
-const createLargeTitleTransition = (rootAnimation, rtl, backDirection, enteringEl, leavingEl) => {
-  const enteringBackButton = getBackButton(enteringEl, backDirection);
-  const leavingLargeTitle = getLargeTitle(leavingEl);
-  const enteringLargeTitle = getLargeTitle(enteringEl);
-  const leavingBackButton = getBackButton(leavingEl, backDirection);
-  const shouldAnimationForward = enteringBackButton !== null && leavingLargeTitle !== null && !backDirection;
-  const shouldAnimationBackward = enteringLargeTitle !== null && leavingBackButton !== null && backDirection;
-  if (shouldAnimationForward) {
-    const leavingLargeTitleBox = leavingLargeTitle.getBoundingClientRect();
-    const enteringBackButtonBox = enteringBackButton.getBoundingClientRect();
-    animateLargeTitle(rootAnimation, rtl, backDirection, leavingLargeTitle, leavingLargeTitleBox, enteringBackButtonBox);
-    animateBackButton(rootAnimation, rtl, backDirection, enteringBackButton, leavingLargeTitleBox, enteringBackButtonBox);
-  }
-  else if (shouldAnimationBackward) {
-    const enteringLargeTitleBox = enteringLargeTitle.getBoundingClientRect();
-    const leavingBackButtonBox = leavingBackButton.getBoundingClientRect();
-    animateLargeTitle(rootAnimation, rtl, backDirection, enteringLargeTitle, enteringLargeTitleBox, leavingBackButtonBox);
-    animateBackButton(rootAnimation, rtl, backDirection, leavingBackButton, enteringLargeTitleBox, leavingBackButtonBox);
-  }
-  return {
-    forward: shouldAnimationForward,
-    backward: shouldAnimationBackward
-  };
-};
-const animateBackButton = (rootAnimation, rtl, backDirection, backButtonEl, largeTitleBox, backButtonBox) => {
-  const BACK_BUTTON_START_OFFSET = (rtl) ? `calc(100% - ${backButtonBox.right + 4}px)` : `${backButtonBox.left - 4}px`;
-  const START_TEXT_TRANSLATE = (rtl) ? '7px' : '-7px';
-  const END_TEXT_TRANSLATE = (rtl) ? '-4px' : '4px';
-  const ICON_TRANSLATE = (rtl) ? '-4px' : '4px';
-  const TEXT_ORIGIN_X = (rtl) ? 'right' : 'left';
-  const ICON_ORIGIN_X = (rtl) ? 'left' : 'right';
-  const FORWARD_TEXT_KEYFRAMES = [
-    { offset: 0, opacity: 0, transform: `translate3d(${START_TEXT_TRANSLATE}, ${largeTitleBox.top - 40}px, 0) scale(2.1)` },
-    { offset: 1, opacity: 1, transform: `translate3d(${END_TEXT_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` }
-  ];
-  const BACKWARD_TEXT_KEYFRAMES = [
-    { offset: 0, opacity: 1, transform: `translate3d(${END_TEXT_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` },
-    { offset: 0.6, opacity: 0 },
-    { offset: 1, opacity: 0, transform: `translate3d(${START_TEXT_TRANSLATE}, ${largeTitleBox.top - 40}px, 0) scale(2.1)` }
-  ];
-  const TEXT_KEYFRAMES = (backDirection) ? BACKWARD_TEXT_KEYFRAMES : FORWARD_TEXT_KEYFRAMES;
-  const FORWARD_ICON_KEYFRAMES = [
-    { offset: 0, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` },
-    { offset: 1, opacity: 1, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` }
-  ];
-  const BACKWARD_ICON_KEYFRAMES = [
-    { offset: 0, opacity: 1, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` },
-    { offset: 0.2, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` },
-    { offset: 1, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` }
-  ];
-  const ICON_KEYFRAMES = (backDirection) ? BACKWARD_ICON_KEYFRAMES : FORWARD_ICON_KEYFRAMES;
-  const enteringBackButtonTextAnimation = createAnimation();
-  const enteringBackButtonIconAnimation = createAnimation();
-  const clonedBackButtonEl = getClonedElement('ion-back-button');
-  const backButtonTextEl = shadow(clonedBackButtonEl).querySelector('.button-text');
-  const backButtonIconEl = shadow(clonedBackButtonEl).querySelector('ion-icon');
-  clonedBackButtonEl.text = backButtonEl.text;
-  clonedBackButtonEl.mode = backButtonEl.mode;
-  clonedBackButtonEl.icon = backButtonEl.icon;
-  clonedBackButtonEl.color = backButtonEl.color;
-  clonedBackButtonEl.disabled = backButtonEl.disabled;
-  clonedBackButtonEl.style.setProperty('display', 'block');
-  clonedBackButtonEl.style.setProperty('position', 'fixed');
-  enteringBackButtonIconAnimation.addElement(backButtonIconEl);
-  enteringBackButtonTextAnimation.addElement(backButtonTextEl);
-  enteringBackButtonTextAnimation
-    .beforeStyles({
-    'transform-origin': `${TEXT_ORIGIN_X} center`
-  })
-    .beforeAddWrite(() => {
-    backButtonEl.style.setProperty('display', 'none');
-    clonedBackButtonEl.style.setProperty(TEXT_ORIGIN_X, BACK_BUTTON_START_OFFSET);
-  })
-    .afterAddWrite(() => {
-    backButtonEl.style.setProperty('display', '');
-    clonedBackButtonEl.style.setProperty('display', 'none');
-    clonedBackButtonEl.style.removeProperty(TEXT_ORIGIN_X);
-  })
-    .keyframes(TEXT_KEYFRAMES);
-  enteringBackButtonIconAnimation
-    .beforeStyles({
-    'transform-origin': `${ICON_ORIGIN_X} center`
-  })
-    .keyframes(ICON_KEYFRAMES);
-  rootAnimation.addAnimation([enteringBackButtonTextAnimation, enteringBackButtonIconAnimation]);
-};
-const animateLargeTitle = (rootAnimation, rtl, backDirection, largeTitleEl, largeTitleBox, backButtonBox) => {
-  const TITLE_START_OFFSET = (rtl) ? `calc(100% - ${largeTitleBox.right}px)` : `${largeTitleBox.left}px`;
-  const START_TRANSLATE = (rtl) ? '-18px' : '18px';
-  const ORIGIN_X = (rtl) ? 'right' : 'left';
-  const BACKWARDS_KEYFRAMES = [
-    { offset: 0, opacity: 0, transform: `translate3d(${START_TRANSLATE}, ${backButtonBox.top - 4}px, 0) scale(0.49)` },
-    { offset: 0.1, opacity: 0 },
-    { offset: 1, opacity: 1, transform: `translate3d(0, ${largeTitleBox.top - 2}px, 0) scale(1)` }
-  ];
-  const FORWARDS_KEYFRAMES = [
-    { offset: 0, opacity: 0.99, transform: `translate3d(0, ${largeTitleBox.top - 2}px, 0) scale(1)` },
-    { offset: 0.6, opacity: 0 },
-    { offset: 1, opacity: 0, transform: `translate3d(${START_TRANSLATE}, ${backButtonBox.top - 4}px, 0) scale(0.5)` }
-  ];
-  const KEYFRAMES = (backDirection) ? BACKWARDS_KEYFRAMES : FORWARDS_KEYFRAMES;
-  const clonedTitleEl = getClonedElement('ion-title');
-  const clonedLargeTitleAnimation = createAnimation();
-  clonedTitleEl.innerText = largeTitleEl.innerText;
-  clonedTitleEl.size = largeTitleEl.size;
-  clonedTitleEl.color = largeTitleEl.color;
-  clonedLargeTitleAnimation.addElement(clonedTitleEl);
-  clonedLargeTitleAnimation
-    .beforeStyles({
-    'transform-origin': `${ORIGIN_X} center`,
-    'height': '46px',
-    'display': '',
-    'position': 'relative',
-    [ORIGIN_X]: TITLE_START_OFFSET
-  })
-    .beforeAddWrite(() => {
-    largeTitleEl.style.setProperty('display', 'none');
-  })
-    .afterAddWrite(() => {
-    largeTitleEl.style.setProperty('display', '');
-    clonedTitleEl.style.setProperty('display', 'none');
-  })
-    .keyframes(KEYFRAMES);
-  rootAnimation.addAnimation(clonedLargeTitleAnimation);
-};
-const iosTransitionAnimation = (navEl, opts) => {
-  try {
-    const EASING = 'cubic-bezier(0.32,0.72,0,1)';
-    const OPACITY = 'opacity';
-    const TRANSFORM = 'transform';
-    const CENTER = '0%';
-    const OFF_OPACITY = 0.8;
-    const isRTL = navEl.ownerDocument.dir === 'rtl';
-    const OFF_RIGHT = isRTL ? '-99.5%' : '99.5%';
-    const OFF_LEFT = isRTL ? '33%' : '-33%';
-    const enteringEl = opts.enteringEl;
-    const leavingEl = opts.leavingEl;
-    const backDirection = (opts.direction === 'back');
-    const contentEl = enteringEl.querySelector(':scope > ion-content');
-    const headerEls = enteringEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
-    const enteringToolBarEls = enteringEl.querySelectorAll(':scope > ion-header > ion-toolbar');
-    const rootAnimation = createAnimation();
-    const enteringContentAnimation = createAnimation();
-    rootAnimation
-      .addElement(enteringEl)
-      .duration(opts.duration || DURATION)
-      .easing(opts.easing || EASING)
-      .fill('both')
-      .beforeRemoveClass('ion-page-invisible');
-    if (leavingEl && navEl) {
-      const navDecorAnimation = createAnimation();
-      navDecorAnimation.addElement(navEl);
-      rootAnimation.addAnimation(navDecorAnimation);
-    }
-    if (!contentEl && enteringToolBarEls.length === 0 && headerEls.length === 0) {
-      enteringContentAnimation.addElement(enteringEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')); // REVIEW
-    }
-    else {
-      enteringContentAnimation.addElement(contentEl); // REVIEW
-      enteringContentAnimation.addElement(headerEls);
-    }
-    rootAnimation.addAnimation(enteringContentAnimation);
-    if (backDirection) {
-      enteringContentAnimation
-        .beforeClearStyles([OPACITY])
-        .fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`)
-        .fromTo(OPACITY, OFF_OPACITY, 1);
-    }
-    else {
-      // entering content, forward direction
-      enteringContentAnimation
-        .beforeClearStyles([OPACITY])
-        .fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
-    }
-    if (contentEl) {
-      const enteringTransitionEffectEl = shadow(contentEl).querySelector('.transition-effect');
-      if (enteringTransitionEffectEl) {
-        const enteringTransitionCoverEl = enteringTransitionEffectEl.querySelector('.transition-cover');
-        const enteringTransitionShadowEl = enteringTransitionEffectEl.querySelector('.transition-shadow');
-        const enteringTransitionEffect = createAnimation();
-        const enteringTransitionCover = createAnimation();
-        const enteringTransitionShadow = createAnimation();
-        enteringTransitionEffect
-          .addElement(enteringTransitionEffectEl)
-          .beforeStyles({ opacity: '1', display: 'block' })
-          .afterStyles({ opacity: '', display: '' });
-        enteringTransitionCover
-          .addElement(enteringTransitionCoverEl) // REVIEW
-          .beforeClearStyles([OPACITY])
-          .fromTo(OPACITY, 0, 0.1);
-        enteringTransitionShadow
-          .addElement(enteringTransitionShadowEl) // REVIEW
-          .beforeClearStyles([OPACITY])
-          .fromTo(OPACITY, 0.03, 0.70);
-        enteringTransitionEffect.addAnimation([enteringTransitionCover, enteringTransitionShadow]);
-        enteringContentAnimation.addAnimation([enteringTransitionEffect]);
-      }
-    }
-    const enteringContentHasLargeTitle = enteringEl.querySelector('ion-header.header-collapse-condense');
-    const { forward, backward } = createLargeTitleTransition(rootAnimation, isRTL, backDirection, enteringEl, leavingEl);
-    enteringToolBarEls.forEach(enteringToolBarEl => {
-      const enteringToolBar = createAnimation();
-      enteringToolBar.addElement(enteringToolBarEl);
-      rootAnimation.addAnimation(enteringToolBar);
-      const enteringTitle = createAnimation();
-      enteringTitle.addElement(enteringToolBarEl.querySelector('ion-title')); // REVIEW
-      const enteringToolBarButtons = createAnimation();
-      const buttons = Array.from(enteringToolBarEl.querySelectorAll('ion-buttons,[menuToggle]'));
-      const parentHeader = enteringToolBarEl.closest('ion-header');
-      const inactiveHeader = parentHeader && parentHeader.classList.contains('header-collapse-condense-inactive');
-      let buttonsToAnimate;
-      if (backDirection) {
-        buttonsToAnimate = buttons.filter(button => {
-          const isCollapseButton = button.classList.contains('buttons-collapse');
-          return (isCollapseButton && !inactiveHeader) || !isCollapseButton;
-        });
-      }
-      else {
-        buttonsToAnimate = buttons.filter(button => !button.classList.contains('buttons-collapse'));
-      }
-      enteringToolBarButtons.addElement(buttonsToAnimate);
-      const enteringToolBarItems = createAnimation();
-      enteringToolBarItems.addElement(enteringToolBarEl.querySelectorAll(':scope > *:not(ion-title):not(ion-buttons):not([menuToggle])'));
-      const enteringToolBarBg = createAnimation();
-      enteringToolBarBg.addElement(shadow(enteringToolBarEl).querySelector('.toolbar-background')); // REVIEW
-      const enteringBackButton = createAnimation();
-      const backButtonEl = enteringToolBarEl.querySelector('ion-back-button');
-      if (backButtonEl) {
-        enteringBackButton.addElement(backButtonEl);
-      }
-      enteringToolBar.addAnimation([enteringTitle, enteringToolBarButtons, enteringToolBarItems, enteringToolBarBg, enteringBackButton]);
-      enteringToolBarButtons.fromTo(OPACITY, 0.01, 1);
-      enteringToolBarItems.fromTo(OPACITY, 0.01, 1);
-      if (backDirection) {
-        if (!inactiveHeader) {
-          enteringTitle
-            .fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`)
-            .fromTo(OPACITY, 0.01, 1);
-        }
-        enteringToolBarItems.fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`);
-        // back direction, entering page has a back button
-        enteringBackButton.fromTo(OPACITY, 0.01, 1);
-      }
-      else {
-        // entering toolbar, forward direction
-        if (!enteringContentHasLargeTitle) {
-          enteringTitle
-            .fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`)
-            .fromTo(OPACITY, 0.01, 1);
-        }
-        enteringToolBarItems.fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
-        enteringToolBarBg.beforeClearStyles([OPACITY, 'transform']);
-        const translucentHeader = parentHeader === null || parentHeader === void 0 ? void 0 : parentHeader.translucent;
-        if (!translucentHeader) {
-          enteringToolBarBg.fromTo(OPACITY, 0.01, 'var(--opacity)');
-        }
-        else {
-          enteringToolBarBg.fromTo('transform', (isRTL ? 'translateX(-100%)' : 'translateX(100%)'), 'translateX(0px)');
-        }
-        // forward direction, entering page has a back button
-        if (!forward) {
-          enteringBackButton.fromTo(OPACITY, 0.01, 1);
-        }
-        if (backButtonEl && !forward) {
-          const enteringBackBtnText = createAnimation();
-          enteringBackBtnText
-            .addElement(shadow(backButtonEl).querySelector('.button-text')) // REVIEW
-            .fromTo(`transform`, (isRTL ? 'translateX(-100px)' : 'translateX(100px)'), 'translateX(0px)');
-          enteringToolBar.addAnimation(enteringBackBtnText);
-        }
-      }
-    });
-    // setup leaving view
-    if (leavingEl) {
-      const leavingContent = createAnimation();
-      const leavingContentEl = leavingEl.querySelector(':scope > ion-content');
-      const leavingToolBarEls = leavingEl.querySelectorAll(':scope > ion-header > ion-toolbar');
-      const leavingHeaderEls = leavingEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
-      if (!leavingContentEl && leavingToolBarEls.length === 0 && leavingHeaderEls.length === 0) {
-        leavingContent.addElement(leavingEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')); // REVIEW
-      }
-      else {
-        leavingContent.addElement(leavingContentEl); // REVIEW
-        leavingContent.addElement(leavingHeaderEls);
-      }
-      rootAnimation.addAnimation(leavingContent);
-      if (backDirection) {
-        // leaving content, back direction
-        leavingContent
-          .beforeClearStyles([OPACITY])
-          .fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
-        const leavingPage = getIonPageElement(leavingEl);
-        rootAnimation.afterAddWrite(() => {
-          if (rootAnimation.getDirection() === 'normal') {
-            leavingPage.style.setProperty('display', 'none');
-          }
-        });
-      }
-      else {
-        // leaving content, forward direction
-        leavingContent
-          .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
-          .fromTo(OPACITY, 1, OFF_OPACITY);
-      }
-      if (leavingContentEl) {
-        const leavingTransitionEffectEl = shadow(leavingContentEl).querySelector('.transition-effect');
-        if (leavingTransitionEffectEl) {
-          const leavingTransitionCoverEl = leavingTransitionEffectEl.querySelector('.transition-cover');
-          const leavingTransitionShadowEl = leavingTransitionEffectEl.querySelector('.transition-shadow');
-          const leavingTransitionEffect = createAnimation();
-          const leavingTransitionCover = createAnimation();
-          const leavingTransitionShadow = createAnimation();
-          leavingTransitionEffect
-            .addElement(leavingTransitionEffectEl)
-            .beforeStyles({ opacity: '1', display: 'block' })
-            .afterStyles({ opacity: '', display: '' });
-          leavingTransitionCover
-            .addElement(leavingTransitionCoverEl) // REVIEW
-            .beforeClearStyles([OPACITY])
-            .fromTo(OPACITY, 0.1, 0);
-          leavingTransitionShadow
-            .addElement(leavingTransitionShadowEl) // REVIEW
-            .beforeClearStyles([OPACITY])
-            .fromTo(OPACITY, 0.70, 0.03);
-          leavingTransitionEffect.addAnimation([leavingTransitionCover, leavingTransitionShadow]);
-          leavingContent.addAnimation([leavingTransitionEffect]);
-        }
-      }
-      leavingToolBarEls.forEach(leavingToolBarEl => {
-        const leavingToolBar = createAnimation();
-        leavingToolBar.addElement(leavingToolBarEl);
-        const leavingTitle = createAnimation();
-        leavingTitle.addElement(leavingToolBarEl.querySelector('ion-title')); // REVIEW
-        const leavingToolBarButtons = createAnimation();
-        const buttons = leavingToolBarEl.querySelectorAll('ion-buttons,[menuToggle]');
-        const parentHeader = leavingToolBarEl.closest('ion-header');
-        const inactiveHeader = parentHeader && parentHeader.classList.contains('header-collapse-condense-inactive');
-        const buttonsToAnimate = Array.from(buttons).filter(button => {
-          const isCollapseButton = button.classList.contains('buttons-collapse');
-          return (isCollapseButton && !inactiveHeader) || !isCollapseButton;
-        });
-        leavingToolBarButtons.addElement(buttonsToAnimate);
-        const leavingToolBarItems = createAnimation();
-        const leavingToolBarItemEls = leavingToolBarEl.querySelectorAll(':scope > *:not(ion-title):not(ion-buttons):not([menuToggle])');
-        if (leavingToolBarItemEls.length > 0) {
-          leavingToolBarItems.addElement(leavingToolBarItemEls);
-        }
-        const leavingToolBarBg = createAnimation();
-        leavingToolBarBg.addElement(shadow(leavingToolBarEl).querySelector('.toolbar-background')); // REVIEW
-        const leavingBackButton = createAnimation();
-        const backButtonEl = leavingToolBarEl.querySelector('ion-back-button');
-        if (backButtonEl) {
-          leavingBackButton.addElement(backButtonEl);
-        }
-        leavingToolBar.addAnimation([leavingTitle, leavingToolBarButtons, leavingToolBarItems, leavingBackButton, leavingToolBarBg]);
-        rootAnimation.addAnimation(leavingToolBar);
-        // fade out leaving toolbar items
-        leavingBackButton.fromTo(OPACITY, 0.99, 0);
-        leavingToolBarButtons.fromTo(OPACITY, 0.99, 0);
-        leavingToolBarItems.fromTo(OPACITY, 0.99, 0);
-        if (backDirection) {
-          if (!inactiveHeader) {
-            // leaving toolbar, back direction
-            leavingTitle
-              .fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'))
-              .fromTo(OPACITY, 0.99, 0);
-          }
-          leavingToolBarItems.fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
-          leavingToolBarBg.beforeClearStyles([OPACITY, 'transform']);
-          // leaving toolbar, back direction, and there's no entering toolbar
-          // should just slide out, no fading out
-          const translucentHeader = parentHeader === null || parentHeader === void 0 ? void 0 : parentHeader.translucent;
-          if (!translucentHeader) {
-            leavingToolBarBg.fromTo(OPACITY, 'var(--opacity)', 0);
-          }
-          else {
-            leavingToolBarBg.fromTo('transform', 'translateX(0px)', (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
-          }
-          if (backButtonEl && !backward) {
-            const leavingBackBtnText = createAnimation();
-            leavingBackBtnText
-              .addElement(shadow(backButtonEl).querySelector('.button-text')) // REVIEW
-              .fromTo('transform', `translateX(${CENTER})`, `translateX(${(isRTL ? -124 : 124) + 'px'})`);
-            leavingToolBar.addAnimation(leavingBackBtnText);
-          }
-        }
-        else {
-          // leaving toolbar, forward direction
-          if (!inactiveHeader) {
-            leavingTitle
-              .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
-              .fromTo(OPACITY, 0.99, 0)
-              .afterClearStyles([TRANSFORM, OPACITY]);
-          }
-          leavingToolBarItems
-            .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
-            .afterClearStyles([TRANSFORM, OPACITY]);
-          leavingBackButton.afterClearStyles([OPACITY]);
-          leavingTitle.afterClearStyles([OPACITY]);
-          leavingToolBarButtons.afterClearStyles([OPACITY]);
-        }
-      });
-    }
-    return rootAnimation;
-  }
-  catch (err) {
-    throw err;
-  }
-};
-
-var ios_transition = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  shadow: shadow,
-  iosTransitionAnimation: iosTransitionAnimation
-});
-
-const mdTransitionAnimation = (_, opts) => {
-  const OFF_BOTTOM = '40px';
-  const CENTER = '0px';
-  const backDirection = (opts.direction === 'back');
-  const enteringEl = opts.enteringEl;
-  const leavingEl = opts.leavingEl;
-  const ionPageElement = getIonPageElement(enteringEl);
-  const enteringToolbarEle = ionPageElement.querySelector('ion-toolbar');
-  const rootTransition = createAnimation();
-  rootTransition
-    .addElement(ionPageElement)
-    .fill('both')
-    .beforeRemoveClass('ion-page-invisible');
-  // animate the component itself
-  if (backDirection) {
-    rootTransition
-      .duration(opts.duration || 200)
-      .easing('cubic-bezier(0.47,0,0.745,0.715)');
-  }
-  else {
-    rootTransition
-      .duration(opts.duration || 280)
-      .easing('cubic-bezier(0.36,0.66,0.04,1)')
-      .fromTo('transform', `translateY(${OFF_BOTTOM})`, `translateY(${CENTER})`)
-      .fromTo('opacity', 0.01, 1);
-  }
-  // Animate toolbar if it's there
-  if (enteringToolbarEle) {
-    const enteringToolBar = createAnimation();
-    enteringToolBar.addElement(enteringToolbarEle);
-    rootTransition.addAnimation(enteringToolBar);
-  }
-  // setup leaving view
-  if (leavingEl && backDirection) {
-    // leaving content
-    rootTransition
-      .duration(opts.duration || 200)
-      .easing('cubic-bezier(0.47,0,0.745,0.715)');
-    const leavingPage = createAnimation();
-    leavingPage
-      .addElement(getIonPageElement(leavingEl))
-      .onFinish(currentStep => {
-      if (currentStep === 1 && leavingPage.elements.length > 0) {
-        leavingPage.elements[0].style.setProperty('display', 'none');
-      }
-    })
-      .fromTo('transform', `translateY(${CENTER})`, `translateY(${OFF_BOTTOM})`)
-      .fromTo('opacity', 1, 0);
-    rootTransition.addAnimation(leavingPage);
-  }
-  return rootTransition;
-};
-
-var md_transition = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  mdTransitionAnimation: mdTransitionAnimation
-});
-
-/**
- * Based on:
- * https://stackoverflow.com/questions/7348009/y-coordinate-for-a-given-x-cubic-bezier
- * https://math.stackexchange.com/questions/26846/is-there-an-explicit-form-for-cubic-b%C3%A9zier-curves
- * TODO: Reduce rounding error
- */
-/**
- * EXPERIMENTAL
- * Given a cubic-bezier curve, get the x value (time) given
- * the y value (progression).
- * Ex: cubic-bezier(0.32, 0.72, 0, 1);
- * P0: (0, 0)
- * P1: (0.32, 0.72)
- * P2: (0, 1)
- * P3: (1, 1)
- *
- * If you give a cubic bezier curve that never reaches the
- * provided progression, this function will return an empty array.
- */
-const getTimeGivenProgression = (p0, p1, p2, p3, progression) => {
-  return solveCubicBezier(p0[1], p1[1], p2[1], p3[1], progression).map(tValue => {
-    return solveCubicParametricEquation(p0[0], p1[0], p2[0], p3[0], tValue);
-  });
-};
-/**
- * Solve a cubic equation in one dimension (time)
- */
-const solveCubicParametricEquation = (p0, p1, p2, p3, t) => {
-  const partA = (3 * p1) * Math.pow(t - 1, 2);
-  const partB = (-3 * p2 * t) + (3 * p2) + (p3 * t);
-  const partC = p0 * Math.pow(t - 1, 3);
-  return t * (partA + (t * partB)) - partC;
-};
-/**
- * Find the `t` value for a cubic bezier using Cardano's formula
- */
-const solveCubicBezier = (p0, p1, p2, p3, refPoint) => {
-  p0 -= refPoint;
-  p1 -= refPoint;
-  p2 -= refPoint;
-  p3 -= refPoint;
-  const roots = solveCubicEquation(p3 - 3 * p2 + 3 * p1 - p0, 3 * p2 - 6 * p1 + 3 * p0, 3 * p1 - 3 * p0, p0);
-  return roots.filter(root => root >= 0 && root <= 1);
-};
-const solveQuadraticEquation = (a, b, c) => {
-  const discriminant = b * b - 4 * a * c;
-  if (discriminant < 0) {
-    return [];
-  }
-  else {
-    return [
-      (-b + Math.sqrt(discriminant)) / (2 * a),
-      (-b - Math.sqrt(discriminant)) / (2 * a)
-    ];
-  }
-};
-const solveCubicEquation = (a, b, c, d) => {
-  if (a === 0) {
-    return solveQuadraticEquation(b, c, d);
-  }
-  b /= a;
-  c /= a;
-  d /= a;
-  const p = (3 * c - b * b) / 3;
-  const q = (2 * b * b * b - 9 * b * c + 27 * d) / 27;
-  if (p === 0) {
-    return [Math.pow(-q, 1 / 3)];
-  }
-  else if (q === 0) {
-    return [Math.sqrt(-p), -Math.sqrt(-p)];
-  }
-  const discriminant = Math.pow(q / 2, 2) + Math.pow(p / 3, 3);
-  if (discriminant === 0) {
-    return [Math.pow(q / 2, 1 / 2) - b / 3];
-  }
-  else if (discriminant > 0) {
-    return [Math.pow(-(q / 2) + Math.sqrt(discriminant), 1 / 3) - Math.pow((q / 2) + Math.sqrt(discriminant), 1 / 3) - b / 3];
-  }
-  const r = Math.sqrt(Math.pow(-(p / 3), 3));
-  const phi = Math.acos(-(q / (2 * Math.sqrt(Math.pow(-(p / 3), 3)))));
-  const s = 2 * Math.pow(r, 1 / 3);
-  return [
-    s * Math.cos(phi / 3) - b / 3,
-    s * Math.cos((phi + 2 * Math.PI) / 3) - b / 3,
-    s * Math.cos((phi + 4 * Math.PI) / 3) - b / 3
-  ];
-};
-
-/**
- * baseAnimation
- * Base class which is extended by the various types. Each
- * type will provide their own animations for open and close
- * and registers itself with Menu.
- */
-const baseAnimation = (isIos) => {
-  // https://material.io/guidelines/motion/movement.html#movement-movement-in-out-of-screen-bounds
-  // https://material.io/guidelines/motion/duration-easing.html#duration-easing-natural-easing-curves
-  /**
-   * "Apply the sharp curve to items temporarily leaving the screen that may return
-   * from the same exit point. When they return, use the deceleration curve. On mobile,
-   * this transition typically occurs over 300ms" -- MD Motion Guide
-   */
-  return createAnimation().duration(isIos ? 400 : 300);
-};
-
-/**
- * Menu Overlay Type
- * The menu slides over the content. The content
- * itself, which is under the menu, does not move.
- */
-const menuOverlayAnimation = (menu) => {
-  let closedX;
-  let openedX;
-  const width = menu.width + 8;
-  const menuAnimation = createAnimation();
-  const backdropAnimation = createAnimation();
-  if (menu.isEndSide) {
-    // right side
-    closedX = width + 'px';
-    openedX = '0px';
-  }
-  else {
-    // left side
-    closedX = -width + 'px';
-    openedX = '0px';
-  }
-  menuAnimation
-    .addElement(menu.menuInnerEl)
-    .fromTo('transform', `translateX(${closedX})`, `translateX(${openedX})`);
-  const mode = getIonMode$1(menu);
-  const isIos = mode === 'ios';
-  const opacity = isIos ? 0.2 : 0.25;
-  backdropAnimation
-    .addElement(menu.backdropEl)
-    .fromTo('opacity', 0.01, opacity);
-  return baseAnimation(isIos).addAnimation([menuAnimation, backdropAnimation]);
-};
-
-/**
- * Menu Push Type
- * The content slides over to reveal the menu underneath.
- * The menu itself also slides over to reveal its bad self.
- */
-const menuPushAnimation = (menu) => {
-  let contentOpenedX;
-  let menuClosedX;
-  const mode = getIonMode$1(menu);
-  const width = menu.width;
-  if (menu.isEndSide) {
-    contentOpenedX = -width + 'px';
-    menuClosedX = width + 'px';
-  }
-  else {
-    contentOpenedX = width + 'px';
-    menuClosedX = -width + 'px';
-  }
-  const menuAnimation = createAnimation()
-    .addElement(menu.menuInnerEl)
-    .fromTo('transform', `translateX(${menuClosedX})`, 'translateX(0px)');
-  const contentAnimation = createAnimation()
-    .addElement(menu.contentEl)
-    .fromTo('transform', 'translateX(0px)', `translateX(${contentOpenedX})`);
-  const backdropAnimation = createAnimation()
-    .addElement(menu.backdropEl)
-    .fromTo('opacity', 0.01, 0.32);
-  return baseAnimation(mode === 'ios').addAnimation([menuAnimation, contentAnimation, backdropAnimation]);
-};
-
-/**
- * Menu Reveal Type
- * The content slides over to reveal the menu underneath.
- * The menu itself, which is under the content, does not move.
- */
-const menuRevealAnimation = (menu) => {
-  const mode = getIonMode$1(menu);
-  const openedX = (menu.width * (menu.isEndSide ? -1 : 1)) + 'px';
-  const contentOpen = createAnimation()
-    .addElement(menu.contentEl) // REVIEW
-    .fromTo('transform', 'translateX(0px)', `translateX(${openedX})`);
-  return baseAnimation(mode === 'ios').addAnimation(contentOpen);
-};
-
-const createMenuController = () => {
-  const menuAnimations = new Map();
-  const menus = [];
-  const open = async (menu) => {
-    const menuEl = await get(menu);
-    if (menuEl) {
-      return menuEl.open();
-    }
-    return false;
-  };
-  const close = async (menu) => {
-    const menuEl = await (menu !== undefined ? get(menu) : getOpen());
-    if (menuEl !== undefined) {
-      return menuEl.close();
-    }
-    return false;
-  };
-  const toggle = async (menu) => {
-    const menuEl = await get(menu);
-    if (menuEl) {
-      return menuEl.toggle();
-    }
-    return false;
-  };
-  const enable = async (shouldEnable, menu) => {
-    const menuEl = await get(menu);
-    if (menuEl) {
-      menuEl.disabled = !shouldEnable;
-    }
-    return menuEl;
-  };
-  const swipeGesture = async (shouldEnable, menu) => {
-    const menuEl = await get(menu);
-    if (menuEl) {
-      menuEl.swipeGesture = shouldEnable;
-    }
-    return menuEl;
-  };
-  const isOpen = async (menu) => {
-    if (menu != null) {
-      const menuEl = await get(menu);
-      return (menuEl !== undefined && menuEl.isOpen());
-    }
-    else {
-      const menuEl = await getOpen();
-      return menuEl !== undefined;
-    }
-  };
-  const isEnabled = async (menu) => {
-    const menuEl = await get(menu);
-    if (menuEl) {
-      return !menuEl.disabled;
-    }
-    return false;
-  };
-  const get = async (menu) => {
-    await waitUntilReady();
-    if (menu === 'start' || menu === 'end') {
-      // there could be more than one menu on the same side
-      // so first try to get the enabled one
-      const menuRef = find(m => m.side === menu && !m.disabled);
-      if (menuRef) {
-        return menuRef;
-      }
-      // didn't find a menu side that is enabled
-      // so try to get the first menu side found
-      return find(m => m.side === menu);
-    }
-    else if (menu != null) {
-      // the menuId was not left or right
-      // so try to get the menu by its "id"
-      return find(m => m.menuId === menu);
-    }
-    // return the first enabled menu
-    const menuEl = find(m => !m.disabled);
-    if (menuEl) {
-      return menuEl;
-    }
-    // get the first menu in the array, if one exists
-    return menus.length > 0 ? menus[0].el : undefined;
-  };
-  /**
-   * Get the instance of the opened menu. Returns `null` if a menu is not found.
-   */
-  const getOpen = async () => {
-    await waitUntilReady();
-    return _getOpenSync();
-  };
-  /**
-   * Get all menu instances.
-   */
-  const getMenus = async () => {
-    await waitUntilReady();
-    return getMenusSync();
-  };
-  /**
-   * Get whether or not a menu is animating. Returns `true` if any
-   * menu is currently animating.
-   */
-  const isAnimating = async () => {
-    await waitUntilReady();
-    return isAnimatingSync();
-  };
-  const registerAnimation = (name, animation) => {
-    menuAnimations.set(name, animation);
-  };
-  const _register = (menu) => {
-    if (menus.indexOf(menu) < 0) {
-      if (!menu.disabled) {
-        _setActiveMenu(menu);
-      }
-      menus.push(menu);
-    }
-  };
-  const _unregister = (menu) => {
-    const index = menus.indexOf(menu);
-    if (index > -1) {
-      menus.splice(index, 1);
-    }
-  };
-  const _setActiveMenu = (menu) => {
-    // if this menu should be enabled
-    // then find all the other menus on this same side
-    // and automatically disable other same side menus
-    const side = menu.side;
-    menus
-      .filter(m => m.side === side && m !== menu)
-      .forEach(m => m.disabled = true);
-  };
-  const _setOpen = async (menu, shouldOpen, animated) => {
-    if (isAnimatingSync()) {
-      return false;
-    }
-    if (shouldOpen) {
-      const openedMenu = await getOpen();
-      if (openedMenu && menu.el !== openedMenu) {
-        await openedMenu.setOpen(false, false);
-      }
-    }
-    return menu._setOpen(shouldOpen, animated);
-  };
-  const _createAnimation = (type, menuCmp) => {
-    const animationBuilder = menuAnimations.get(type);
-    if (!animationBuilder) {
-      throw new Error('animation not registered');
-    }
-    const animation = animationBuilder(menuCmp);
-    return animation;
-  };
-  const _getOpenSync = () => {
-    return find(m => m._isOpen);
-  };
-  const getMenusSync = () => {
-    return menus.map(menu => menu.el);
-  };
-  const isAnimatingSync = () => {
-    return menus.some(menu => menu.isAnimating);
-  };
-  const find = (predicate) => {
-    const instance = menus.find(predicate);
-    if (instance !== undefined) {
-      return instance.el;
-    }
-    return undefined;
-  };
-  const waitUntilReady = () => {
-    return Promise.all(Array.from(document.querySelectorAll('ion-menu'))
-      .map(menu => new Promise(resolve => componentOnReady(menu, resolve))));
-  };
-  registerAnimation('reveal', menuRevealAnimation);
-  registerAnimation('push', menuPushAnimation);
-  registerAnimation('overlay', menuOverlayAnimation);
-  /* tslint:disable-next-line */
-  if (typeof document !== 'undefined') {
-    document.addEventListener('ionBackButton', (ev) => {
-      const openMenu = _getOpenSync();
-      if (openMenu) {
-        ev.detail.register(MENU_BACK_BUTTON_PRIORITY, () => {
-          return openMenu.close();
-        });
-      }
-    });
-  }
-  return {
-    registerAnimation,
-    get,
-    getMenus,
-    getOpen,
-    isEnabled,
-    swipeGesture,
-    isAnimating,
-    isOpen,
-    enable,
-    toggle,
-    close,
-    open,
-    _getOpenSync,
-    _createAnimation,
-    _register,
-    _unregister,
-    _setOpen,
-    _setActiveMenu,
-  };
-};
-const menuController = /*@__PURE__*/ createMenuController();
-
-const filterBarCss = "fireenjin-filter-bar ion-col.mode-toggle{max-width:60px;padding-top:12px}fireenjin-filter-bar ion-col.filter-control ion-card{padding:12px;margin-top:8px;position:relative;padding-left:35px;cursor:pointer}fireenjin-filter-bar ion-col.filter-control ion-card.has-value{padding:5px 30px}fireenjin-filter-bar ion-col.filter-control .start-icon{position:absolute;top:10px;left:10px;height:20px;width:20px}fireenjin-filter-bar ion-col.filter-control .end-icon{position:absolute;top:15px;right:10px;opacity:0.33}";
-
-class FilterBar {
-  constructor(hostRef) {
-    registerInstance(this, hostRef);
-    this.modeToggle = false;
-    this.displayMode = "grid";
-    this.disableSearch = false;
-    this.selectOptions = {};
-    this.currentFilters = {};
-  }
-  onPaginationElChange() {
-    if (!this.paginationEl)
-      return;
-    this.displayMode = this.paginationEl.display ? this.paginationEl.display : this.displayMode;
-  }
-  onSuccess(event) {
-    var _a;
-    if (((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.name) !== "select")
-      return;
-    this.selectOptions[event.detail.target.name] = event.detail.data.results;
-  }
-  onReset() {
-    if (!this.filterPopoverEl)
-      return;
-    this.filterPopoverEl.dismiss();
-  }
-  async onSubmit(event) {
-    var _a, _b, _c, _d;
-    if (!this.filterPopoverEl || ((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.name) !== "filter")
-      return;
-    if (((_b = event.detail) === null || _b === void 0 ? void 0 : _b.data) && Object.keys(event.detail.data).length) {
-      for (const [i, control] of this.filter.controls.entries()) {
-        if (!control.name || !((_c = event.detail) === null || _c === void 0 ? void 0 : _c.data[control.name]))
-          continue;
-        const controlData = Object.assign(Object.assign({}, control), { value: event.detail.data[control.name] });
-        this.filter.controls[i] = controlData;
-        this.currentFilters[control.name] = controlData;
-        this.filter = Object.assign({}, this.filter);
-      }
-    }
-    this.filterPopoverEl.dismiss();
-    if (!this.paginationEl)
-      return;
-    await this.paginationEl.clearResults();
-    this.paginationEl.getResults({
-      paramData: ((_d = event === null || event === void 0 ? void 0 : event.detail) === null || _d === void 0 ? void 0 : _d.data) ? event.detail.data : {},
-    });
-  }
-  onChange(event) {
-    var _a, _b;
-    if (((_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.name) === "orderBy") {
-      this.paginationEl.orderBy = event.detail.value;
-    }
-    if (((_b = event === null || event === void 0 ? void 0 : event.target) === null || _b === void 0 ? void 0 : _b.tagName) === "ION-SEARCHBAR") {
-      this.paginationEl.query = event.detail.value ? event.detail.value : "";
-    }
-  }
-  async createFilterPopover(event) {
-    return this.filterPopoverEl = await popoverController.create({
-      component: "fireenjin-popover-filter",
-      componentProps: this.filter,
-      event: event ? event : null,
-      cssClass: "fireenjin-popover-filter-wrapper",
-    });
-  }
-  async togglePaginationDisplay() {
-    this.displayMode = this.displayMode === "grid" ? "list" : "grid";
-    this.paginationEl.display = this.displayMode;
-  }
-  async openFilterPopover(event) {
-    await this.createFilterPopover(event);
-    this.filterPopoverEl.present();
-  }
-  async clearFilter(event, clearingControl) {
-    event.preventDefault();
-    event.stopPropagation();
-    for (const [i, control] of this.filter.controls.entries()) {
-      if (!control.name ||
-        !control.value ||
-        control.name !== clearingControl.name)
-        continue;
-      this.filter.controls[i] = Object.assign(Object.assign({}, control), { value: null });
-      delete this.currentFilters[clearingControl.name];
-      this.filter = Object.assign({}, this.filter);
-      await this.paginationEl.clearParamData(control.name);
-    }
-    await this.paginationEl.clearResults();
-    await this.paginationEl.getResults(await new Promise((resolve, reject) => {
-      try {
-        const paramData = {};
-        for (const filter of Object.values(this.currentFilters)) {
-          paramData[filter.name] = filter.value;
-        }
-        console.log(paramData);
-        resolve(paramData);
-      }
-      catch (err) {
-        console.log(err);
-        reject({});
-      }
-    }));
-  }
-  async componentDidLoad() {
-    if (this.filter && Build.isBrowser) {
-      await this.createFilterPopover();
-    }
-  }
-  render() {
-    var _a, _b, _c, _d, _e, _f, _g;
-    return (hAsync(Host, null, hAsync("slot", { name: "before" }), hAsync("ion-grid", null, hAsync("ion-row", null, this.modeToggle && (hAsync("ion-col", { class: "mode-toggle" }, hAsync("ion-button", { fill: "clear", color: "primary", onClick: () => this.togglePaginationDisplay() }, hAsync("ion-icon", { slot: "icon-only", name: this.displayMode === "grid" ? "list" : "grid" })))), !this.disableSearch && hAsync("ion-col", null, hAsync("ion-searchbar", null)), ((_b = (_a = this.filter) === null || _a === void 0 ? void 0 : _a.controls) === null || _b === void 0 ? void 0 : _b.length) && (hAsync("ion-col", { class: "filter-control" }, hAsync("ion-card", { onClick: (event) => this.openFilterPopover(event), class: {
-        "has-value": this.currentFilters &&
-          Object.keys(this.currentFilters).length > 0,
-      } }, hAsync("ion-icon", { name: "funnel", class: "start-icon" }), ((_d = (_c = this.filter) === null || _c === void 0 ? void 0 : _c.controls) === null || _d === void 0 ? void 0 : _d.length)
-      ? this.filter.controls
-        .filter((control) => {
-        var _a;
-        return !!control.value &&
-          (((_a = control.options) === null || _a === void 0 ? void 0 : _a.length) ||
-            this.selectOptions[control.name]);
-      })
-        .map((control) => {
-        var _a;
-        return (hAsync("ion-chip", { outline: true, color: "primary", style: {
-            marginTop: "0",
-            marginBottom: "0",
-          } }, control.icon && hAsync("ion-icon", { name: control.icon }), hAsync("ion-label", null, ((_a = control.options) === null || _a === void 0 ? void 0 : _a.length)
-          ? control.options
-            .filter((option) => control.value.map ? control.value.includes(option.value) : option.value === control.value)
-            .map((option) => option.label).join(", ")
-          : this.selectOptions[control.name]
-            ? this.selectOptions[control.name]
-              .filter((result) => control.value.map ? control.value.includes(result.id) : result.id === control.value)
-              .map((result) => result.name).join(", ")
-            : null), hAsync("ion-icon", { name: "close-circle", onClick: (event) => this.clearFilter(event, control) })));
-      })
-      : null, ((_e = this.filter) === null || _e === void 0 ? void 0 : _e.label) &&
-      !(this.currentFilters &&
-        Object.keys(this.currentFilters).length > 0)
-      ? this.filter.label
-      : "", hAsync("ion-icon", { name: "caret-down", class: "end-icon" })))), ((_g = (_f = this.sort) === null || _f === void 0 ? void 0 : _f.options) === null || _g === void 0 ? void 0 : _g.length) && (hAsync("ion-col", null, hAsync("ion-card", null, hAsync("ion-icon", { style: {
-        height: "25px",
-        width: "25px",
-        padding: "5px 0px 0px 5px",
-      }, class: "ion-float-left", name: "swap-vertical" }), hAsync("ion-select", { name: "orderBy", value: this.sort.value, okText: "Okay", cancelText: "Dismiss", interfaceOptions: {
-        header: this.sort.header,
-        subHeader: this.sort.subHeader,
-        message: this.sort.message,
-      } }, this.sort.options.map((option) => (hAsync("ion-select-option", { value: option.value }, option.label))))))))), hAsync("slot", { name: "after" })));
-  }
-  static get watchers() { return {
-    "paginationEl": ["onPaginationElChange"]
-  }; }
-  static get style() { return filterBarCss; }
-  static get cmpMeta() { return {
-    "$flags$": 4,
-    "$tagName$": "fireenjin-filter-bar",
-    "$members$": {
-      "sort": [16],
-      "filter": [16],
-      "paginationEl": [8, "pagination-el"],
-      "modeToggle": [4, "mode-toggle"],
-      "displayMode": [1025, "display-mode"],
-      "disableSearch": [4, "disable-search"],
-      "selectOptions": [32],
-      "currentFilters": [32],
-      "createFilterPopover": [64],
-      "togglePaginationDisplay": [64],
-      "openFilterPopover": [64],
-      "clearFilter": [64]
-    },
-    "$listeners$": [[16, "fireenjinSuccess", "onSuccess"], [16, "fireenjinReset", "onReset"], [16, "fireenjinSubmit", "onSubmit"], [0, "ionChange", "onChange"]],
-    "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
-  }; }
-}
-
 const footerIosCss = "ion-footer{display:block;position:relative;order:1;width:100%;z-index:10}ion-footer ion-toolbar:last-of-type{padding-bottom:var(--ion-safe-area-bottom, 0)}.footer-ios ion-toolbar:first-of-type{--border-width:0.55px 0 0}@supports (backdrop-filter: blur(0)){.footer-background{left:0;right:0;top:0;bottom:0;position:absolute;backdrop-filter:saturate(180%) blur(20px)}.footer-translucent-ios ion-toolbar{--opacity:.8}}.footer-ios.ion-no-border ion-toolbar:first-of-type{--border-width:0}";
 
 const footerMdCss = "ion-footer{display:block;position:relative;order:1;width:100%;z-index:10}ion-footer ion-toolbar:last-of-type{padding-bottom:var(--ion-safe-area-bottom, 0)}.footer-md::before{left:0;top:-2px;bottom:auto;background-position:left 0 top 0;position:absolute;width:100%;height:2px;background-image:url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==\");background-repeat:repeat-x;content:\"\"}[dir=rtl] .footer-md::before,:host-context([dir=rtl]) .footer-md::before{left:unset;right:unset;right:0}[dir=rtl] .footer-md::before,:host-context([dir=rtl]) .footer-md::before{background-position:right 0 top 0}.footer-md.ion-no-border::before{display:none}";
@@ -34953,6 +33632,39 @@ class Header {
   }; }
 }
 
+const getName = (iconName, icon, mode, ios, md) => {
+  // default to "md" if somehow the mode wasn't set
+  mode = (mode && toLower(mode)) === 'ios' ? 'ios' : 'md';
+  // if an icon was passed in using the ios or md attributes
+  // set the iconName to whatever was passed in
+  if (ios && mode === 'ios') {
+    iconName = toLower(ios);
+  }
+  else if (md && mode === 'md') {
+    iconName = toLower(md);
+  }
+  else {
+    if (!iconName && icon && !isSrc(icon)) {
+      iconName = icon;
+    }
+    if (isStr(iconName)) {
+      iconName = toLower(iconName);
+    }
+  }
+  if (!isStr(iconName) || iconName.trim() === '') {
+    return null;
+  }
+  // only allow alpha characters and dash
+  const invalidChars = iconName.replace(/[a-z]|-|\d/gi, '');
+  if (invalidChars !== '') {
+    return null;
+  }
+  return iconName;
+};
+const isSrc = (str) => str.length > 0 && /(\/|\.)/.test(str);
+const isStr = (val) => typeof val === 'string';
+const toLower = (val) => val.toLowerCase();
+
 const iconCss = "/*!@:host*/.sc-ion-icon-h{display:inline-block;width:1em;height:1em;contain:strict;fill:currentColor;box-sizing:content-box !important}/*!@:host .ionicon*/.sc-ion-icon-h .ionicon.sc-ion-icon{stroke:currentColor}/*!@.ionicon-fill-none*/.ionicon-fill-none.sc-ion-icon{fill:none}/*!@.ionicon-stroke-width*/.ionicon-stroke-width.sc-ion-icon{stroke-width:32px;stroke-width:var(--ionicon-stroke-width, 32px)}/*!@.icon-inner,\n.ionicon,\nsvg*/.icon-inner.sc-ion-icon,.ionicon.sc-ion-icon,svg.sc-ion-icon{display:block;height:100%;width:100%}/*!@:host(.flip-rtl) .icon-inner*/.flip-rtl.sc-ion-icon-h .icon-inner.sc-ion-icon{transform:scaleX(-1)}/*!@:host(.icon-small)*/.icon-small.sc-ion-icon-h{font-size:18px !important}/*!@:host(.icon-large)*/.icon-large.sc-ion-icon-h{font-size:32px !important}/*!@:host(.ion-color)*/.ion-color.sc-ion-icon-h{color:var(--ion-color-base) !important}/*!@:host(.ion-color-primary)*/.ion-color-primary.sc-ion-icon-h{--ion-color-base:var(--ion-color-primary, #3880ff)}/*!@:host(.ion-color-secondary)*/.ion-color-secondary.sc-ion-icon-h{--ion-color-base:var(--ion-color-secondary, #0cd1e8)}/*!@:host(.ion-color-tertiary)*/.ion-color-tertiary.sc-ion-icon-h{--ion-color-base:var(--ion-color-tertiary, #f4a942)}/*!@:host(.ion-color-success)*/.ion-color-success.sc-ion-icon-h{--ion-color-base:var(--ion-color-success, #10dc60)}/*!@:host(.ion-color-warning)*/.ion-color-warning.sc-ion-icon-h{--ion-color-base:var(--ion-color-warning, #ffce00)}/*!@:host(.ion-color-danger)*/.ion-color-danger.sc-ion-icon-h{--ion-color-base:var(--ion-color-danger, #f14141)}/*!@:host(.ion-color-light)*/.ion-color-light.sc-ion-icon-h{--ion-color-base:var(--ion-color-light, #f4f5f8)}/*!@:host(.ion-color-medium)*/.ion-color-medium.sc-ion-icon-h{--ion-color-base:var(--ion-color-medium, #989aa2)}/*!@:host(.ion-color-dark)*/.ion-color-dark.sc-ion-icon-h{--ion-color-base:var(--ion-color-dark, #222428)}";
 
 class Icon {
@@ -38181,6 +36893,1117 @@ _defaults(exports, _interopExportWildcard(Debounce$1, _defaults));
 });
 
 var Debounce = /*@__PURE__*/getDefaultExportFromCjs(dist);
+
+const LIFECYCLE_WILL_ENTER = 'ionViewWillEnter';
+const LIFECYCLE_DID_ENTER = 'ionViewDidEnter';
+const LIFECYCLE_WILL_LEAVE = 'ionViewWillLeave';
+const LIFECYCLE_DID_LEAVE = 'ionViewDidLeave';
+const LIFECYCLE_WILL_UNLOAD = 'ionViewWillUnload';
+
+const iosTransitionAnimation$1 = () => Promise.resolve().then(function () { return ios_transition; });
+const mdTransitionAnimation$1 = () => Promise.resolve().then(function () { return md_transition; });
+const transition$2 = (opts) => {
+  return new Promise((resolve, reject) => {
+    writeTask(() => {
+      beforeTransition(opts);
+      runTransition(opts).then(result => {
+        if (result.animation) {
+          result.animation.destroy();
+        }
+        afterTransition(opts);
+        resolve(result);
+      }, error => {
+        afterTransition(opts);
+        reject(error);
+      });
+    });
+  });
+};
+const beforeTransition = (opts) => {
+  const enteringEl = opts.enteringEl;
+  const leavingEl = opts.leavingEl;
+  setZIndex(enteringEl, leavingEl, opts.direction);
+  if (opts.showGoBack) {
+    enteringEl.classList.add('can-go-back');
+  }
+  else {
+    enteringEl.classList.remove('can-go-back');
+  }
+  setPageHidden(enteringEl, false);
+  /**
+   * When transitioning, the page should not
+   * respond to click events. This resolves small
+   * issues like users double tapping the ion-back-button.
+   * These pointer events are removed in `afterTransition`.
+   */
+  enteringEl.style.setProperty('pointer-events', 'none');
+  if (leavingEl) {
+    setPageHidden(leavingEl, false);
+    leavingEl.style.setProperty('pointer-events', 'none');
+  }
+};
+const runTransition = async (opts) => {
+  const animationBuilder = await getAnimationBuilder(opts);
+  const ani = (animationBuilder && Build.isBrowser)
+    ? animation(animationBuilder, opts)
+    : noAnimation(opts); // fast path for no animation
+  return ani;
+};
+const afterTransition = (opts) => {
+  const enteringEl = opts.enteringEl;
+  const leavingEl = opts.leavingEl;
+  enteringEl.classList.remove('ion-page-invisible');
+  enteringEl.style.removeProperty('pointer-events');
+  if (leavingEl !== undefined) {
+    leavingEl.classList.remove('ion-page-invisible');
+    leavingEl.style.removeProperty('pointer-events');
+  }
+};
+const getAnimationBuilder = async (opts) => {
+  if (!opts.leavingEl || !opts.animated || opts.duration === 0) {
+    return undefined;
+  }
+  if (opts.animationBuilder) {
+    return opts.animationBuilder;
+  }
+  const getAnimation = (opts.mode === 'ios')
+    ? (await iosTransitionAnimation$1()).iosTransitionAnimation
+    : (await mdTransitionAnimation$1()).mdTransitionAnimation;
+  return getAnimation;
+};
+const animation = async (animationBuilder, opts) => {
+  await waitForReady(opts, true);
+  const trans = animationBuilder(opts.baseEl, opts);
+  fireWillEvents(opts.enteringEl, opts.leavingEl);
+  const didComplete = await playTransition(trans, opts);
+  if (opts.progressCallback) {
+    opts.progressCallback(undefined);
+  }
+  if (didComplete) {
+    fireDidEvents(opts.enteringEl, opts.leavingEl);
+  }
+  return {
+    hasCompleted: didComplete,
+    animation: trans
+  };
+};
+const noAnimation = async (opts) => {
+  const enteringEl = opts.enteringEl;
+  const leavingEl = opts.leavingEl;
+  await waitForReady(opts, false);
+  fireWillEvents(enteringEl, leavingEl);
+  fireDidEvents(enteringEl, leavingEl);
+  return {
+    hasCompleted: true
+  };
+};
+const waitForReady = async (opts, defaultDeep) => {
+  const deep = opts.deepWait !== undefined ? opts.deepWait : defaultDeep;
+  const promises = deep ? [
+    deepReady(opts.enteringEl),
+    deepReady(opts.leavingEl),
+  ] : [
+    shallowReady(opts.enteringEl),
+    shallowReady(opts.leavingEl),
+  ];
+  await Promise.all(promises);
+  await notifyViewReady(opts.viewIsReady, opts.enteringEl);
+};
+const notifyViewReady = async (viewIsReady, enteringEl) => {
+  if (viewIsReady) {
+    await viewIsReady(enteringEl);
+  }
+};
+const playTransition = (trans, opts) => {
+  const progressCallback = opts.progressCallback;
+  const promise = new Promise(resolve => {
+    trans.onFinish((currentStep) => resolve(currentStep === 1));
+  });
+  // cool, let's do this, start the transition
+  if (progressCallback) {
+    // this is a swipe to go back, just get the transition progress ready
+    // kick off the swipe animation start
+    trans.progressStart(true);
+    progressCallback(trans);
+  }
+  else {
+    // only the top level transition should actually start "play"
+    // kick it off and let it play through
+    // ******** DOM WRITE ****************
+    trans.play();
+  }
+  // create a callback for when the animation is done
+  return promise;
+};
+const fireWillEvents = (enteringEl, leavingEl) => {
+  lifecycle(leavingEl, LIFECYCLE_WILL_LEAVE);
+  lifecycle(enteringEl, LIFECYCLE_WILL_ENTER);
+};
+const fireDidEvents = (enteringEl, leavingEl) => {
+  lifecycle(enteringEl, LIFECYCLE_DID_ENTER);
+  lifecycle(leavingEl, LIFECYCLE_DID_LEAVE);
+};
+const lifecycle = (el, eventName) => {
+  if (el) {
+    const ev = new CustomEvent(eventName, {
+      bubbles: false,
+      cancelable: false,
+    });
+    el.dispatchEvent(ev);
+  }
+};
+const shallowReady = (el) => {
+  if (el) {
+    return new Promise(resolve => componentOnReady(el, resolve));
+  }
+  return Promise.resolve();
+};
+const deepReady = async (el) => {
+  const element = el;
+  if (element) {
+    if (element.componentOnReady != null) {
+      const stencilEl = await element.componentOnReady();
+      if (stencilEl != null) {
+        return;
+      }
+    }
+    await Promise.all(Array.from(element.children).map(deepReady));
+  }
+};
+const setPageHidden = (el, hidden) => {
+  if (hidden) {
+    el.setAttribute('aria-hidden', 'true');
+    el.classList.add('ion-page-hidden');
+  }
+  else {
+    el.hidden = false;
+    el.removeAttribute('aria-hidden');
+    el.classList.remove('ion-page-hidden');
+  }
+};
+const setZIndex = (enteringEl, leavingEl, direction) => {
+  if (enteringEl !== undefined) {
+    enteringEl.style.zIndex = (direction === 'back')
+      ? '99'
+      : '101';
+  }
+  if (leavingEl !== undefined) {
+    leavingEl.style.zIndex = '100';
+  }
+};
+const getIonPageElement = (element) => {
+  if (element.classList.contains('ion-page')) {
+    return element;
+  }
+  const ionPage = element.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs');
+  if (ionPage) {
+    return ionPage;
+  }
+  // idk, return the original element so at least something animates and we don't have a null pointer
+  return element;
+};
+
+const DURATION = 540;
+const getClonedElement = (tagName) => {
+  return document.querySelector(`${tagName}.ion-cloned-element`);
+};
+const shadow = (el) => {
+  return el.shadowRoot || el;
+};
+const getLargeTitle = (refEl) => {
+  const tabs = (refEl.tagName === 'ION-TABS') ? refEl : refEl.querySelector('ion-tabs');
+  const query = 'ion-content ion-header:not(.header-collapse-condense-inactive) ion-title.title-large';
+  if (tabs != null) {
+    const activeTab = tabs.querySelector('ion-tab:not(.tab-hidden), .ion-page:not(.ion-page-hidden)');
+    return (activeTab != null) ? activeTab.querySelector(query) : null;
+  }
+  return refEl.querySelector(query);
+};
+const getBackButton = (refEl, backDirection) => {
+  const tabs = (refEl.tagName === 'ION-TABS') ? refEl : refEl.querySelector('ion-tabs');
+  let buttonsList = [];
+  if (tabs != null) {
+    const activeTab = tabs.querySelector('ion-tab:not(.tab-hidden), .ion-page:not(.ion-page-hidden)');
+    if (activeTab != null) {
+      buttonsList = activeTab.querySelectorAll('ion-buttons');
+    }
+  }
+  else {
+    buttonsList = refEl.querySelectorAll('ion-buttons');
+  }
+  for (const buttons of buttonsList) {
+    const parentHeader = buttons.closest('ion-header');
+    const activeHeader = parentHeader && !parentHeader.classList.contains('header-collapse-condense-inactive');
+    const backButton = buttons.querySelector('ion-back-button');
+    const buttonsCollapse = buttons.classList.contains('buttons-collapse');
+    const startSlot = buttons.slot === 'start' || buttons.slot === '';
+    if (backButton !== null && startSlot && ((buttonsCollapse && activeHeader && backDirection) || !buttonsCollapse)) {
+      return backButton;
+    }
+  }
+  return null;
+};
+const createLargeTitleTransition = (rootAnimation, rtl, backDirection, enteringEl, leavingEl) => {
+  const enteringBackButton = getBackButton(enteringEl, backDirection);
+  const leavingLargeTitle = getLargeTitle(leavingEl);
+  const enteringLargeTitle = getLargeTitle(enteringEl);
+  const leavingBackButton = getBackButton(leavingEl, backDirection);
+  const shouldAnimationForward = enteringBackButton !== null && leavingLargeTitle !== null && !backDirection;
+  const shouldAnimationBackward = enteringLargeTitle !== null && leavingBackButton !== null && backDirection;
+  if (shouldAnimationForward) {
+    const leavingLargeTitleBox = leavingLargeTitle.getBoundingClientRect();
+    const enteringBackButtonBox = enteringBackButton.getBoundingClientRect();
+    animateLargeTitle(rootAnimation, rtl, backDirection, leavingLargeTitle, leavingLargeTitleBox, enteringBackButtonBox);
+    animateBackButton(rootAnimation, rtl, backDirection, enteringBackButton, leavingLargeTitleBox, enteringBackButtonBox);
+  }
+  else if (shouldAnimationBackward) {
+    const enteringLargeTitleBox = enteringLargeTitle.getBoundingClientRect();
+    const leavingBackButtonBox = leavingBackButton.getBoundingClientRect();
+    animateLargeTitle(rootAnimation, rtl, backDirection, enteringLargeTitle, enteringLargeTitleBox, leavingBackButtonBox);
+    animateBackButton(rootAnimation, rtl, backDirection, leavingBackButton, enteringLargeTitleBox, leavingBackButtonBox);
+  }
+  return {
+    forward: shouldAnimationForward,
+    backward: shouldAnimationBackward
+  };
+};
+const animateBackButton = (rootAnimation, rtl, backDirection, backButtonEl, largeTitleBox, backButtonBox) => {
+  const BACK_BUTTON_START_OFFSET = (rtl) ? `calc(100% - ${backButtonBox.right + 4}px)` : `${backButtonBox.left - 4}px`;
+  const START_TEXT_TRANSLATE = (rtl) ? '7px' : '-7px';
+  const END_TEXT_TRANSLATE = (rtl) ? '-4px' : '4px';
+  const ICON_TRANSLATE = (rtl) ? '-4px' : '4px';
+  const TEXT_ORIGIN_X = (rtl) ? 'right' : 'left';
+  const ICON_ORIGIN_X = (rtl) ? 'left' : 'right';
+  const FORWARD_TEXT_KEYFRAMES = [
+    { offset: 0, opacity: 0, transform: `translate3d(${START_TEXT_TRANSLATE}, ${largeTitleBox.top - 40}px, 0) scale(2.1)` },
+    { offset: 1, opacity: 1, transform: `translate3d(${END_TEXT_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` }
+  ];
+  const BACKWARD_TEXT_KEYFRAMES = [
+    { offset: 0, opacity: 1, transform: `translate3d(${END_TEXT_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` },
+    { offset: 0.6, opacity: 0 },
+    { offset: 1, opacity: 0, transform: `translate3d(${START_TEXT_TRANSLATE}, ${largeTitleBox.top - 40}px, 0) scale(2.1)` }
+  ];
+  const TEXT_KEYFRAMES = (backDirection) ? BACKWARD_TEXT_KEYFRAMES : FORWARD_TEXT_KEYFRAMES;
+  const FORWARD_ICON_KEYFRAMES = [
+    { offset: 0, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` },
+    { offset: 1, opacity: 1, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` }
+  ];
+  const BACKWARD_ICON_KEYFRAMES = [
+    { offset: 0, opacity: 1, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 46}px, 0) scale(1)` },
+    { offset: 0.2, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` },
+    { offset: 1, opacity: 0, transform: `translate3d(${ICON_TRANSLATE}, ${backButtonBox.top - 41}px, 0) scale(0.6)` }
+  ];
+  const ICON_KEYFRAMES = (backDirection) ? BACKWARD_ICON_KEYFRAMES : FORWARD_ICON_KEYFRAMES;
+  const enteringBackButtonTextAnimation = createAnimation();
+  const enteringBackButtonIconAnimation = createAnimation();
+  const clonedBackButtonEl = getClonedElement('ion-back-button');
+  const backButtonTextEl = shadow(clonedBackButtonEl).querySelector('.button-text');
+  const backButtonIconEl = shadow(clonedBackButtonEl).querySelector('ion-icon');
+  clonedBackButtonEl.text = backButtonEl.text;
+  clonedBackButtonEl.mode = backButtonEl.mode;
+  clonedBackButtonEl.icon = backButtonEl.icon;
+  clonedBackButtonEl.color = backButtonEl.color;
+  clonedBackButtonEl.disabled = backButtonEl.disabled;
+  clonedBackButtonEl.style.setProperty('display', 'block');
+  clonedBackButtonEl.style.setProperty('position', 'fixed');
+  enteringBackButtonIconAnimation.addElement(backButtonIconEl);
+  enteringBackButtonTextAnimation.addElement(backButtonTextEl);
+  enteringBackButtonTextAnimation
+    .beforeStyles({
+    'transform-origin': `${TEXT_ORIGIN_X} center`
+  })
+    .beforeAddWrite(() => {
+    backButtonEl.style.setProperty('display', 'none');
+    clonedBackButtonEl.style.setProperty(TEXT_ORIGIN_X, BACK_BUTTON_START_OFFSET);
+  })
+    .afterAddWrite(() => {
+    backButtonEl.style.setProperty('display', '');
+    clonedBackButtonEl.style.setProperty('display', 'none');
+    clonedBackButtonEl.style.removeProperty(TEXT_ORIGIN_X);
+  })
+    .keyframes(TEXT_KEYFRAMES);
+  enteringBackButtonIconAnimation
+    .beforeStyles({
+    'transform-origin': `${ICON_ORIGIN_X} center`
+  })
+    .keyframes(ICON_KEYFRAMES);
+  rootAnimation.addAnimation([enteringBackButtonTextAnimation, enteringBackButtonIconAnimation]);
+};
+const animateLargeTitle = (rootAnimation, rtl, backDirection, largeTitleEl, largeTitleBox, backButtonBox) => {
+  const TITLE_START_OFFSET = (rtl) ? `calc(100% - ${largeTitleBox.right}px)` : `${largeTitleBox.left}px`;
+  const START_TRANSLATE = (rtl) ? '-18px' : '18px';
+  const ORIGIN_X = (rtl) ? 'right' : 'left';
+  const BACKWARDS_KEYFRAMES = [
+    { offset: 0, opacity: 0, transform: `translate3d(${START_TRANSLATE}, ${backButtonBox.top - 4}px, 0) scale(0.49)` },
+    { offset: 0.1, opacity: 0 },
+    { offset: 1, opacity: 1, transform: `translate3d(0, ${largeTitleBox.top - 2}px, 0) scale(1)` }
+  ];
+  const FORWARDS_KEYFRAMES = [
+    { offset: 0, opacity: 0.99, transform: `translate3d(0, ${largeTitleBox.top - 2}px, 0) scale(1)` },
+    { offset: 0.6, opacity: 0 },
+    { offset: 1, opacity: 0, transform: `translate3d(${START_TRANSLATE}, ${backButtonBox.top - 4}px, 0) scale(0.5)` }
+  ];
+  const KEYFRAMES = (backDirection) ? BACKWARDS_KEYFRAMES : FORWARDS_KEYFRAMES;
+  const clonedTitleEl = getClonedElement('ion-title');
+  const clonedLargeTitleAnimation = createAnimation();
+  clonedTitleEl.innerText = largeTitleEl.innerText;
+  clonedTitleEl.size = largeTitleEl.size;
+  clonedTitleEl.color = largeTitleEl.color;
+  clonedLargeTitleAnimation.addElement(clonedTitleEl);
+  clonedLargeTitleAnimation
+    .beforeStyles({
+    'transform-origin': `${ORIGIN_X} center`,
+    'height': '46px',
+    'display': '',
+    'position': 'relative',
+    [ORIGIN_X]: TITLE_START_OFFSET
+  })
+    .beforeAddWrite(() => {
+    largeTitleEl.style.setProperty('display', 'none');
+  })
+    .afterAddWrite(() => {
+    largeTitleEl.style.setProperty('display', '');
+    clonedTitleEl.style.setProperty('display', 'none');
+  })
+    .keyframes(KEYFRAMES);
+  rootAnimation.addAnimation(clonedLargeTitleAnimation);
+};
+const iosTransitionAnimation = (navEl, opts) => {
+  try {
+    const EASING = 'cubic-bezier(0.32,0.72,0,1)';
+    const OPACITY = 'opacity';
+    const TRANSFORM = 'transform';
+    const CENTER = '0%';
+    const OFF_OPACITY = 0.8;
+    const isRTL = navEl.ownerDocument.dir === 'rtl';
+    const OFF_RIGHT = isRTL ? '-99.5%' : '99.5%';
+    const OFF_LEFT = isRTL ? '33%' : '-33%';
+    const enteringEl = opts.enteringEl;
+    const leavingEl = opts.leavingEl;
+    const backDirection = (opts.direction === 'back');
+    const contentEl = enteringEl.querySelector(':scope > ion-content');
+    const headerEls = enteringEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
+    const enteringToolBarEls = enteringEl.querySelectorAll(':scope > ion-header > ion-toolbar');
+    const rootAnimation = createAnimation();
+    const enteringContentAnimation = createAnimation();
+    rootAnimation
+      .addElement(enteringEl)
+      .duration(opts.duration || DURATION)
+      .easing(opts.easing || EASING)
+      .fill('both')
+      .beforeRemoveClass('ion-page-invisible');
+    if (leavingEl && navEl) {
+      const navDecorAnimation = createAnimation();
+      navDecorAnimation.addElement(navEl);
+      rootAnimation.addAnimation(navDecorAnimation);
+    }
+    if (!contentEl && enteringToolBarEls.length === 0 && headerEls.length === 0) {
+      enteringContentAnimation.addElement(enteringEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')); // REVIEW
+    }
+    else {
+      enteringContentAnimation.addElement(contentEl); // REVIEW
+      enteringContentAnimation.addElement(headerEls);
+    }
+    rootAnimation.addAnimation(enteringContentAnimation);
+    if (backDirection) {
+      enteringContentAnimation
+        .beforeClearStyles([OPACITY])
+        .fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`)
+        .fromTo(OPACITY, OFF_OPACITY, 1);
+    }
+    else {
+      // entering content, forward direction
+      enteringContentAnimation
+        .beforeClearStyles([OPACITY])
+        .fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
+    }
+    if (contentEl) {
+      const enteringTransitionEffectEl = shadow(contentEl).querySelector('.transition-effect');
+      if (enteringTransitionEffectEl) {
+        const enteringTransitionCoverEl = enteringTransitionEffectEl.querySelector('.transition-cover');
+        const enteringTransitionShadowEl = enteringTransitionEffectEl.querySelector('.transition-shadow');
+        const enteringTransitionEffect = createAnimation();
+        const enteringTransitionCover = createAnimation();
+        const enteringTransitionShadow = createAnimation();
+        enteringTransitionEffect
+          .addElement(enteringTransitionEffectEl)
+          .beforeStyles({ opacity: '1', display: 'block' })
+          .afterStyles({ opacity: '', display: '' });
+        enteringTransitionCover
+          .addElement(enteringTransitionCoverEl) // REVIEW
+          .beforeClearStyles([OPACITY])
+          .fromTo(OPACITY, 0, 0.1);
+        enteringTransitionShadow
+          .addElement(enteringTransitionShadowEl) // REVIEW
+          .beforeClearStyles([OPACITY])
+          .fromTo(OPACITY, 0.03, 0.70);
+        enteringTransitionEffect.addAnimation([enteringTransitionCover, enteringTransitionShadow]);
+        enteringContentAnimation.addAnimation([enteringTransitionEffect]);
+      }
+    }
+    const enteringContentHasLargeTitle = enteringEl.querySelector('ion-header.header-collapse-condense');
+    const { forward, backward } = createLargeTitleTransition(rootAnimation, isRTL, backDirection, enteringEl, leavingEl);
+    enteringToolBarEls.forEach(enteringToolBarEl => {
+      const enteringToolBar = createAnimation();
+      enteringToolBar.addElement(enteringToolBarEl);
+      rootAnimation.addAnimation(enteringToolBar);
+      const enteringTitle = createAnimation();
+      enteringTitle.addElement(enteringToolBarEl.querySelector('ion-title')); // REVIEW
+      const enteringToolBarButtons = createAnimation();
+      const buttons = Array.from(enteringToolBarEl.querySelectorAll('ion-buttons,[menuToggle]'));
+      const parentHeader = enteringToolBarEl.closest('ion-header');
+      const inactiveHeader = parentHeader && parentHeader.classList.contains('header-collapse-condense-inactive');
+      let buttonsToAnimate;
+      if (backDirection) {
+        buttonsToAnimate = buttons.filter(button => {
+          const isCollapseButton = button.classList.contains('buttons-collapse');
+          return (isCollapseButton && !inactiveHeader) || !isCollapseButton;
+        });
+      }
+      else {
+        buttonsToAnimate = buttons.filter(button => !button.classList.contains('buttons-collapse'));
+      }
+      enteringToolBarButtons.addElement(buttonsToAnimate);
+      const enteringToolBarItems = createAnimation();
+      enteringToolBarItems.addElement(enteringToolBarEl.querySelectorAll(':scope > *:not(ion-title):not(ion-buttons):not([menuToggle])'));
+      const enteringToolBarBg = createAnimation();
+      enteringToolBarBg.addElement(shadow(enteringToolBarEl).querySelector('.toolbar-background')); // REVIEW
+      const enteringBackButton = createAnimation();
+      const backButtonEl = enteringToolBarEl.querySelector('ion-back-button');
+      if (backButtonEl) {
+        enteringBackButton.addElement(backButtonEl);
+      }
+      enteringToolBar.addAnimation([enteringTitle, enteringToolBarButtons, enteringToolBarItems, enteringToolBarBg, enteringBackButton]);
+      enteringToolBarButtons.fromTo(OPACITY, 0.01, 1);
+      enteringToolBarItems.fromTo(OPACITY, 0.01, 1);
+      if (backDirection) {
+        if (!inactiveHeader) {
+          enteringTitle
+            .fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`)
+            .fromTo(OPACITY, 0.01, 1);
+        }
+        enteringToolBarItems.fromTo('transform', `translateX(${OFF_LEFT})`, `translateX(${CENTER})`);
+        // back direction, entering page has a back button
+        enteringBackButton.fromTo(OPACITY, 0.01, 1);
+      }
+      else {
+        // entering toolbar, forward direction
+        if (!enteringContentHasLargeTitle) {
+          enteringTitle
+            .fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`)
+            .fromTo(OPACITY, 0.01, 1);
+        }
+        enteringToolBarItems.fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
+        enteringToolBarBg.beforeClearStyles([OPACITY, 'transform']);
+        const translucentHeader = parentHeader === null || parentHeader === void 0 ? void 0 : parentHeader.translucent;
+        if (!translucentHeader) {
+          enteringToolBarBg.fromTo(OPACITY, 0.01, 'var(--opacity)');
+        }
+        else {
+          enteringToolBarBg.fromTo('transform', (isRTL ? 'translateX(-100%)' : 'translateX(100%)'), 'translateX(0px)');
+        }
+        // forward direction, entering page has a back button
+        if (!forward) {
+          enteringBackButton.fromTo(OPACITY, 0.01, 1);
+        }
+        if (backButtonEl && !forward) {
+          const enteringBackBtnText = createAnimation();
+          enteringBackBtnText
+            .addElement(shadow(backButtonEl).querySelector('.button-text')) // REVIEW
+            .fromTo(`transform`, (isRTL ? 'translateX(-100px)' : 'translateX(100px)'), 'translateX(0px)');
+          enteringToolBar.addAnimation(enteringBackBtnText);
+        }
+      }
+    });
+    // setup leaving view
+    if (leavingEl) {
+      const leavingContent = createAnimation();
+      const leavingContentEl = leavingEl.querySelector(':scope > ion-content');
+      const leavingToolBarEls = leavingEl.querySelectorAll(':scope > ion-header > ion-toolbar');
+      const leavingHeaderEls = leavingEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
+      if (!leavingContentEl && leavingToolBarEls.length === 0 && leavingHeaderEls.length === 0) {
+        leavingContent.addElement(leavingEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')); // REVIEW
+      }
+      else {
+        leavingContent.addElement(leavingContentEl); // REVIEW
+        leavingContent.addElement(leavingHeaderEls);
+      }
+      rootAnimation.addAnimation(leavingContent);
+      if (backDirection) {
+        // leaving content, back direction
+        leavingContent
+          .beforeClearStyles([OPACITY])
+          .fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
+        const leavingPage = getIonPageElement(leavingEl);
+        rootAnimation.afterAddWrite(() => {
+          if (rootAnimation.getDirection() === 'normal') {
+            leavingPage.style.setProperty('display', 'none');
+          }
+        });
+      }
+      else {
+        // leaving content, forward direction
+        leavingContent
+          .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
+          .fromTo(OPACITY, 1, OFF_OPACITY);
+      }
+      if (leavingContentEl) {
+        const leavingTransitionEffectEl = shadow(leavingContentEl).querySelector('.transition-effect');
+        if (leavingTransitionEffectEl) {
+          const leavingTransitionCoverEl = leavingTransitionEffectEl.querySelector('.transition-cover');
+          const leavingTransitionShadowEl = leavingTransitionEffectEl.querySelector('.transition-shadow');
+          const leavingTransitionEffect = createAnimation();
+          const leavingTransitionCover = createAnimation();
+          const leavingTransitionShadow = createAnimation();
+          leavingTransitionEffect
+            .addElement(leavingTransitionEffectEl)
+            .beforeStyles({ opacity: '1', display: 'block' })
+            .afterStyles({ opacity: '', display: '' });
+          leavingTransitionCover
+            .addElement(leavingTransitionCoverEl) // REVIEW
+            .beforeClearStyles([OPACITY])
+            .fromTo(OPACITY, 0.1, 0);
+          leavingTransitionShadow
+            .addElement(leavingTransitionShadowEl) // REVIEW
+            .beforeClearStyles([OPACITY])
+            .fromTo(OPACITY, 0.70, 0.03);
+          leavingTransitionEffect.addAnimation([leavingTransitionCover, leavingTransitionShadow]);
+          leavingContent.addAnimation([leavingTransitionEffect]);
+        }
+      }
+      leavingToolBarEls.forEach(leavingToolBarEl => {
+        const leavingToolBar = createAnimation();
+        leavingToolBar.addElement(leavingToolBarEl);
+        const leavingTitle = createAnimation();
+        leavingTitle.addElement(leavingToolBarEl.querySelector('ion-title')); // REVIEW
+        const leavingToolBarButtons = createAnimation();
+        const buttons = leavingToolBarEl.querySelectorAll('ion-buttons,[menuToggle]');
+        const parentHeader = leavingToolBarEl.closest('ion-header');
+        const inactiveHeader = parentHeader && parentHeader.classList.contains('header-collapse-condense-inactive');
+        const buttonsToAnimate = Array.from(buttons).filter(button => {
+          const isCollapseButton = button.classList.contains('buttons-collapse');
+          return (isCollapseButton && !inactiveHeader) || !isCollapseButton;
+        });
+        leavingToolBarButtons.addElement(buttonsToAnimate);
+        const leavingToolBarItems = createAnimation();
+        const leavingToolBarItemEls = leavingToolBarEl.querySelectorAll(':scope > *:not(ion-title):not(ion-buttons):not([menuToggle])');
+        if (leavingToolBarItemEls.length > 0) {
+          leavingToolBarItems.addElement(leavingToolBarItemEls);
+        }
+        const leavingToolBarBg = createAnimation();
+        leavingToolBarBg.addElement(shadow(leavingToolBarEl).querySelector('.toolbar-background')); // REVIEW
+        const leavingBackButton = createAnimation();
+        const backButtonEl = leavingToolBarEl.querySelector('ion-back-button');
+        if (backButtonEl) {
+          leavingBackButton.addElement(backButtonEl);
+        }
+        leavingToolBar.addAnimation([leavingTitle, leavingToolBarButtons, leavingToolBarItems, leavingBackButton, leavingToolBarBg]);
+        rootAnimation.addAnimation(leavingToolBar);
+        // fade out leaving toolbar items
+        leavingBackButton.fromTo(OPACITY, 0.99, 0);
+        leavingToolBarButtons.fromTo(OPACITY, 0.99, 0);
+        leavingToolBarItems.fromTo(OPACITY, 0.99, 0);
+        if (backDirection) {
+          if (!inactiveHeader) {
+            // leaving toolbar, back direction
+            leavingTitle
+              .fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'))
+              .fromTo(OPACITY, 0.99, 0);
+          }
+          leavingToolBarItems.fromTo('transform', `translateX(${CENTER})`, (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
+          leavingToolBarBg.beforeClearStyles([OPACITY, 'transform']);
+          // leaving toolbar, back direction, and there's no entering toolbar
+          // should just slide out, no fading out
+          const translucentHeader = parentHeader === null || parentHeader === void 0 ? void 0 : parentHeader.translucent;
+          if (!translucentHeader) {
+            leavingToolBarBg.fromTo(OPACITY, 'var(--opacity)', 0);
+          }
+          else {
+            leavingToolBarBg.fromTo('transform', 'translateX(0px)', (isRTL ? 'translateX(-100%)' : 'translateX(100%)'));
+          }
+          if (backButtonEl && !backward) {
+            const leavingBackBtnText = createAnimation();
+            leavingBackBtnText
+              .addElement(shadow(backButtonEl).querySelector('.button-text')) // REVIEW
+              .fromTo('transform', `translateX(${CENTER})`, `translateX(${(isRTL ? -124 : 124) + 'px'})`);
+            leavingToolBar.addAnimation(leavingBackBtnText);
+          }
+        }
+        else {
+          // leaving toolbar, forward direction
+          if (!inactiveHeader) {
+            leavingTitle
+              .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
+              .fromTo(OPACITY, 0.99, 0)
+              .afterClearStyles([TRANSFORM, OPACITY]);
+          }
+          leavingToolBarItems
+            .fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`)
+            .afterClearStyles([TRANSFORM, OPACITY]);
+          leavingBackButton.afterClearStyles([OPACITY]);
+          leavingTitle.afterClearStyles([OPACITY]);
+          leavingToolBarButtons.afterClearStyles([OPACITY]);
+        }
+      });
+    }
+    return rootAnimation;
+  }
+  catch (err) {
+    throw err;
+  }
+};
+
+var ios_transition = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  shadow: shadow,
+  iosTransitionAnimation: iosTransitionAnimation
+});
+
+const mdTransitionAnimation = (_, opts) => {
+  const OFF_BOTTOM = '40px';
+  const CENTER = '0px';
+  const backDirection = (opts.direction === 'back');
+  const enteringEl = opts.enteringEl;
+  const leavingEl = opts.leavingEl;
+  const ionPageElement = getIonPageElement(enteringEl);
+  const enteringToolbarEle = ionPageElement.querySelector('ion-toolbar');
+  const rootTransition = createAnimation();
+  rootTransition
+    .addElement(ionPageElement)
+    .fill('both')
+    .beforeRemoveClass('ion-page-invisible');
+  // animate the component itself
+  if (backDirection) {
+    rootTransition
+      .duration(opts.duration || 200)
+      .easing('cubic-bezier(0.47,0,0.745,0.715)');
+  }
+  else {
+    rootTransition
+      .duration(opts.duration || 280)
+      .easing('cubic-bezier(0.36,0.66,0.04,1)')
+      .fromTo('transform', `translateY(${OFF_BOTTOM})`, `translateY(${CENTER})`)
+      .fromTo('opacity', 0.01, 1);
+  }
+  // Animate toolbar if it's there
+  if (enteringToolbarEle) {
+    const enteringToolBar = createAnimation();
+    enteringToolBar.addElement(enteringToolbarEle);
+    rootTransition.addAnimation(enteringToolBar);
+  }
+  // setup leaving view
+  if (leavingEl && backDirection) {
+    // leaving content
+    rootTransition
+      .duration(opts.duration || 200)
+      .easing('cubic-bezier(0.47,0,0.745,0.715)');
+    const leavingPage = createAnimation();
+    leavingPage
+      .addElement(getIonPageElement(leavingEl))
+      .onFinish(currentStep => {
+      if (currentStep === 1 && leavingPage.elements.length > 0) {
+        leavingPage.elements[0].style.setProperty('display', 'none');
+      }
+    })
+      .fromTo('transform', `translateY(${CENTER})`, `translateY(${OFF_BOTTOM})`)
+      .fromTo('opacity', 1, 0);
+    rootTransition.addAnimation(leavingPage);
+  }
+  return rootTransition;
+};
+
+var md_transition = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  mdTransitionAnimation: mdTransitionAnimation
+});
+
+/**
+ * Based on:
+ * https://stackoverflow.com/questions/7348009/y-coordinate-for-a-given-x-cubic-bezier
+ * https://math.stackexchange.com/questions/26846/is-there-an-explicit-form-for-cubic-b%C3%A9zier-curves
+ * TODO: Reduce rounding error
+ */
+/**
+ * EXPERIMENTAL
+ * Given a cubic-bezier curve, get the x value (time) given
+ * the y value (progression).
+ * Ex: cubic-bezier(0.32, 0.72, 0, 1);
+ * P0: (0, 0)
+ * P1: (0.32, 0.72)
+ * P2: (0, 1)
+ * P3: (1, 1)
+ *
+ * If you give a cubic bezier curve that never reaches the
+ * provided progression, this function will return an empty array.
+ */
+const getTimeGivenProgression = (p0, p1, p2, p3, progression) => {
+  return solveCubicBezier(p0[1], p1[1], p2[1], p3[1], progression).map(tValue => {
+    return solveCubicParametricEquation(p0[0], p1[0], p2[0], p3[0], tValue);
+  });
+};
+/**
+ * Solve a cubic equation in one dimension (time)
+ */
+const solveCubicParametricEquation = (p0, p1, p2, p3, t) => {
+  const partA = (3 * p1) * Math.pow(t - 1, 2);
+  const partB = (-3 * p2 * t) + (3 * p2) + (p3 * t);
+  const partC = p0 * Math.pow(t - 1, 3);
+  return t * (partA + (t * partB)) - partC;
+};
+/**
+ * Find the `t` value for a cubic bezier using Cardano's formula
+ */
+const solveCubicBezier = (p0, p1, p2, p3, refPoint) => {
+  p0 -= refPoint;
+  p1 -= refPoint;
+  p2 -= refPoint;
+  p3 -= refPoint;
+  const roots = solveCubicEquation(p3 - 3 * p2 + 3 * p1 - p0, 3 * p2 - 6 * p1 + 3 * p0, 3 * p1 - 3 * p0, p0);
+  return roots.filter(root => root >= 0 && root <= 1);
+};
+const solveQuadraticEquation = (a, b, c) => {
+  const discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) {
+    return [];
+  }
+  else {
+    return [
+      (-b + Math.sqrt(discriminant)) / (2 * a),
+      (-b - Math.sqrt(discriminant)) / (2 * a)
+    ];
+  }
+};
+const solveCubicEquation = (a, b, c, d) => {
+  if (a === 0) {
+    return solveQuadraticEquation(b, c, d);
+  }
+  b /= a;
+  c /= a;
+  d /= a;
+  const p = (3 * c - b * b) / 3;
+  const q = (2 * b * b * b - 9 * b * c + 27 * d) / 27;
+  if (p === 0) {
+    return [Math.pow(-q, 1 / 3)];
+  }
+  else if (q === 0) {
+    return [Math.sqrt(-p), -Math.sqrt(-p)];
+  }
+  const discriminant = Math.pow(q / 2, 2) + Math.pow(p / 3, 3);
+  if (discriminant === 0) {
+    return [Math.pow(q / 2, 1 / 2) - b / 3];
+  }
+  else if (discriminant > 0) {
+    return [Math.pow(-(q / 2) + Math.sqrt(discriminant), 1 / 3) - Math.pow((q / 2) + Math.sqrt(discriminant), 1 / 3) - b / 3];
+  }
+  const r = Math.sqrt(Math.pow(-(p / 3), 3));
+  const phi = Math.acos(-(q / (2 * Math.sqrt(Math.pow(-(p / 3), 3)))));
+  const s = 2 * Math.pow(r, 1 / 3);
+  return [
+    s * Math.cos(phi / 3) - b / 3,
+    s * Math.cos((phi + 2 * Math.PI) / 3) - b / 3,
+    s * Math.cos((phi + 4 * Math.PI) / 3) - b / 3
+  ];
+};
+
+/**
+ * baseAnimation
+ * Base class which is extended by the various types. Each
+ * type will provide their own animations for open and close
+ * and registers itself with Menu.
+ */
+const baseAnimation = (isIos) => {
+  // https://material.io/guidelines/motion/movement.html#movement-movement-in-out-of-screen-bounds
+  // https://material.io/guidelines/motion/duration-easing.html#duration-easing-natural-easing-curves
+  /**
+   * "Apply the sharp curve to items temporarily leaving the screen that may return
+   * from the same exit point. When they return, use the deceleration curve. On mobile,
+   * this transition typically occurs over 300ms" -- MD Motion Guide
+   */
+  return createAnimation().duration(isIos ? 400 : 300);
+};
+
+/**
+ * Menu Overlay Type
+ * The menu slides over the content. The content
+ * itself, which is under the menu, does not move.
+ */
+const menuOverlayAnimation = (menu) => {
+  let closedX;
+  let openedX;
+  const width = menu.width + 8;
+  const menuAnimation = createAnimation();
+  const backdropAnimation = createAnimation();
+  if (menu.isEndSide) {
+    // right side
+    closedX = width + 'px';
+    openedX = '0px';
+  }
+  else {
+    // left side
+    closedX = -width + 'px';
+    openedX = '0px';
+  }
+  menuAnimation
+    .addElement(menu.menuInnerEl)
+    .fromTo('transform', `translateX(${closedX})`, `translateX(${openedX})`);
+  const mode = getIonMode$1(menu);
+  const isIos = mode === 'ios';
+  const opacity = isIos ? 0.2 : 0.25;
+  backdropAnimation
+    .addElement(menu.backdropEl)
+    .fromTo('opacity', 0.01, opacity);
+  return baseAnimation(isIos).addAnimation([menuAnimation, backdropAnimation]);
+};
+
+/**
+ * Menu Push Type
+ * The content slides over to reveal the menu underneath.
+ * The menu itself also slides over to reveal its bad self.
+ */
+const menuPushAnimation = (menu) => {
+  let contentOpenedX;
+  let menuClosedX;
+  const mode = getIonMode$1(menu);
+  const width = menu.width;
+  if (menu.isEndSide) {
+    contentOpenedX = -width + 'px';
+    menuClosedX = width + 'px';
+  }
+  else {
+    contentOpenedX = width + 'px';
+    menuClosedX = -width + 'px';
+  }
+  const menuAnimation = createAnimation()
+    .addElement(menu.menuInnerEl)
+    .fromTo('transform', `translateX(${menuClosedX})`, 'translateX(0px)');
+  const contentAnimation = createAnimation()
+    .addElement(menu.contentEl)
+    .fromTo('transform', 'translateX(0px)', `translateX(${contentOpenedX})`);
+  const backdropAnimation = createAnimation()
+    .addElement(menu.backdropEl)
+    .fromTo('opacity', 0.01, 0.32);
+  return baseAnimation(mode === 'ios').addAnimation([menuAnimation, contentAnimation, backdropAnimation]);
+};
+
+/**
+ * Menu Reveal Type
+ * The content slides over to reveal the menu underneath.
+ * The menu itself, which is under the content, does not move.
+ */
+const menuRevealAnimation = (menu) => {
+  const mode = getIonMode$1(menu);
+  const openedX = (menu.width * (menu.isEndSide ? -1 : 1)) + 'px';
+  const contentOpen = createAnimation()
+    .addElement(menu.contentEl) // REVIEW
+    .fromTo('transform', 'translateX(0px)', `translateX(${openedX})`);
+  return baseAnimation(mode === 'ios').addAnimation(contentOpen);
+};
+
+const createMenuController = () => {
+  const menuAnimations = new Map();
+  const menus = [];
+  const open = async (menu) => {
+    const menuEl = await get(menu);
+    if (menuEl) {
+      return menuEl.open();
+    }
+    return false;
+  };
+  const close = async (menu) => {
+    const menuEl = await (menu !== undefined ? get(menu) : getOpen());
+    if (menuEl !== undefined) {
+      return menuEl.close();
+    }
+    return false;
+  };
+  const toggle = async (menu) => {
+    const menuEl = await get(menu);
+    if (menuEl) {
+      return menuEl.toggle();
+    }
+    return false;
+  };
+  const enable = async (shouldEnable, menu) => {
+    const menuEl = await get(menu);
+    if (menuEl) {
+      menuEl.disabled = !shouldEnable;
+    }
+    return menuEl;
+  };
+  const swipeGesture = async (shouldEnable, menu) => {
+    const menuEl = await get(menu);
+    if (menuEl) {
+      menuEl.swipeGesture = shouldEnable;
+    }
+    return menuEl;
+  };
+  const isOpen = async (menu) => {
+    if (menu != null) {
+      const menuEl = await get(menu);
+      return (menuEl !== undefined && menuEl.isOpen());
+    }
+    else {
+      const menuEl = await getOpen();
+      return menuEl !== undefined;
+    }
+  };
+  const isEnabled = async (menu) => {
+    const menuEl = await get(menu);
+    if (menuEl) {
+      return !menuEl.disabled;
+    }
+    return false;
+  };
+  const get = async (menu) => {
+    await waitUntilReady();
+    if (menu === 'start' || menu === 'end') {
+      // there could be more than one menu on the same side
+      // so first try to get the enabled one
+      const menuRef = find(m => m.side === menu && !m.disabled);
+      if (menuRef) {
+        return menuRef;
+      }
+      // didn't find a menu side that is enabled
+      // so try to get the first menu side found
+      return find(m => m.side === menu);
+    }
+    else if (menu != null) {
+      // the menuId was not left or right
+      // so try to get the menu by its "id"
+      return find(m => m.menuId === menu);
+    }
+    // return the first enabled menu
+    const menuEl = find(m => !m.disabled);
+    if (menuEl) {
+      return menuEl;
+    }
+    // get the first menu in the array, if one exists
+    return menus.length > 0 ? menus[0].el : undefined;
+  };
+  /**
+   * Get the instance of the opened menu. Returns `null` if a menu is not found.
+   */
+  const getOpen = async () => {
+    await waitUntilReady();
+    return _getOpenSync();
+  };
+  /**
+   * Get all menu instances.
+   */
+  const getMenus = async () => {
+    await waitUntilReady();
+    return getMenusSync();
+  };
+  /**
+   * Get whether or not a menu is animating. Returns `true` if any
+   * menu is currently animating.
+   */
+  const isAnimating = async () => {
+    await waitUntilReady();
+    return isAnimatingSync();
+  };
+  const registerAnimation = (name, animation) => {
+    menuAnimations.set(name, animation);
+  };
+  const _register = (menu) => {
+    if (menus.indexOf(menu) < 0) {
+      if (!menu.disabled) {
+        _setActiveMenu(menu);
+      }
+      menus.push(menu);
+    }
+  };
+  const _unregister = (menu) => {
+    const index = menus.indexOf(menu);
+    if (index > -1) {
+      menus.splice(index, 1);
+    }
+  };
+  const _setActiveMenu = (menu) => {
+    // if this menu should be enabled
+    // then find all the other menus on this same side
+    // and automatically disable other same side menus
+    const side = menu.side;
+    menus
+      .filter(m => m.side === side && m !== menu)
+      .forEach(m => m.disabled = true);
+  };
+  const _setOpen = async (menu, shouldOpen, animated) => {
+    if (isAnimatingSync()) {
+      return false;
+    }
+    if (shouldOpen) {
+      const openedMenu = await getOpen();
+      if (openedMenu && menu.el !== openedMenu) {
+        await openedMenu.setOpen(false, false);
+      }
+    }
+    return menu._setOpen(shouldOpen, animated);
+  };
+  const _createAnimation = (type, menuCmp) => {
+    const animationBuilder = menuAnimations.get(type);
+    if (!animationBuilder) {
+      throw new Error('animation not registered');
+    }
+    const animation = animationBuilder(menuCmp);
+    return animation;
+  };
+  const _getOpenSync = () => {
+    return find(m => m._isOpen);
+  };
+  const getMenusSync = () => {
+    return menus.map(menu => menu.el);
+  };
+  const isAnimatingSync = () => {
+    return menus.some(menu => menu.isAnimating);
+  };
+  const find = (predicate) => {
+    const instance = menus.find(predicate);
+    if (instance !== undefined) {
+      return instance.el;
+    }
+    return undefined;
+  };
+  const waitUntilReady = () => {
+    return Promise.all(Array.from(document.querySelectorAll('ion-menu'))
+      .map(menu => new Promise(resolve => componentOnReady(menu, resolve))));
+  };
+  registerAnimation('reveal', menuRevealAnimation);
+  registerAnimation('push', menuPushAnimation);
+  registerAnimation('overlay', menuOverlayAnimation);
+  /* tslint:disable-next-line */
+  if (typeof document !== 'undefined') {
+    document.addEventListener('ionBackButton', (ev) => {
+      const openMenu = _getOpenSync();
+      if (openMenu) {
+        ev.detail.register(MENU_BACK_BUTTON_PRIORITY, () => {
+          return openMenu.close();
+        });
+      }
+    });
+  }
+  return {
+    registerAnimation,
+    get,
+    getMenus,
+    getOpen,
+    isEnabled,
+    swipeGesture,
+    isAnimating,
+    isOpen,
+    enable,
+    toggle,
+    close,
+    open,
+    _getOpenSync,
+    _createAnimation,
+    _register,
+    _unregister,
+    _setOpen,
+    _setActiveMenu,
+  };
+};
+const menuController = /*@__PURE__*/ createMenuController();
 
 /**
  * Get the value from an object using a dot notation string.
@@ -61645,7 +61468,6 @@ registerComponents([
   Fab,
   FabButton,
   FabList,
-  FilterBar,
   Footer,
   Form,
   Graph,
