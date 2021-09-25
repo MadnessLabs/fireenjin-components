@@ -43505,14 +43505,19 @@ class Map$1 {
     this.mapMarkers.push(mapMarker);
     return mapMarker;
   }
+  async updateMarkers() {
+    await this.clearMarkers();
+    if (this.markers.length >= 1) {
+      this.markers.map(this.addMarker.bind(this));
+    }
+    return this.markers;
+  }
   /**
    * Set the list of map markers
    * @param markers A list of map markers
    */
-  async setMarkers(markers = [], clearFirst = false) {
-    if (!clearFirst) {
-      await this.clearMarkers();
-    }
+  async setMarkers(markers = []) {
+    await this.clearMarkers();
     this.markers =
       typeof markers === "string"
         ? JSON.parse(markers)
@@ -43629,7 +43634,7 @@ class Map$1 {
   }
   get mapEl() { return getElement(this); }
   static get watchers() { return {
-    "markers": ["setMarkers"]
+    "markers": ["updateMarkers"]
   }; }
   static get style() { return mapCss; }
   static get cmpMeta() { return {

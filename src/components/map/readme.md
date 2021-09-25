@@ -54,7 +54,7 @@ Type: `Promise<void>`
 
 
 
-### `setMarkers(markers?: { position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }[], clearFirst?: boolean) => Promise<{ position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }[]>`
+### `setMarkers(markers?: { position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }[]) => Promise<{ position: { lat: number; lng: number; }; name: string; icon: string; payload?: any; }[]>`
 
 Set the list of map markers
 

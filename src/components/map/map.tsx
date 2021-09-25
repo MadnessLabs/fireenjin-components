@@ -124,12 +124,20 @@ export class Map implements ComponentInterface {
     return mapMarker;
   }
 
+  @Watch("markers")
+  async updateMarkers() {
+    await this.clearMarkers();
+    if (this.markers.length >= 1) {
+      this.markers.map(this.addMarker.bind(this));
+    }
+    return this.markers;
+  }
+
   /**
    * Set the list of map markers
    * @param markers A list of map markers
    */
   @Method()
-  @Watch("markers")
   async setMarkers(
     markers: {
       position: {
@@ -139,12 +147,9 @@ export class Map implements ComponentInterface {
       name: string;
       icon: string;
       payload?: any;
-    }[] = [],
-    clearFirst = false
+    }[] = []
   ) {
-    if (!clearFirst) {
-      await this.clearMarkers();
-    }
+    await this.clearMarkers();
     this.markers =
       typeof markers === "string"
         ? JSON.parse(markers)
