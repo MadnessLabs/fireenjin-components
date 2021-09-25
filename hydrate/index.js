@@ -50584,6 +50584,19 @@ class SearchBar {
   onFilterChange() {
     this.updateCurrentFilters();
   }
+  async onTrigger(event) {
+    var _a, _b, _c, _d, _e, _f, _g;
+    if (((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.trigger) === "set" && ((_c = (_b = event === null || event === void 0 ? void 0 : event.detail) === null || _b === void 0 ? void 0 : _b.payload) === null || _c === void 0 ? void 0 : _c.name)) {
+      for (const [i, control] of this.filter.controls.entries()) {
+        if (!(control === null || control === void 0 ? void 0 : control.name) || ((_e = (_d = event === null || event === void 0 ? void 0 : event.detail) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.name) !== (control === null || control === void 0 ? void 0 : control.name))
+          continue;
+        const controlData = Object.assign(Object.assign({}, control), { value: ((_g = (_f = event === null || event === void 0 ? void 0 : event.detail) === null || _f === void 0 ? void 0 : _f.payload) === null || _g === void 0 ? void 0 : _g.value) || null });
+        this.filter.controls[i] = controlData;
+        this.currentFilters[control.name] = controlData;
+        this.filter = Object.assign({}, this.filter);
+      }
+    }
+  }
   onSuccess(event) {
     var _a;
     if (((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.name) !== "select")
@@ -50684,7 +50697,7 @@ class SearchBar {
     "$tagName$": "fireenjin-search-bar",
     "$members$": {
       "sort": [16],
-      "filter": [16],
+      "filter": [1040],
       "paginationEl": [8, "pagination-el"],
       "modeToggle": [4, "mode-toggle"],
       "displayMode": [1025, "display-mode"],
@@ -50697,7 +50710,7 @@ class SearchBar {
       "clearFilter": [64],
       "updateCurrentFilters": [64]
     },
-    "$listeners$": [[16, "fireenjinSuccess", "onSuccess"], [0, "ionChange", "onChange"]],
+    "$listeners$": [[16, "fireenjinTrigger", "onTrigger"], [16, "fireenjinSuccess", "onSuccess"], [0, "ionChange", "onChange"]],
     "$lazyBundleId$": "-",
     "$attrsToReflect$": []
   }; }

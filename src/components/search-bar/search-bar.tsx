@@ -30,7 +30,7 @@ export class SearchBar implements ComponentInterface {
       value: string;
     }[];
   };
-  @Prop() filter?: {
+  @Prop({ mutable: true }) filter?: {
     label?: string;
     controls: filterControl[];
   };
@@ -55,6 +55,22 @@ export class SearchBar implements ComponentInterface {
   @Watch("filter")
   onFilterChange() {
     this.updateCurrentFilters();
+  }
+
+  @Listen("fireenjinTrigger", { target: "body" })
+  async onTrigger(event) {
+    if (event?.detail?.trigger === "set" && event?.detail?.payload?.name) {
+      for (const [i, control] of this.filter.controls.entries()) {
+        if (!control?.name || event?.detail?.payload?.name !== control?.name) continue;
+        const controlData = {
+          ...control,
+          value: event?.detail?.payload?.value || null
+        };
+        this.filter.controls[i] = controlData;
+        this.currentFilters[control.name] = controlData;
+        this.filter = { ...this.filter };
+      }
+    }
   }
 
   @Listen("fireenjinSuccess", { target: "body" })
