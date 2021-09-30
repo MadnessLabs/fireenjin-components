@@ -7215,7 +7215,7 @@ function HeadersInstanceToPlainObject(headers) {
 var localforage = createCommonjsModule(function (module, exports) {
 /*!
     localForage -- Offline Storage, Improved
-    Version 1.9.0
+    Version 1.10.0
     https://localforage.github.io/localForage
     (c) 2013-2017 Mozilla, Apache License 2.0
 */
@@ -7861,7 +7861,16 @@ function _getConnection(dbInfo, upgradeNeeded) {
         };
 
         openreq.onsuccess = function () {
-            resolve(openreq.result);
+            var db = openreq.result;
+            db.onversionchange = function (e) {
+                // Triggered when the database is modified (e.g. adding an objectStore) or
+                // deleted (even when initiated by other sessions in different tabs).
+                // Closing the connection here prevents those operations from being blocked.
+                // If the database is accessed again later by this instance, the connection
+                // will be reopened or the database recreated as needed.
+                e.target.close();
+            };
+            resolve(db);
             _advanceReadiness(dbInfo);
         };
     });
@@ -8537,12 +8546,18 @@ function dropInstance(options, callback) {
                 var dropDBPromise = new Promise$1(function (resolve, reject) {
                     var req = idb.deleteDatabase(options.name);
 
-                    req.onerror = req.onblocked = function (err) {
+                    req.onerror = function () {
                         var db = req.result;
                         if (db) {
                             db.close();
                         }
-                        reject(err);
+                        reject(req.error);
+                    };
+
+                    req.onblocked = function () {
+                        // Closing all open connections in onversionchange handler should prevent this situation, but if
+                        // we do get here, it just means the request remains pending - eventually it will succeed or error
+                        console.warn('dropInstance blocked for database "' + options.name + '" until all open connections are closed');
                     };
 
                     req.onsuccess = function () {
@@ -50589,7 +50604,7 @@ class SearchBar {
     this.updateCurrentFilters();
   }
   async onTrigger(event) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g;
     if (((_a = event === null || event === void 0 ? void 0 : event.detail) === null || _a === void 0 ? void 0 : _a.trigger) === "set" && ((_c = (_b = event === null || event === void 0 ? void 0 : event.detail) === null || _b === void 0 ? void 0 : _b.payload) === null || _c === void 0 ? void 0 : _c.name)) {
       for (const [i, control] of this.filter.controls.entries()) {
         if (!(control === null || control === void 0 ? void 0 : control.name) || ((_e = (_d = event === null || event === void 0 ? void 0 : event.detail) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.name) !== (control === null || control === void 0 ? void 0 : control.name))
@@ -50599,9 +50614,10 @@ class SearchBar {
         this.currentFilters[control.name] = controlData;
         this.filter = Object.assign({}, this.filter);
       }
-      if (!((_h = this.paginationEl) === null || _h === void 0 ? void 0 : _h.clearParamData))
+      if (!this.paginationEl)
         return;
-      await this.paginationEl.clearParamData();
+      await this.paginationEl.clearResults();
+      await this.paginationEl.getResults();
     }
   }
   onSuccess(event) {
