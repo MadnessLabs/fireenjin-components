@@ -51,6 +51,7 @@ export class InputAddress implements ComponentInterface {
    * The Google Maps API Key
    */
   @Prop() googleMapsKey: string;
+  @Prop() lines: "full" | "inset" | "none";
 
   @State() place: any;
   @State() manualEntry = false;
@@ -181,7 +182,7 @@ export class InputAddress implements ComponentInterface {
   render() {
     const value = this.value ? this.value : {};
     return [
-      <ion-item class={{ "is-hidden": !this.manualEntry }}>
+      <ion-item lines={this.lines} class={{ "is-hidden": !this.manualEntry }}>
         <ion-label position="stacked">{this.label}</ion-label>
         <div class="manual-fields">
           <ion-input
