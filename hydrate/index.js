@@ -7215,7 +7215,7 @@ function HeadersInstanceToPlainObject(headers) {
 var localforage = createCommonjsModule(function (module, exports) {
 /*!
     localForage -- Offline Storage, Improved
-    Version 1.10.0
+    Version 1.9.0
     https://localforage.github.io/localForage
     (c) 2013-2017 Mozilla, Apache License 2.0
 */
@@ -7861,16 +7861,7 @@ function _getConnection(dbInfo, upgradeNeeded) {
         };
 
         openreq.onsuccess = function () {
-            var db = openreq.result;
-            db.onversionchange = function (e) {
-                // Triggered when the database is modified (e.g. adding an objectStore) or
-                // deleted (even when initiated by other sessions in different tabs).
-                // Closing the connection here prevents those operations from being blocked.
-                // If the database is accessed again later by this instance, the connection
-                // will be reopened or the database recreated as needed.
-                e.target.close();
-            };
-            resolve(db);
+            resolve(openreq.result);
             _advanceReadiness(dbInfo);
         };
     });
@@ -8546,18 +8537,12 @@ function dropInstance(options, callback) {
                 var dropDBPromise = new Promise$1(function (resolve, reject) {
                     var req = idb.deleteDatabase(options.name);
 
-                    req.onerror = function () {
+                    req.onerror = req.onblocked = function (err) {
                         var db = req.result;
                         if (db) {
                             db.close();
                         }
-                        reject(req.error);
-                    };
-
-                    req.onblocked = function () {
-                        // Closing all open connections in onversionchange handler should prevent this situation, but if
-                        // we do get here, it just means the request remains pending - eventually it will succeed or error
-                        console.warn('dropInstance blocked for database "' + options.name + '" until all open connections are closed');
+                        reject(err);
                     };
 
                     req.onsuccess = function () {
@@ -62172,20 +62157,25 @@ const toggleCss = "fireenjin-toggle{display:block;width:100%}fireenjin-toggle .i
 class Toggle$1 {
   constructor(hostRef) {
     registerInstance(this, hostRef);
-  }
-  componentDidLoad() {
+    /**
+     * If `true`, the user cannot interact with the select.
+     */
+    this.disabled = false;
   }
   render() {
-    return (hAsync("ion-item", null, this.label && hAsync("ion-label", null, this.label), hAsync("ion-toggle", { color: "success", name: this.name, checked: !!this.value })));
+    return (hAsync("ion-item", null, hAsync("slot", { name: "start", slot: "start" }), this.label && hAsync("ion-label", { position: this.labelPosition }, this.label), hAsync("ion-toggle", { disabled: this.disabled, color: this.color, name: this.name, checked: !!this.value }), hAsync("slot", { name: "end", slot: "after" })));
   }
   static get style() { return toggleCss; }
   static get cmpMeta() { return {
-    "$flags$": 0,
+    "$flags$": 4,
     "$tagName$": "fireenjin-toggle",
     "$members$": {
       "label": [1],
       "name": [1],
-      "value": [4]
+      "value": [4],
+      "color": [1],
+      "labelPosition": [1, "label-position"],
+      "disabled": [4]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
