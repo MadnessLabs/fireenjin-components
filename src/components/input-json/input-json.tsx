@@ -8,6 +8,7 @@ export class InputJson {
   @Prop() value: any = {};
   @Prop() label: string;
   @Prop() name = "json";
+  @Prop() lines: "full" | "inset" | "none";
 
   componentDidLoad() {
     if (Build.isBrowser) {
@@ -17,7 +18,7 @@ export class InputJson {
 
   render() {
     return (
-      <ion-item style={{ overflow: "visible" }}>
+      <ion-item lines={this.lines} style={{ overflow: "visible" }}>
         {this.label && <ion-label position="stacked">{this.label}</ion-label>}
         <fireenjin-json-editor
           style={{ width: "100%", marginTop: "15px" }}
