@@ -64,6 +64,7 @@ export class Input implements ComponentInterface {
     fonts?: any[];
   } = {};
   @Prop() lines: "full" | "inset" | "none";
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @Event() ionChange: EventEmitter;
   @Event() ionInput: EventEmitter;
@@ -474,7 +475,7 @@ export class Input implements ComponentInterface {
       >
         {this.iconLeft && <ion-icon name={this.iconLeft} slot="start" />}
         {this.label && (
-          <ion-label position="stacked">
+          <ion-label position={this.labelPosition}>
             <span>{this.label}</span>
           </ion-label>
         )}

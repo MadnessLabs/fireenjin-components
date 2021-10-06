@@ -41,6 +41,8 @@ export class InputSearch implements ComponentInterface {
   @Prop({ mutable: true }) results: any[] = [];
   @Prop() resultsKey: string;
   @Prop() lines: "full" | "inset" | "none";
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
+
 
   @Event() ionInput: EventEmitter;
   @Event() fireenjinFetch: EventEmitter;
@@ -168,7 +170,7 @@ export class InputSearch implements ComponentInterface {
       >
         <slot name="start" />
         {this.iconStart && <ion-icon name={this.iconStart} slot="start" />}
-        {this.label && <ion-label position="stacked">{this.label}</ion-label>}
+        {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
         <ion-input
           onInput={(event) => this.onInput(event)}
           ref={(el) => (this.inputEl = el)}

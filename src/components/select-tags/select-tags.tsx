@@ -50,6 +50,7 @@ export class SelectTags implements ComponentInterface {
   @Prop() fetchData?: any;
   @Prop() query?: string;
   @Prop() lines: "full" | "inset" | "none";
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @State() choices: any;
   @State() hasValue = false;
@@ -310,7 +311,7 @@ export class SelectTags implements ComponentInterface {
     const OptionEl: any = "option";
     return (
       <ion-item ref={(el) => (this.itemEl = el)} lines={this.lines}>
-        {this.label && <ion-label position="stacked">{this.label}</ion-label>}
+        {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
         <select
           disabled={this.disabled}
           multiple={this.multiple}

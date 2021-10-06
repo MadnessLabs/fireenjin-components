@@ -7,30 +7,31 @@
 
 ## Properties
 
-| Property         | Attribute         | Description | Type                               | Default         |
-| ---------------- | ----------------- | ----------- | ---------------------------------- | --------------- |
-| `allowAdding`    | `allow-adding`    |             | `boolean`                          | `false`         |
-| `dataPropsMap`   | `data-props-map`  |             | `any`                              | `undefined`     |
-| `disableFetch`   | `disable-fetch`   |             | `boolean`                          | `false`         |
-| `disabled`       | `disabled`        |             | `boolean`                          | `false`         |
-| `duplicates`     | `duplicates`      |             | `boolean`                          | `false`         |
-| `endpoint`       | `endpoint`        |             | `string`                           | `undefined`     |
-| `fetchData`      | `fetch-data`      |             | `any`                              | `undefined`     |
-| `label`          | `label`           |             | `any`                              | `undefined`     |
-| `limit`          | `limit`           |             | `number`                           | `15`            |
-| `lines`          | `lines`           |             | `"full" \| "inset" \| "none"`      | `undefined`     |
-| `multiple`       | `multiple`        |             | `boolean`                          | `undefined`     |
-| `name`           | `name`            |             | `string`                           | `"tags"`        |
-| `options`        | --                |             | `{ label: string; value: any; }[]` | `[]`            |
-| `orderBy`        | `order-by`        |             | `string`                           | `undefined`     |
-| `orderDirection` | `order-direction` |             | `string`                           | `undefined`     |
-| `page`           | `page`            |             | `number`                           | `0`             |
-| `placeholder`    | `placeholder`     |             | `string`                           | `"Select Tags"` |
-| `query`          | `query`           |             | `string`                           | `undefined`     |
-| `required`       | `required`        |             | `boolean`                          | `false`         |
-| `results`        | --                |             | `any[]`                            | `[]`            |
-| `resultsKey`     | `results-key`     |             | `string`                           | `undefined`     |
-| `value`          | `value`           |             | `any`                              | `undefined`     |
+| Property         | Attribute         | Description | Type                                 | Default         |
+| ---------------- | ----------------- | ----------- | ------------------------------------ | --------------- |
+| `allowAdding`    | `allow-adding`    |             | `boolean`                            | `false`         |
+| `dataPropsMap`   | `data-props-map`  |             | `any`                                | `undefined`     |
+| `disableFetch`   | `disable-fetch`   |             | `boolean`                            | `false`         |
+| `disabled`       | `disabled`        |             | `boolean`                            | `false`         |
+| `duplicates`     | `duplicates`      |             | `boolean`                            | `false`         |
+| `endpoint`       | `endpoint`        |             | `string`                             | `undefined`     |
+| `fetchData`      | `fetch-data`      |             | `any`                                | `undefined`     |
+| `label`          | `label`           |             | `any`                                | `undefined`     |
+| `labelPosition`  | `label-position`  |             | `"fixed" \| "floating" \| "stacked"` | `undefined`     |
+| `limit`          | `limit`           |             | `number`                             | `15`            |
+| `lines`          | `lines`           |             | `"full" \| "inset" \| "none"`        | `undefined`     |
+| `multiple`       | `multiple`        |             | `boolean`                            | `undefined`     |
+| `name`           | `name`            |             | `string`                             | `"tags"`        |
+| `options`        | --                |             | `{ label: string; value: any; }[]`   | `[]`            |
+| `orderBy`        | `order-by`        |             | `string`                             | `undefined`     |
+| `orderDirection` | `order-direction` |             | `string`                             | `undefined`     |
+| `page`           | `page`            |             | `number`                             | `0`             |
+| `placeholder`    | `placeholder`     |             | `string`                             | `"Select Tags"` |
+| `query`          | `query`           |             | `string`                             | `undefined`     |
+| `required`       | `required`        |             | `boolean`                            | `false`         |
+| `results`        | --                |             | `any[]`                              | `[]`            |
+| `resultsKey`     | `results-key`     |             | `string`                             | `undefined`     |
+| `value`          | `value`           |             | `any`                                | `undefined`     |
 
 
 ## Events

@@ -25,6 +25,7 @@ export class Radios implements ComponentInterface {
   @Prop() name: string;
   @Prop() lines: "full" | "inset" | "none" = "none";
   @Prop({ mutable: true }) selected = 0;
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @State() selectedIndex: number;
 
@@ -106,7 +107,7 @@ export class Radios implements ComponentInterface {
   render() {
     return (
       <ion-item lines={this.lines}>
-        <ion-label position="stacked">{this.label}</ion-label>
+        <ion-label position={this.labelPosition}>{this.label}</ion-label>
         <ul>
           {this.options.map((radio, index) => (
             <li onClick={() => this.selectOption(index, radio)}>

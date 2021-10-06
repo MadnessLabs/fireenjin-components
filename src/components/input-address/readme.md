@@ -5,15 +5,16 @@
 
 ## Properties
 
-| Property        | Attribute         | Description                              | Type                          | Default     |
-| --------------- | ----------------- | ---------------------------------------- | ----------------------------- | ----------- |
-| `googleMapsKey` | `google-maps-key` | The Google Maps API Key                  | `string`                      | `undefined` |
-| `label`         | `label`           | The label of the input field             | `string`                      | `undefined` |
-| `lines`         | `lines`           |                                          | `"full" \| "inset" \| "none"` | `undefined` |
-| `name`          | `name`            | The name attribute of the input          | `string`                      | `undefined` |
-| `placeholder`   | `placeholder`     | The placeholder text for the input field | `string`                      | `undefined` |
-| `required`      | `required`        | Whether the address input is required    | `boolean`                     | `undefined` |
-| `value`         | `value`           | The value of the input field             | `any`                         | `{}`        |
+| Property        | Attribute         | Description                              | Type                                 | Default     |
+| --------------- | ----------------- | ---------------------------------------- | ------------------------------------ | ----------- |
+| `googleMapsKey` | `google-maps-key` | The Google Maps API Key                  | `string`                             | `undefined` |
+| `label`         | `label`           | The label of the input field             | `string`                             | `undefined` |
+| `labelPosition` | `label-position`  |                                          | `"fixed" \| "floating" \| "stacked"` | `undefined` |
+| `lines`         | `lines`           |                                          | `"full" \| "inset" \| "none"`        | `undefined` |
+| `name`          | `name`            | The name attribute of the input          | `string`                             | `undefined` |
+| `placeholder`   | `placeholder`     | The placeholder text for the input field | `string`                             | `undefined` |
+| `required`      | `required`        | Whether the address input is required    | `boolean`                            | `undefined` |
+| `value`         | `value`           | The value of the input field             | `any`                                | `{}`        |
 
 
 ## Events

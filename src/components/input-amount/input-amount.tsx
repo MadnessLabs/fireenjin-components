@@ -31,6 +31,7 @@ export class InputAmount implements ComponentInterface {
   @Prop() max: string;
   @Prop() step = "0.01";
   @Prop() lines: "full" | "inset" | "none";
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @State() formattedValue: string;
 
@@ -111,7 +112,7 @@ export class InputAmount implements ComponentInterface {
     return (
       <ion-item lines={this.lines}>
         <ion-icon name="logo-usd" slot="start" />
-        {this.label && <ion-label position="stacked">{this.label}</ion-label>}
+        {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
         {this.presets && this.presets.length && (
           <div class="presets" slot="end">
             {this.presets.map((preset) => (

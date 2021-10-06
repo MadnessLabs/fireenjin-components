@@ -5,15 +5,16 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type                          | Default     |
-| ---------- | ---------- | ----------- | ----------------------------- | ----------- |
-| `label`    | `label`    |             | `string`                      | `undefined` |
-| `lines`    | `lines`    |             | `"full" \| "inset" \| "none"` | `"none"`    |
-| `name`     | `name`     |             | `string`                      | `undefined` |
-| `options`  | `options`  |             | `any`                         | `undefined` |
-| `required` | `required` |             | `any`                         | `undefined` |
-| `selected` | `selected` |             | `number`                      | `0`         |
-| `value`    | `value`    |             | `any`                         | `undefined` |
+| Property        | Attribute        | Description | Type                                 | Default     |
+| --------------- | ---------------- | ----------- | ------------------------------------ | ----------- |
+| `label`         | `label`          |             | `string`                             | `undefined` |
+| `labelPosition` | `label-position` |             | `"fixed" \| "floating" \| "stacked"` | `undefined` |
+| `lines`         | `lines`          |             | `"full" \| "inset" \| "none"`        | `"none"`    |
+| `name`          | `name`           |             | `string`                             | `undefined` |
+| `options`       | `options`        |             | `any`                                | `undefined` |
+| `required`      | `required`       |             | `any`                                | `undefined` |
+| `selected`      | `selected`       |             | `number`                             | `0`         |
+| `value`         | `value`          |             | `any`                                | `undefined` |
 
 
 ## Events

@@ -33,6 +33,7 @@ export class InputSearchUser implements ComponentInterface {
   @Prop() template: (result) => any;
   @Prop() results: any[] = [];
   @Prop() lines: "full" | "inset" | "none";
+  @Prop() labelPosition?: "stacked" | "fixed" | "floating";
 
   @Event() ionInput: EventEmitter;
   @Event() fireenjinSelectUser: EventEmitter;
@@ -58,6 +59,7 @@ export class InputSearchUser implements ComponentInterface {
   render() {
     return (
       <fireenjin-input-search
+        labelPosition={this.labelPosition}
         lines={this.lines}
         iconEnd={this.iconEnd}
         iconStart={this.iconStart}

@@ -5,12 +5,13 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                          | Default     |
-| -------- | --------- | ----------- | ----------------------------- | ----------- |
-| `label`  | `label`   |             | `string`                      | `undefined` |
-| `lines`  | `lines`   |             | `"full" \| "inset" \| "none"` | `undefined` |
-| `name`   | `name`    |             | `string`                      | `"json"`    |
-| `value`  | `value`   |             | `any`                         | `{}`        |
+| Property        | Attribute        | Description | Type                                 | Default     |
+| --------------- | ---------------- | ----------- | ------------------------------------ | ----------- |
+| `label`         | `label`          |             | `string`                             | `undefined` |
+| `labelPosition` | `label-position` |             | `"fixed" \| "floating" \| "stacked"` | `undefined` |
+| `lines`         | `lines`          |             | `"full" \| "inset" \| "none"`        | `undefined` |
+| `name`          | `name`           |             | `string`                             | `"json"`    |
+| `value`         | `value`          |             | `any`                                | `{}`        |
 
 
 ## Dependencies
