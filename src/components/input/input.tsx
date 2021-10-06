@@ -63,6 +63,7 @@ export class Input implements ComponentInterface {
     style?: any;
     fonts?: any[];
   } = {};
+  @Prop() lines: "full" | "inset" | "none";
 
   @Event() ionChange: EventEmitter;
   @Event() ionInput: EventEmitter;
@@ -464,7 +465,7 @@ export class Input implements ComponentInterface {
     return (
       <ion-item
         ref={el => (this.itemEl = el)}
-        lines="full"
+        lines={this.lines}
         class={{
           "input-password item-input": this.inputType === "password",
           "input-card": this.inputType === "card",
