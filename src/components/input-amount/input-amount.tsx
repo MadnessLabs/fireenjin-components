@@ -30,6 +30,7 @@ export class InputAmount implements ComponentInterface {
   @Prop() min: string;
   @Prop() max: string;
   @Prop() step = "0.01";
+  @Prop() lines: "full" | "inset" | "none";
 
   @State() formattedValue: string;
 
@@ -108,7 +109,7 @@ export class InputAmount implements ComponentInterface {
 
   render() {
     return (
-      <ion-item>
+      <ion-item lines={this.lines}>
         <ion-icon name="logo-usd" slot="start" />
         {this.label && <ion-label position="stacked">{this.label}</ion-label>}
         {this.presets && this.presets.length && (
