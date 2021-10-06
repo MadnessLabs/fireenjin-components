@@ -22,9 +22,9 @@ export class Select implements ComponentInterface {
 
   @Event() fireenjinFetch: EventEmitter;
 
-   /**
-   * If `true`, the user cannot interact with the select.
-   */
+  /**
+  * If `true`, the user cannot interact with the select.
+  */
   @Prop() disabled = false;
   /**
    * The text to display on the cancel button.
@@ -92,6 +92,7 @@ export class Select implements ComponentInterface {
   }[] = [];
   @Prop() resultsKey?: string;
   @Prop() labelPosition?: "stacked" | "fixed" | "floating";
+  @Prop() lines: "full" | "inset" | "none";
 
   @State() results: any[] = [];
 
@@ -131,7 +132,7 @@ export class Select implements ComponentInterface {
   render() {
     return (
       <Host>
-        <ion-item>
+        <ion-item lines={this.lines}>
           {this.icon && <ion-icon slot="start" name={this.icon} />}
           {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
           <ion-select
@@ -152,15 +153,15 @@ export class Select implements ComponentInterface {
             }}
           >
             {(this.options ? this.options : []).map((option) => this.optionEl ? (
-                this.optionEl(option)
-              ) : (
-                <ion-select-option
+              this.optionEl(option)
+            ) : (
+              <ion-select-option
                 value={option.value}
                 disabled={option.disabled}
               >
                 {option.label}
               </ion-select-option>
-              ))}
+            ))}
             {(this.results ? this.results : []).map((result) =>
               this.optionEl ? (
                 this.optionEl(result)
