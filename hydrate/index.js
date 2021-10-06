@@ -43766,7 +43766,7 @@ class LogItem {
     return format(new Date(Date.parse(timestamp)), "MM/dd/yyyy @ hh:mm aaa");
   }
   render() {
-    return (hAsync("ion-item", { lines: "full" }, hAsync("ion-label", { class: "ion-text-wrap" }, hAsync("ion-grid", null, hAsync("ion-row", null, hAsync("ion-col", null, hAsync("h2", null, this.type, " - ", this.name, " ", this.resolveTime ? `(${this.resolveTime}ms)` : "")), hAsync("ion-col", { style: {
+    return (hAsync("ion-item", { lines: this.lines }, hAsync("ion-label", { class: "ion-text-wrap" }, hAsync("ion-grid", null, hAsync("ion-row", null, hAsync("ion-col", null, hAsync("h2", null, this.type, " - ", this.name, " ", this.resolveTime ? `(${this.resolveTime}ms)` : "")), hAsync("ion-col", { style: {
         display: "flex",
         justifyContent: "flex-end",
       } }, hAsync("small", { style: {
@@ -43787,7 +43787,8 @@ class LogItem {
       "resolveTime": [2, "resolve-time"],
       "input": [1],
       "output": [1],
-      "createdAt": [1, "created-at"]
+      "createdAt": [1, "created-at"],
+      "lines": [1]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
@@ -59249,7 +59250,7 @@ class SelectTags {
   }
   render() {
     const OptionEl = "option";
-    return (hAsync("ion-item", { ref: (el) => (this.itemEl = el), lines: "full" }, this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("select", { disabled: this.disabled, multiple: this.multiple, name: this.name, required: this.required, ref: (el) => (this.choicesEl = el) }, hAsync("slot", null), !this.multiple && this.placeholder ? (hAsync(OptionEl, { placeholder: true }, this.placeholder)) : null, this.options.map((option) => (hAsync("option", { selected: this.multiple
+    return (hAsync("ion-item", { ref: (el) => (this.itemEl = el), lines: this.lines }, this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("select", { disabled: this.disabled, multiple: this.multiple, name: this.name, required: this.required, ref: (el) => (this.choicesEl = el) }, hAsync("slot", null), !this.multiple && this.placeholder ? (hAsync(OptionEl, { placeholder: true }, this.placeholder)) : null, this.options.map((option) => (hAsync("option", { selected: this.multiple
         ? this.value && this.value.indexOf(option.value) >= 0
         : option.value + "" === this.value + "", value: option.value }, option.label))))));
   }
@@ -59283,6 +59284,7 @@ class SelectTags {
       "results": [1040],
       "fetchData": [8, "fetch-data"],
       "query": [1],
+      "lines": [1],
       "choices": [32],
       "hasValue": [32],
       "paramData": [32],
@@ -60301,7 +60303,7 @@ class Share {
   componentDidLoad() {
   }
   render() {
-    return (hAsync("ion-list", null, hAsync("ion-item", { class: "share-twitter", onClick: (event) => this.openPopup(event, "twitter") }, hAsync("ion-icon", { slot: "end", name: "logo-twitter" }), "Share on Twitter"), hAsync("ion-item", { class: "share-facebook", onClick: (event) => this.openPopup(event, "facebook") }, hAsync("ion-icon", { slot: "end", name: "logo-facebook" }), "Share on Facebook"), hAsync("ion-item", { ref: (el) => (this.copyItemEl = el), class: "share-clipboard", "data-clipboard-text": this.url }, hAsync("ion-icon", { slot: "end", name: "clipboard" }), "Copy to Clipboard")));
+    return (hAsync("ion-list", null, hAsync("ion-item", { lines: this.lines, class: "share-twitter", onClick: (event) => this.openPopup(event, "twitter") }, hAsync("ion-icon", { slot: "end", name: "logo-twitter" }), "Share on Twitter"), hAsync("ion-item", { lines: this.lines, class: "share-facebook", onClick: (event) => this.openPopup(event, "facebook") }, hAsync("ion-icon", { slot: "end", name: "logo-facebook" }), "Share on Facebook"), hAsync("ion-item", { lines: this.lines, ref: (el) => (this.copyItemEl = el), class: "share-clipboard", "data-clipboard-text": this.url }, hAsync("ion-icon", { slot: "end", name: "clipboard" }), "Copy to Clipboard")));
   }
   static get style() { return shareCss; }
   static get cmpMeta() { return {
@@ -60311,7 +60313,8 @@ class Share {
       "facebookAppId": [1, "facebook-app-id"],
       "url": [1],
       "text": [1],
-      "subject": [1]
+      "subject": [1],
+      "lines": [1]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",

@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property        | Attribute         | Description | Type     | Default     |
-| --------------- | ----------------- | ----------- | -------- | ----------- |
-| `facebookAppId` | `facebook-app-id` |             | `string` | `undefined` |
-| `subject`       | `subject`         |             | `string` | `undefined` |
-| `text`          | `text`            |             | `string` | `undefined` |
-| `url`           | `url`             |             | `string` | `undefined` |
+| Property        | Attribute         | Description | Type                          | Default     |
+| --------------- | ----------------- | ----------- | ----------------------------- | ----------- |
+| `facebookAppId` | `facebook-app-id` |             | `string`                      | `undefined` |
+| `lines`         | `lines`           |             | `"full" \| "inset" \| "none"` | `undefined` |
+| `subject`       | `subject`         |             | `string`                      | `undefined` |
+| `text`          | `text`            |             | `string`                      | `undefined` |
+| `url`           | `url`             |             | `string`                      | `undefined` |
 
 
 ## Events

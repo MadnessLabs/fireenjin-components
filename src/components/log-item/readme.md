@@ -5,14 +5,15 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type     | Default     |
-| ------------- | -------------- | ----------- | -------- | ----------- |
-| `createdAt`   | `created-at`   |             | `string` | `undefined` |
-| `input`       | `input`        |             | `string` | `undefined` |
-| `name`        | `name`         |             | `string` | `undefined` |
-| `output`      | `output`       |             | `string` | `undefined` |
-| `resolveTime` | `resolve-time` |             | `number` | `undefined` |
-| `type`        | `type`         |             | `string` | `undefined` |
+| Property      | Attribute      | Description | Type                          | Default     |
+| ------------- | -------------- | ----------- | ----------------------------- | ----------- |
+| `createdAt`   | `created-at`   |             | `string`                      | `undefined` |
+| `input`       | `input`        |             | `string`                      | `undefined` |
+| `lines`       | `lines`        |             | `"full" \| "inset" \| "none"` | `undefined` |
+| `name`        | `name`         |             | `string`                      | `undefined` |
+| `output`      | `output`       |             | `string`                      | `undefined` |
+| `resolveTime` | `resolve-time` |             | `number`                      | `undefined` |
+| `type`        | `type`         |             | `string`                      | `undefined` |
 
 
 ## Dependencies

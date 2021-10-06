@@ -18,6 +18,7 @@
 | `fetchData`      | `fetch-data`      |             | `any`                              | `undefined`     |
 | `label`          | `label`           |             | `any`                              | `undefined`     |
 | `limit`          | `limit`           |             | `number`                           | `15`            |
+| `lines`          | `lines`           |             | `"full" \| "inset" \| "none"`      | `undefined`     |
 | `multiple`       | `multiple`        |             | `boolean`                          | `undefined`     |
 | `name`           | `name`            |             | `string`                           | `"tags"`        |
 | `options`        | --                |             | `{ label: string; value: any; }[]` | `[]`            |
