@@ -36081,7 +36081,7 @@ class Input$1 {
     }
   }
   render() {
-    return (hAsync("ion-item", { ref: el => (this.itemEl = el), lines: "full", class: {
+    return (hAsync("ion-item", { ref: el => (this.itemEl = el), lines: this.lines, class: {
         "input-password item-input": this.inputType === "password",
         "input-card": this.inputType === "card",
         "has-info-bubble": !!this.info
@@ -36126,6 +36126,7 @@ class Input$1 {
       "spellCheck": [4, "spell-check"],
       "inputMode": [1, "input-mode"],
       "stripeElements": [16],
+      "lines": [1],
       "showInfo": [32],
       "passwordVisible": [32],
       "cleave": [32],
@@ -36497,7 +36498,7 @@ class InputAddress {
   render() {
     const value = this.value ? this.value : {};
     return [
-      hAsync("ion-item", { class: { "is-hidden": !this.manualEntry } }, hAsync("ion-label", { position: "stacked" }, this.label), hAsync("div", { class: "manual-fields" }, hAsync("ion-input", { ref: (el) => (this.streetInputEl = el), type: "text", name: this.name + ".street", placeholder: "Street Address", value: value.street, required: this.required && this.manualEntry }), hAsync("ion-input", { ref: (el) => (this.unitInputEl = el), type: "text", name: this.name + ".unit", placeholder: "Street Address 2", value: value.unit }), hAsync("ion-input", { ref: (el) => (this.cityInputEl = el), type: "text", name: this.name + ".city", placeholder: "City", value: value.city, required: this.required && this.manualEntry }), hAsync("ion-grid", null, hAsync("ion-row", null, hAsync("ion-col", { size: "6" }, hAsync("fireenjin-input-state", { ref: (el) => (this.stateSelectEl = el), name: this.name + ".state", value: value.state, placeholder: "State" })), hAsync("ion-col", { size: "6" }, hAsync("ion-input", { ref: (el) => (this.zipInputEl = el), class: "zip-input", type: "tel", name: this.name + ".zip", min: "0", max: "999999", value: value.zip, placeholder: "Zip Code", required: this.required && this.manualEntry }))))), hAsync("ion-button", { fill: "clear", color: "primary", onClick: () => this.toggleManualEntry(), slot: "end" }, hAsync("span", { class: "button-inner" }, "Search", hAsync("ion-icon", { name: "search" })))),
+      hAsync("ion-item", { lines: this.lines, class: { "is-hidden": !this.manualEntry } }, hAsync("ion-label", { position: "stacked" }, this.label), hAsync("div", { class: "manual-fields" }, hAsync("ion-input", { ref: (el) => (this.streetInputEl = el), type: "text", name: this.name + ".street", placeholder: "Street Address", value: value.street, required: this.required && this.manualEntry }), hAsync("ion-input", { ref: (el) => (this.unitInputEl = el), type: "text", name: this.name + ".unit", placeholder: "Street Address 2", value: value.unit }), hAsync("ion-input", { ref: (el) => (this.cityInputEl = el), type: "text", name: this.name + ".city", placeholder: "City", value: value.city, required: this.required && this.manualEntry }), hAsync("ion-grid", null, hAsync("ion-row", null, hAsync("ion-col", { size: "6" }, hAsync("fireenjin-input-state", { ref: (el) => (this.stateSelectEl = el), name: this.name + ".state", value: value.state, placeholder: "State" })), hAsync("ion-col", { size: "6" }, hAsync("ion-input", { ref: (el) => (this.zipInputEl = el), class: "zip-input", type: "tel", name: this.name + ".zip", min: "0", max: "999999", value: value.zip, placeholder: "Zip Code", required: this.required && this.manualEntry }))))), hAsync("ion-button", { fill: "clear", color: "primary", onClick: () => this.toggleManualEntry(), slot: "end" }, hAsync("span", { class: "button-inner" }, "Search", hAsync("ion-icon", { name: "search" })))),
       hAsync("ion-item", { class: { "is-hidden": this.manualEntry } }, hAsync("ion-label", { position: "stacked" }, this.label), hAsync("ion-input", { ref: (el) => (this.autocompleteFieldEl = el), class: "autocomplete-field", type: "text", placeholder: this.placeholder, value: value.full, autocomplete: "off", required: this.required && !this.manualEntry }), hAsync("ion-button", { fill: "clear", color: "primary", onClick: () => this.toggleManualEntry(), slot: "end" }, hAsync("span", { class: "button-inner" }, "Manual", hAsync("ion-icon", { name: "create" })))),
     ];
   }
@@ -36513,6 +36514,7 @@ class InputAddress {
       "required": [4],
       "name": [1],
       "googleMapsKey": [1, "google-maps-key"],
+      "lines": [1],
       "place": [32],
       "manualEntry": [32],
       "forceUpdate": [32]
@@ -36583,7 +36585,7 @@ class InputAmount {
     this.formattedValue = this.formatCurrency(typeof preset === "string" ? preset : (preset === null || preset === void 0 ? void 0 : preset.value) ? preset.value : 0);
   }
   render() {
-    return (hAsync("ion-item", null, hAsync("ion-icon", { name: "logo-usd", slot: "start" }), this.label && hAsync("ion-label", { position: "stacked" }, this.label), this.presets && this.presets.length && (hAsync("div", { class: "presets", slot: "end" }, this.presets.map((preset) => (hAsync("span", { onClick: () => this.selectPreset(preset) }, typeof preset === "string"
+    return (hAsync("ion-item", { lines: this.lines }, hAsync("ion-icon", { name: "logo-usd", slot: "start" }), this.label && hAsync("ion-label", { position: "stacked" }, this.label), this.presets && this.presets.length && (hAsync("div", { class: "presets", slot: "end" }, this.presets.map((preset) => (hAsync("span", { onClick: () => this.selectPreset(preset) }, typeof preset === "string"
       ? preset
       : (preset === null || preset === void 0 ? void 0 : preset.label)
         ? preset.label
@@ -36611,6 +36613,7 @@ class InputAmount {
       "min": [1],
       "max": [1],
       "step": [1],
+      "lines": [1],
       "formattedValue": [32]
     },
     "$listeners$": [[0, "ionBlur", "onChange"]],
@@ -36774,7 +36777,7 @@ class InputJson {
   componentDidLoad() {
   }
   render() {
-    return (hAsync("ion-item", { style: { overflow: "visible" } }, this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("fireenjin-json-editor", { style: { width: "100%", marginTop: "15px" }, name: this.name, value: this.value ? this.value : {} })));
+    return (hAsync("ion-item", { lines: this.lines, style: { overflow: "visible" } }, this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("fireenjin-json-editor", { style: { width: "100%", marginTop: "15px" }, name: this.name, value: this.value ? this.value : {} })));
   }
   static get style() { return inputJsonCss; }
   static get cmpMeta() { return {
@@ -36783,7 +36786,8 @@ class InputJson {
     "$members$": {
       "value": [8],
       "label": [1],
-      "name": [1]
+      "name": [1],
+      "lines": [1]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
@@ -38250,7 +38254,7 @@ class InputSearch {
   render() {
     var _a;
     return [
-      hAsync("ion-item", { class: "search-input", ref: (el) => (this.itemEl = el), onClick: (event) => this.onInput(event) }, hAsync("slot", { name: "start" }), this.iconStart && hAsync("ion-icon", { name: this.iconStart, slot: "start" }), this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("ion-input", { onInput: (event) => this.onInput(event), ref: (el) => (this.inputEl = el), disabled: this.disabled, type: this.type, name: this.name, placeholder: this.placeholder, required: this.required, autofocus: this.autofocus, value: this.value }), this.iconEnd && hAsync("ion-icon", { name: this.iconEnd, slot: "end" }), hAsync("slot", { name: "end" })),
+      hAsync("ion-item", { lines: this.lines, class: "search-input", ref: (el) => (this.itemEl = el), onClick: (event) => this.onInput(event) }, hAsync("slot", { name: "start" }), this.iconStart && hAsync("ion-icon", { name: this.iconStart, slot: "start" }), this.label && hAsync("ion-label", { position: "stacked" }, this.label), hAsync("ion-input", { onInput: (event) => this.onInput(event), ref: (el) => (this.inputEl = el), disabled: this.disabled, type: this.type, name: this.name, placeholder: this.placeholder, required: this.required, autofocus: this.autofocus, value: this.value }), this.iconEnd && hAsync("ion-icon", { name: this.iconEnd, slot: "end" }), hAsync("slot", { name: "end" })),
       this.mode === "inline" && ((_a = this.results) === null || _a === void 0 ? void 0 : _a.length)
         ? this.results.map((result) => this.template(result))
         : null,
@@ -38279,6 +38283,7 @@ class InputSearch {
       "iconStart": [1, "icon-start"],
       "results": [1040],
       "resultsKey": [1, "results-key"],
+      "lines": [1],
       "checkValidity": [64],
       "reportValidity": [64],
       "clearResults": [64],
@@ -38348,7 +38353,7 @@ class InputSearchUser {
     }
   }
   render() {
-    return (hAsync("fireenjin-input-search", { iconEnd: this.iconEnd, iconStart: this.iconStart, mode: this.mode, label: this.label, ref: (el) => (this.inputSearchEl = el), endpoint: "searchUsers", resultsKey: "searchUsers.results", name: this.name, searchParams: {
+    return (hAsync("fireenjin-input-search", { lines: this.lines, iconEnd: this.iconEnd, iconStart: this.iconStart, mode: this.mode, label: this.label, ref: (el) => (this.inputSearchEl = el), endpoint: "searchUsers", resultsKey: "searchUsers.results", name: this.name, searchParams: {
         limit: this.limit ? this.limit : null,
       }, results: this.results, placeholder: this.placeholder, value: this.value, template: (result) => (hAsync("ion-item", { onClick: (event) => this.selectUser(event, result), style: {
           cursor: "pointer",
@@ -38374,7 +38379,8 @@ class InputSearchUser {
       "iconStart": [1, "icon-start"],
       "limit": [2],
       "template": [16],
-      "results": [16]
+      "results": [16],
+      "lines": [1]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
@@ -53110,7 +53116,7 @@ class Select$1 {
     return;
   }
   render() {
-    return (hAsync(Host, null, hAsync("ion-item", null, this.icon && hAsync("ion-icon", { slot: "start", name: this.icon }), this.label && hAsync("ion-label", { position: this.labelPosition }, this.label), hAsync("ion-select", { disabled: this.disabled, selectedText: this.selectedText, interface: this.interface, compareWith: this.compareWith, name: this.name, value: this.value, okText: this.okText, multiple: this.multiple, cancelText: this.cancelText, placeholder: this.placeholder, interfaceOptions: this.interfaceOptions ? this.interfaceOptions : {
+    return (hAsync(Host, null, hAsync("ion-item", { lines: this.lines }, this.icon && hAsync("ion-icon", { slot: "start", name: this.icon }), this.label && hAsync("ion-label", { position: this.labelPosition }, this.label), hAsync("ion-select", { disabled: this.disabled, selectedText: this.selectedText, interface: this.interface, compareWith: this.compareWith, name: this.name, value: this.value, okText: this.okText, multiple: this.multiple, cancelText: this.cancelText, placeholder: this.placeholder, interfaceOptions: this.interfaceOptions ? this.interfaceOptions : {
         header: this.header,
         subHeader: this.subHeader,
         message: this.message,
@@ -53148,6 +53154,7 @@ class Select$1 {
       "options": [1040],
       "resultsKey": [1, "results-key"],
       "labelPosition": [1, "label-position"],
+      "lines": [1],
       "results": [32]
     },
     "$listeners$": [[16, "fireenjinSuccess", "onSuccess"]],
@@ -62163,7 +62170,7 @@ class Toggle$1 {
     this.disabled = false;
   }
   render() {
-    return (hAsync("ion-item", null, hAsync("slot", { name: "start", slot: "start" }), this.label && hAsync("ion-label", { position: this.labelPosition }, this.label), hAsync("ion-toggle", { disabled: this.disabled, color: this.color, name: this.name, checked: !!this.value }), hAsync("slot", { name: "end", slot: "after" })));
+    return (hAsync("ion-item", { lines: this.lines }, hAsync("slot", { name: "start", slot: "start" }), this.label && hAsync("ion-label", { position: this.labelPosition }, this.label), hAsync("ion-toggle", { disabled: this.disabled, color: this.color, name: this.name, checked: !!this.value }), hAsync("slot", { name: "end", slot: "after" })));
   }
   static get style() { return toggleCss; }
   static get cmpMeta() { return {
@@ -62175,7 +62182,8 @@ class Toggle$1 {
       "value": [4],
       "color": [1],
       "labelPosition": [1, "label-position"],
-      "disabled": [4]
+      "disabled": [4],
+      "lines": [1]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",

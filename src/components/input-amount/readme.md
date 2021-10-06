@@ -11,6 +11,7 @@
 | `decimal`     | `decimal`     |             | `boolean`                                       | `undefined` |
 | `disabled`    | `disabled`    |             | `boolean`                                       | `undefined` |
 | `label`       | `label`       |             | `string`                                        | `undefined` |
+| `lines`       | `lines`       |             | `"full" \| "inset" \| "none"`                   | `undefined` |
 | `max`         | `max`         |             | `string`                                        | `undefined` |
 | `min`         | `min`         |             | `string`                                        | `undefined` |
 | `name`        | `name`        |             | `string`                                        | `undefined` |

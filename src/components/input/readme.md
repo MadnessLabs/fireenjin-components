@@ -22,6 +22,7 @@
 | `info`           | `info`           |             | `string`                          | `undefined` |
 | `inputMode`      | `input-mode`     |             | `string`                          | `"text"`    |
 | `label`          | `label`          |             | `string`                          | `undefined` |
+| `lines`          | `lines`          |             | `"full" \| "inset" \| "none"`     | `undefined` |
 | `max`            | `max`            |             | `string`                          | `undefined` |
 | `maxlength`      | `maxlength`      |             | `number`                          | `undefined` |
 | `min`            | `min`            |             | `string`                          | `undefined` |

@@ -5,24 +5,25 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type                    | Default          |
-| --------------- | ---------------- | ----------- | ----------------------- | ---------------- |
-| `autofocus`     | `autofocus`      |             | `boolean`               | `undefined`      |
-| `dataPropsMap`  | `data-props-map` |             | `any`                   | `undefined`      |
-| `disableSearch` | `disable-search` |             | `boolean`               | `false`          |
-| `disabled`      | `disabled`       |             | `boolean`               | `undefined`      |
-| `endpoint`      | `endpoint`       |             | `string`                | `undefined`      |
-| `iconEnd`       | `icon-end`       |             | `string`                | `undefined`      |
-| `iconStart`     | `icon-start`     |             | `string`                | `undefined`      |
-| `label`         | `label`          |             | `string`                | `undefined`      |
-| `limit`         | `limit`          |             | `number`                | `5`              |
-| `mode`          | `mode`           |             | `"inline" \| "popover"` | `"inline"`       |
-| `name`          | `name`           |             | `string`                | `undefined`      |
-| `placeholder`   | `placeholder`    |             | `string`                | `"Search Users"` |
-| `required`      | `required`       |             | `boolean`               | `undefined`      |
-| `results`       | --               |             | `any[]`                 | `[]`             |
-| `template`      | --               |             | `(result: any) => any`  | `undefined`      |
-| `value`         | `value`          |             | `any`                   | `undefined`      |
+| Property        | Attribute        | Description | Type                          | Default          |
+| --------------- | ---------------- | ----------- | ----------------------------- | ---------------- |
+| `autofocus`     | `autofocus`      |             | `boolean`                     | `undefined`      |
+| `dataPropsMap`  | `data-props-map` |             | `any`                         | `undefined`      |
+| `disableSearch` | `disable-search` |             | `boolean`                     | `false`          |
+| `disabled`      | `disabled`       |             | `boolean`                     | `undefined`      |
+| `endpoint`      | `endpoint`       |             | `string`                      | `undefined`      |
+| `iconEnd`       | `icon-end`       |             | `string`                      | `undefined`      |
+| `iconStart`     | `icon-start`     |             | `string`                      | `undefined`      |
+| `label`         | `label`          |             | `string`                      | `undefined`      |
+| `limit`         | `limit`          |             | `number`                      | `5`              |
+| `lines`         | `lines`          |             | `"full" \| "inset" \| "none"` | `undefined`      |
+| `mode`          | `mode`           |             | `"inline" \| "popover"`       | `"inline"`       |
+| `name`          | `name`           |             | `string`                      | `undefined`      |
+| `placeholder`   | `placeholder`    |             | `string`                      | `"Search Users"` |
+| `required`      | `required`       |             | `boolean`                     | `undefined`      |
+| `results`       | --               |             | `any[]`                       | `[]`             |
+| `template`      | --               |             | `(result: any) => any`        | `undefined`      |
+| `value`         | `value`          |             | `any`                         | `undefined`      |
 
 
 ## Events

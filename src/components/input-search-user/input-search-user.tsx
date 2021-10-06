@@ -32,6 +32,7 @@ export class InputSearchUser implements ComponentInterface {
   @Prop() limit = 5;
   @Prop() template: (result) => any;
   @Prop() results: any[] = [];
+  @Prop() lines: "full" | "inset" | "none";
 
   @Event() ionInput: EventEmitter;
   @Event() fireenjinSelectUser: EventEmitter;
@@ -57,6 +58,7 @@ export class InputSearchUser implements ComponentInterface {
   render() {
     return (
       <fireenjin-input-search
+        lines={this.lines}
         iconEnd={this.iconEnd}
         iconStart={this.iconStart}
         mode={this.mode}
