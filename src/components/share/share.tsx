@@ -22,6 +22,7 @@ export class Share implements ComponentInterface {
   @Prop() url: string;
   @Prop() text: string;
   @Prop() subject: string;
+  @Prop() lines: "full" | "inset" | "none";
 
   // Implementation Example
   // import { SocialSharing } from "@ionic-native/social-sharing";
@@ -88,6 +89,7 @@ export class Share implements ComponentInterface {
     return (
       <ion-list>
         <ion-item
+          lines={this.lines}
           class="share-twitter"
           onClick={(event) => this.openPopup(event, "twitter")}
         >
@@ -95,6 +97,7 @@ export class Share implements ComponentInterface {
           Share on Twitter
         </ion-item>
         <ion-item
+          lines={this.lines}
           class="share-facebook"
           onClick={(event) => this.openPopup(event, "facebook")}
         >
@@ -102,6 +105,7 @@ export class Share implements ComponentInterface {
           Share on Facebook
         </ion-item>
         <ion-item
+          lines={this.lines}
           ref={(el) => (this.copyItemEl = el)}
           class="share-clipboard"
           data-clipboard-text={this.url}

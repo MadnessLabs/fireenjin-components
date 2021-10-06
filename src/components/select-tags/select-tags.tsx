@@ -45,10 +45,11 @@ export class SelectTags implements ComponentInterface {
   @Prop() orderBy?: string;
   @Prop() orderDirection?: string;
   @Prop() dataPropsMap: any;
-  @Prop({ mutable: true }) page? = 0;
+  @Prop({ mutable: true }) page?= 0;
   @Prop({ mutable: true }) results: any[] = [];
   @Prop() fetchData?: any;
   @Prop() query?: string;
+  @Prop() lines: "full" | "inset" | "none";
 
   @State() choices: any;
   @State() hasValue = false;
@@ -99,7 +100,7 @@ export class SelectTags implements ComponentInterface {
 
     if (this.multiple) {
       try {
-        this.value = this.choices.getValue().map((choice) => 
+        this.value = this.choices.getValue().map((choice) =>
           this.options.find((option) => option.value === choice.value).value
         );
 
@@ -254,37 +255,30 @@ export class SelectTags implements ComponentInterface {
             },
             item: (classNames, data) => {
               return template(`
-                      <div class="${classNames.item} ${
-                data.highlighted
+                      <div class="${classNames.item} ${data.highlighted
                   ? classNames.highlightedState
                   : classNames.itemSelectable
-              }" data-item data-deletable data-id="${data.id}" data-value="${
-                data.value
-              }" ${data.active ? 'aria-selected="true"' : ""} ${
-                data.disabled ? 'aria-disabled="true"' : ""
-              }>
+                }" data-item data-deletable data-id="${data.id}" data-value="${data.value
+                }" ${data.active ? 'aria-selected="true"' : ""} ${data.disabled ? 'aria-disabled="true"' : ""
+                }>
                         <p class="choice-label-text">${data.label}</p>
-                        ${
-                          this.multiple
-                            ? `<ion-icon name="close-circle" data-button />`
-                            : ""
-                        }
+                        ${this.multiple
+                  ? `<ion-icon name="close-circle" data-button />`
+                  : ""
+                }
                       </div>
                     `);
             },
             choice: (classNames, data) => {
               return template(`
-                      <div class="${classNames.item} ${classNames.itemChoice} ${
-                data.disabled
+                      <div class="${classNames.item} ${classNames.itemChoice} ${data.disabled
                   ? classNames.itemDisabled
                   : classNames.itemSelectable
-              }" data-choice ${
-                data.disabled
+                }" data-choice ${data.disabled
                   ? 'data-choice-disabled aria-disabled="true"'
                   : "data-choice-selectable"
-              } data-id="${data.id}" data-value="${data.value}" ${
-                data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
-              }>
+                } data-id="${data.id}" data-value="${data.value}" ${data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
+                }>
                         <p class="choice-label-text">${data.label}</p>
                       </div>
                     `);
@@ -315,7 +309,7 @@ export class SelectTags implements ComponentInterface {
   render() {
     const OptionEl: any = "option";
     return (
-      <ion-item ref={(el) => (this.itemEl = el)} lines="full">
+      <ion-item ref={(el) => (this.itemEl = el)} lines={this.lines}>
         {this.label && <ion-label position="stacked">{this.label}</ion-label>}
         <select
           disabled={this.disabled}
