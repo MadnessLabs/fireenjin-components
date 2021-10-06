@@ -1,5 +1,5 @@
 import { Color } from "@ionic/core";
-import { Build, Component, h, Prop } from "@stencil/core";
+import { Component, h, Prop } from "@stencil/core";
 
 @Component({
   tag: "fireenjin-toggle",
