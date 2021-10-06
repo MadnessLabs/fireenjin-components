@@ -15,10 +15,11 @@ export class Toggle {
    * If `true`, the user cannot interact with the select.
    */
   @Prop() disabled = false;
+  @Prop() lines: "full" | "inset" | "none";
 
   render() {
     return (
-      <ion-item>
+      <ion-item lines={this.lines}>
         <slot name="start" slot="start" />
         {this.label && <ion-label position={this.labelPosition}>{this.label}</ion-label>}
         <ion-toggle disabled={this.disabled} color={this.color} name={this.name} checked={!!this.value} />
