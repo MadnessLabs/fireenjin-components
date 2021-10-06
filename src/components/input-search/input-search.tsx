@@ -40,6 +40,7 @@ export class InputSearch implements ComponentInterface {
   @Prop() iconStart: string;
   @Prop({ mutable: true }) results: any[] = [];
   @Prop() resultsKey: string;
+  @Prop() lines: "full" | "inset" | "none";
 
   @Event() ionInput: EventEmitter;
   @Event() fireenjinFetch: EventEmitter;
@@ -160,6 +161,7 @@ export class InputSearch implements ComponentInterface {
   render() {
     return [
       <ion-item
+        lines={this.lines}
         class="search-input"
         ref={(el) => (this.itemEl = el)}
         onClick={(event) => this.onInput(event)}
