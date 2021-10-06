@@ -12,6 +12,7 @@ export class LogItem implements ComponentInterface {
   @Prop() input: string;
   @Prop() output: string;
   @Prop() createdAt: string;
+  @Prop() lines: "full" | "inset" | "none";
 
   formatDate(timestamp: string) {
     return format(new Date(Date.parse(timestamp)), "MM/dd/yyyy @ hh:mm aaa");
@@ -19,7 +20,7 @@ export class LogItem implements ComponentInterface {
 
   render() {
     return (
-      <ion-item lines="full">
+      <ion-item lines={this.lines}>
         <ion-label class="ion-text-wrap">
           <ion-grid>
             <ion-row>
