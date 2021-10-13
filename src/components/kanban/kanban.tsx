@@ -1,5 +1,5 @@
 import { Build, Component, ComponentInterface, Element, Prop, h, Host } from "@stencil/core";
-import * as jKanban from "jkanban";
+// import * as jKanban from "jkanban";
 
 @Component({
   tag: "fireenjin-kanban",
@@ -13,10 +13,10 @@ export class Kanban implements ComponentInterface {
 
   componentDidLoad() {
     if (Build.isBrowser) {
-      this.kanban = new jKanban({
-        element: this.kanbanEl,
-        ...(this.options || {})
-      });
+      // this.kanban = new jKanban({
+      //   element: this.kanbanEl,
+      //   ...(this.options || {})
+      // });
     }
   }
 
