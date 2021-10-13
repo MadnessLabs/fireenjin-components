@@ -69,7 +69,7 @@ fireenjin-radios ul li {
   font-size: 14px;
   line-height: 30px;
   text-align: left;
-  color: var(--ion-color-dark);
+  color: var(--ion-text-color);
   position: relative;
   height: 30px;
   text-indent: 30px;
