@@ -120,8 +120,8 @@ export class Form implements ComponentInterface {
   /**
    * The action to use for the form
    */
-   @Prop() action: string;
-   @Prop() apiUrl: string;
+  @Prop() action: string;
+  @Prop() apiUrl: string;
 
   /**
    * Emitted on load with endpoint
@@ -228,7 +228,7 @@ export class Form implements ComponentInterface {
    */
   @Method()
   async submit(event?, options = {
-    manual: false 
+    manual: false
   }) {
     if (event) event.preventDefault();
     await this.checkFormValidity();
@@ -261,6 +261,7 @@ export class Form implements ComponentInterface {
       event.preventDefault();
     } else {
       this.formData = {};
+      this.hasChanged = false;
     }
     this.fireenjinReset.emit({
       event,
@@ -269,7 +270,6 @@ export class Form implements ComponentInterface {
       data: this.formData,
       name: this.name,
     });
-    this.hasChanged = false;
   }
 
   @Method()
@@ -283,10 +283,10 @@ export class Form implements ComponentInterface {
         !(await inputEl.checkValidity(
           !reportValidity
             ? {
-                validationClassOptions: {
-                  ignoreInvalid: true,
-                },
-              }
+              validationClassOptions: {
+                ignoreInvalid: true,
+              },
+            }
             : null
         ))
       ) {
