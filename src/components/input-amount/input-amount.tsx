@@ -134,7 +134,7 @@ export class InputAmount implements ComponentInterface {
           ref={(el) => (this.inputEl = el)}
           disabled={this.disabled}
           inputmode="decimal"
-          type="number"
+          type="tel"
           step={this.step}
           placeholder={this.placeholder}
           required={this.required}
