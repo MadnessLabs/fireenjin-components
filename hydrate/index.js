@@ -6767,7 +6767,18 @@ var isExtractableFileEnhanced = function (value) {
 function createRequestBody(query, variables, operationName) {
     var _a = _public.extractFiles({ query: query, variables: variables, operationName: operationName }, '', isExtractableFileEnhanced), clone = _a.clone, files = _a.files;
     if (files.size === 0) {
-        return JSON.stringify(clone);
+        if (!Array.isArray(query)) {
+            return JSON.stringify(clone);
+        }
+        if (typeof variables !== 'undefined' && !Array.isArray(variables)) {
+            throw new Error('Cannot create request body with given variable type, array expected');
+        }
+        // Batch support
+        var payload = query.reduce(function (accu, currentQuery, index) {
+            accu.push({ query: currentQuery, variables: variables ? variables[index] : undefined });
+            return accu;
+        }, []);
+        return JSON.stringify(payload);
     }
     var Form = typeof FormData === 'undefined' ? form_data_1.default : FormData;
     var form = new Form();
@@ -6920,7 +6931,7 @@ var __importDefault = (commonjsGlobal$1 && commonjsGlobal$1.__importDefault) || 
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gql = exports.request = exports.rawRequest = exports.GraphQLClient = exports.ClientError = void 0;
+exports.gql = exports.batchRequests = exports.request = exports.rawRequest = exports.GraphQLClient = exports.ClientError = void 0;
 var cross_fetch_1 = __importStar(browserPonyfill), CrossFetch = cross_fetch_1;
 
 var createRequestBody_1$1 = __importDefault(createRequestBody_1);
@@ -6950,6 +6961,47 @@ var resolveHeaders = function (headers) {
     return oHeaders;
 };
 /**
+ * Clean a GraphQL document to send it via a GET query
+ *
+ * @param {string} str GraphQL query
+ * @returns {string} Cleaned query
+ */
+var queryCleanner = function (str) { return str.replace(/([\s,]|#[^\n\r]+)+/g, ' ').trim(); };
+/**
+ * Create query string for GraphQL request
+ *
+ * @param {object} param0 -
+ *
+ * @param {string|string[]} param0.query the GraphQL document or array of document if it's a batch request
+ * @param {string|undefined} param0.operationName the GraphQL operation name
+ * @param {any|any[]} param0.variables the GraphQL variables to use
+ */
+var buildGetQueryParams = function (_a) {
+    var query = _a.query, variables = _a.variables, operationName = _a.operationName;
+    if (!Array.isArray(query)) {
+        var search = ["query=" + encodeURIComponent(queryCleanner(query))];
+        if (variables) {
+            search.push("variables=" + encodeURIComponent(JSON.stringify(variables)));
+        }
+        if (operationName) {
+            search.push("operationName=" + encodeURIComponent(operationName));
+        }
+        return search.join('&');
+    }
+    if (typeof variables !== 'undefined' && !Array.isArray(variables)) {
+        throw new Error('Cannot create query with given variable type, array expected');
+    }
+    // Batch support
+    var payload = query.reduce(function (accu, currentQuery, index) {
+        accu.push({
+            query: queryCleanner(currentQuery),
+            variables: variables ? JSON.stringify(variables[index]) : undefined,
+        });
+        return accu;
+    }, []);
+    return "query=" + encodeURIComponent(JSON.stringify(payload));
+};
+/**
  * Fetch data using POST method
  */
 var post = function (_a) {
@@ -6972,18 +7024,16 @@ var post = function (_a) {
 var get = function (_a) {
     var url = _a.url, query = _a.query, variables = _a.variables, operationName = _a.operationName, headers = _a.headers, fetch = _a.fetch, fetchOptions = _a.fetchOptions;
     return __awaiter(void 0, void 0, void 0, function () {
-        var search;
+        var queryParams;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    search = ["query=" + encodeURIComponent(query.replace(/([\s,]|#[^\n\r]+)+/g, ' ').trim())];
-                    if (variables) {
-                        search.push("variables=" + encodeURIComponent(JSON.stringify(variables)));
-                    }
-                    if (operationName) {
-                        search.push("operationName=" + encodeURIComponent(operationName));
-                    }
-                    return [4 /*yield*/, fetch(url + "?" + search.join('&'), __assign({ method: 'GET', headers: headers }, fetchOptions))];
+                    queryParams = buildGetQueryParams({
+                        query: query,
+                        variables: variables,
+                        operationName: operationName,
+                    });
+                    return [4 /*yield*/, fetch(url + "?" + queryParams, __assign({ method: 'GET', headers: headers }, fetchOptions))];
                 case 1: return [2 /*return*/, _b.sent()];
             }
         });
@@ -7040,6 +7090,42 @@ var GraphQLClient = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Send a GraphQL document to the server.
+     */
+    GraphQLClient.prototype.batchRequests = function (documents, requestHeaders) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, headers, _b, fetch, _c, method, fetchOptions, url, queries, variables, data;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _a = this.options, headers = _a.headers, _b = _a.fetch, fetch = _b === void 0 ? cross_fetch_1.default : _b, _c = _a.method, method = _c === void 0 ? 'POST' : _c, fetchOptions = __rest(_a, ["headers", "fetch", "method"]);
+                        url = this.url;
+                        queries = documents.map(function (_a) {
+                            var document = _a.document;
+                            return resolveRequestDocument(document).query;
+                        });
+                        variables = documents.map(function (_a) {
+                            var variables = _a.variables;
+                            return variables;
+                        });
+                        return [4 /*yield*/, makeRequest({
+                                url: url,
+                                query: queries,
+                                variables: variables,
+                                headers: __assign(__assign({}, resolveHeaders(headers)), resolveHeaders(requestHeaders)),
+                                operationName: undefined,
+                                fetch: fetch,
+                                method: method,
+                                fetchOptions: fetchOptions,
+                            })];
+                    case 1:
+                        data = (_d.sent()).data;
+                        return [2 /*return*/, data];
+                }
+            });
+        });
+    };
     GraphQLClient.prototype.setHeaders = function (headers) {
         this.options.headers = headers;
         return this;
@@ -7060,17 +7146,25 @@ var GraphQLClient = /** @class */ (function () {
         }
         return this;
     };
+    /**
+     * Change the client endpoint. All subsequent requests will send to this endpoint.
+     */
+    GraphQLClient.prototype.setEndpoint = function (value) {
+        this.url = value;
+        return this;
+    };
     return GraphQLClient;
 }());
 exports.GraphQLClient = GraphQLClient;
 function makeRequest(_a) {
     var url = _a.url, query = _a.query, variables = _a.variables, headers = _a.headers, operationName = _a.operationName, fetch = _a.fetch, _b = _a.method, method = _b === void 0 ? 'POST' : _b, fetchOptions = _a.fetchOptions;
     return __awaiter(this, void 0, void 0, function () {
-        var fetcher, response, result, headers_1, status_1, errorResult;
+        var fetcher, isBathchingQuery, response, result, successfullyReceivedData, headers_1, status_1, errorResult;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     fetcher = method.toUpperCase() === 'POST' ? post : get;
+                    isBathchingQuery = Array.isArray(query);
                     return [4 /*yield*/, fetcher({
                             url: url,
                             query: query,
@@ -7085,9 +7179,13 @@ function makeRequest(_a) {
                     return [4 /*yield*/, getResult(response)];
                 case 2:
                     result = _c.sent();
-                    if (response.ok && !result.errors && result.data) {
+                    successfullyReceivedData = isBathchingQuery && Array.isArray(result) ? !result.some(function (_a) {
+                        var data = _a.data;
+                        return !data;
+                    }) : !!result.data;
+                    if (response.ok && !result.errors && successfullyReceivedData) {
                         headers_1 = response.headers, status_1 = response.status;
-                        return [2 /*return*/, __assign(__assign({}, result), { headers: headers_1, status: status_1 })];
+                        return [2 /*return*/, __assign(__assign({}, (isBathchingQuery ? { data: result } : result)), { headers: headers_1, status: status_1 })];
                     }
                     else {
                         errorResult = typeof result === 'string' ? { error: result } : result;
@@ -7154,6 +7252,50 @@ function request(url, document, variables, requestHeaders) {
     });
 }
 exports.request = request;
+/**
+ * Send a batch of GraphQL Document to the GraphQL server for exectuion.
+ *
+ * @example
+ *
+ * ```ts
+ * // You can pass a raw string
+ *
+ * await batchRequests('https://foo.bar/graphql', [
+ * {
+ *  query: `
+ *   {
+ *     query {
+ *       users
+ *     }
+ *   }`
+ * },
+ * {
+ *   query: `
+ *   {
+ *     query {
+ *       users
+ *     }
+ *   }`
+ * }])
+ *
+ * // You can also pass a GraphQL DocumentNode as query. Convenient if you
+ * // are using graphql-tag package.
+ *
+ * import gql from 'graphql-tag'
+ *
+ * await batchRequests('https://foo.bar/graphql', [{ query: gql`...` }])
+ * ```
+ */
+function batchRequests(url, documents, requestHeaders) {
+    return __awaiter(this, void 0, void 0, function () {
+        var client;
+        return __generator(this, function (_a) {
+            client = new GraphQLClient(url);
+            return [2 /*return*/, client.batchRequests(documents, requestHeaders)];
+        });
+    });
+}
+exports.batchRequests = batchRequests;
 exports.default = request;
 /**
  * todo
@@ -16644,7 +16786,9 @@ async function setComponentProps(dataPropsMap, data) {
     const dataKeys = Object.keys(dataPropsMap);
     for (const key of dataKeys) {
       try {
-        newData[dataPropsMap[key]] = key.split(".").reduce((o, i) => o[i], data);
+        newData[dataPropsMap[key]] = key
+          .split(".")
+          .reduce((o, i) => o[i], data);
       }
       catch (e) {
         continue;
@@ -16664,7 +16808,10 @@ if (window && !window.FireEnjin) {
       sdk = getSdk(client);
       window.addEventListener("fireenjinUpload", async (event) => {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-        if (!((_b = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.encodedContent))
+        if (typeof (options === null || options === void 0 ? void 0 : options.onUpload) === "function")
+          options.onUpload(event);
+        if (!((_b = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.encodedContent) ||
+          typeof (options === null || options === void 0 ? void 0 : options.onUpload) === "function")
           return false;
         try {
           const response = await fetch(options.uploadUrl
@@ -23812,6 +23959,7 @@ class Form {
     }
     else {
       this.formData = {};
+      this.hasChanged = false;
     }
     this.fireenjinReset.emit({
       event,
@@ -23820,7 +23968,6 @@ class Form {
       data: this.formData,
       name: this.name,
     });
-    this.hasChanged = false;
   }
   async checkFormValidity(reportValidity = true) {
     let isValid = true;
@@ -35776,7 +35923,7 @@ var registerWrapper = function registerWrapper(stripe, startTime) {
 
   stripe._registerWrapper({
     name: 'stripe-js',
-    version: "1.19.1",
+    version: "1.20.3",
     startTime: startTime
   });
 };
@@ -36614,7 +36761,7 @@ class InputAmount {
         ? preset.label
         : (preset === null || preset === void 0 ? void 0 : preset.value)
           ? preset.value
-          : ""))))), hAsync("ion-input", { min: this.min, max: this.max, ref: (el) => (this.inputEl = el), disabled: this.disabled, inputmode: "decimal", type: "number", step: this.step, placeholder: this.placeholder, required: this.required, autofocus: this.autofocus, value: this.formattedValue })));
+          : ""))))), hAsync("ion-input", { min: this.min, max: this.max, ref: (el) => (this.inputEl = el), disabled: this.disabled, inputmode: "decimal", type: "tel", step: this.step, placeholder: this.placeholder, required: this.required, autofocus: this.autofocus, value: this.formattedValue })));
   }
   static get watchers() { return {
     "value": ["onValueChange"]
@@ -36820,6 +36967,72 @@ class InputJson {
   }; }
 }
 
+async function resizeImage(base64image, width = 1080, height = 1080) {
+  return new Promise((resolve, reject) => {
+    try {
+      let img = new Image();
+      img.src = base64image;
+      img.onload = () => {
+        let base64ResizedImage;
+        // Check if the image require resize at all
+        if (img.height <= height && img.width <= width) {
+          base64ResizedImage = base64image;
+          // TODO: Call method to do something with the resize image
+        }
+        else {
+          // Make sure the width and height preserve the original aspect ratio and adjust if needed
+          if (img.height > img.width) {
+            width = Math.floor(height * (img.width / img.height));
+          }
+          else {
+            height = Math.floor(width * (img.height / img.width));
+          }
+          let resizingCanvas = document.createElement("canvas");
+          let resizingCanvasContext = resizingCanvas.getContext("2d");
+          // Start with original image size
+          resizingCanvas.width = img.width;
+          resizingCanvas.height = img.height;
+          // Draw the original image on the (temp) resizing canvas
+          resizingCanvasContext.drawImage(img, 0, 0, resizingCanvas.width, resizingCanvas.height);
+          let curImageDimensions = {
+            width: Math.floor(img.width),
+            height: Math.floor(img.height),
+          };
+          let halfImageDimensions = {
+            width: null,
+            height: null,
+          };
+          // Quickly reduce the dize by 50% each time in few iterations until the size is less then
+          // 2x time the target size - the motivation for it, is to reduce the aliasing that would have been
+          // created with direct reduction of very big image to small image
+          while (curImageDimensions.width * 0.5 > width) {
+            // Reduce the resizing canvas by half and refresh the image
+            halfImageDimensions.width = Math.floor(curImageDimensions.width * 0.5);
+            halfImageDimensions.height = Math.floor(curImageDimensions.height * 0.5);
+            resizingCanvasContext.drawImage(resizingCanvas, 0, 0, curImageDimensions.width, curImageDimensions.height, 0, 0, halfImageDimensions.width, halfImageDimensions.height);
+            curImageDimensions.width = halfImageDimensions.width;
+            curImageDimensions.height = halfImageDimensions.height;
+          }
+          // Now do final resize for the resizingCanvas to meet the dimension requirments
+          // directly to the output canvas, that will output the final image
+          let outputCanvas = document.createElement("canvas");
+          let outputCanvasContext = outputCanvas.getContext("2d");
+          outputCanvas.width = width;
+          outputCanvas.height = height;
+          outputCanvasContext.drawImage(resizingCanvas, 0, 0, curImageDimensions.width, curImageDimensions.height, 0, 0, width, height);
+          // output the canvas pixels as an image. params: format, quality
+          base64ResizedImage = outputCanvas.toDataURL("image/jpeg", 1);
+          // TODO: Call method to do something with the resize image
+        }
+        resolve(base64ResizedImage);
+      };
+    }
+    catch (error) {
+      reject("Error resizing image!");
+    }
+  });
+}
+
 const inputPhotoCss = "fireenjin-input-photo .upload-wrapper{display:block;margin:0 auto;height:150px;width:150px;position:relative}fireenjin-input-photo .upload-wrapper .photo{position:relative;background:var(--ion-color-medium);border-radius:4px;border:2px solid var(--ion-color-light);height:150px;width:150px;margin:0 auto;display:block;background-repeat:no-repeat;background-size:cover;background-position:center;color:var(--ion-color-medium);font-size:75px;line-height:150px;text-align:center;font-weight:bolder}fireenjin-input-photo .upload-wrapper .photo.is-loading:before{border-radius:4px}fireenjin-input-photo .upload-wrapper .photo.is-loading:after{border-radius:4px}fireenjin-input-photo .upload-wrapper .photo:hover{cursor:pointer;border-color:var(--ion-color-primary)}fireenjin-input-photo input[type=\"file\"]{height:0;width:0;visibility:hidden;opacity:0;pointer-events:none;float:left}";
 
 class InputPhoto {
@@ -36851,6 +37064,10 @@ class InputPhoto {
      * Allow uploading multiple
      */
     this.multiple = false;
+    /**
+     * Resize photos before uploading
+     */
+    this.resize = false;
   }
   onSuccess(event) {
     if (event.detail.endpoint !== "upload" || event.detail.name !== this.name)
@@ -36884,7 +37101,10 @@ class InputPhoto {
     fileInputEl.click();
   }
   selectFile(event) {
-    this.uploadPhoto(event.target.files[0]);
+    var _a;
+    for (const file of ((_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.files) || []) {
+      this.uploadPhoto(file);
+    }
   }
   uploadPhoto(file) {
     this.loading = true;
@@ -36906,7 +37126,7 @@ class InputPhoto {
           id: this.documentId,
           type: this.type,
           path: this.path,
-          file,
+          file: this.resize ? resizeImage(file) : file,
           fileName: this.fileName,
           encodedContent: event.target.result,
         },
@@ -36954,6 +37174,7 @@ class InputPhoto {
       "endpoint": [1],
       "initials": [1],
       "multiple": [4],
+      "resize": [4],
       "loading": [1028],
       "photoUrl": [32],
       "triggerFileInput": [64]

@@ -18,6 +18,7 @@
 | `multiple`   | `multiple`    | Allow uploading multiple                         | `boolean` | `false`        |
 | `name`       | `name`        | The name to use when emitting field change event | `string`  | `undefined`    |
 | `path`       | `path`        | The storage path to upload the file to           | `string`  | `undefined`    |
+| `resize`     | `resize`      | Resize photos before uploading                   | `boolean` | `false`        |
 | `showButton` | `show-button` | Should the photo uploader show the button        | `boolean` | `false`        |
 | `type`       | `type`        | The type of photo being uploaded                 | `string`  | `"photo"`      |
 | `value`      | `value`       | A link to the photo to display                   | `string`  | `undefined`    |

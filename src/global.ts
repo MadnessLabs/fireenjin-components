@@ -4,19 +4,21 @@ import localforage from "localforage";
 import isEqual from "lodash/fp/isEqual";
 
 async function setComponentProps(dataPropsMap, data) {
-    let newData = data ? data : {};
-    if (dataPropsMap) {
-        const dataKeys = Object.keys(dataPropsMap);
-        for (const key of dataKeys) {
-            try {
-                newData[dataPropsMap[key]] = key.split(".").reduce((o, i) => o[i], data);
-            } catch (e) {
-                continue;
-            }
-        }
+  let newData = data ? data : {};
+  if (dataPropsMap) {
+    const dataKeys = Object.keys(dataPropsMap);
+    for (const key of dataKeys) {
+      try {
+        newData[dataPropsMap[key]] = key
+          .split(".")
+          .reduce((o, i) => o[i], data);
+      } catch (e) {
+        continue;
+      }
     }
+  }
 
-    return newData;
+  return newData;
 }
 
 if (window && !(window as any).FireEnjin) {
@@ -29,6 +31,7 @@ if (window && !(window as any).FireEnjin) {
         token?: string;
         onError?: (error) => void;
         onSuccess?: (data) => void;
+        onUpload?: (data) => void;
         headers?: any;
         functionsHost?: string;
         uploadUrl?: string;
@@ -46,7 +49,12 @@ if (window && !(window as any).FireEnjin) {
       sdk = getSdk(client);
 
       window.addEventListener("fireenjinUpload", async (event: any) => {
-        if (!event.detail?.data?.encodedContent) return false;
+        if (typeof options?.onUpload === "function") options.onUpload(event);
+        if (
+          !event.detail?.data?.encodedContent ||
+          typeof options?.onUpload === "function"
+        )
+          return false;
         try {
           const response = await fetch(
             options.uploadUrl
@@ -74,7 +82,10 @@ if (window && !(window as any).FireEnjin) {
             new CustomEvent("fireenjinSuccess", {
               detail: {
                 event: event.detail.event,
-                data: await setComponentProps(event?.detail?.dataPropsMap, data),
+                data: await setComponentProps(
+                  event?.detail?.dataPropsMap,
+                  data
+                ),
                 target: event.target,
                 name: event.detail.name,
                 endpoint: event.detail.endpoint,
@@ -122,7 +133,10 @@ if (window && !(window as any).FireEnjin) {
             new CustomEvent("fireenjinSuccess", {
               detail: {
                 event: event.detail?.event,
-                data: await setComponentProps(event?.detail?.dataPropsMap, data),
+                data: await setComponentProps(
+                  event?.detail?.dataPropsMap,
+                  data
+                ),
                 target: event.target,
                 name: event.detail.name,
                 endpoint: event.detail.endpoint,
@@ -178,7 +192,10 @@ if (window && !(window as any).FireEnjin) {
           try {
             cachedData = await localforage.getItem(localKey);
             if (cachedData) {
-              const data = await setComponentProps(event?.detail?.dataPropsMap, cachedData);
+              const data = await setComponentProps(
+                event?.detail?.dataPropsMap,
+                cachedData
+              );
               document.body.dispatchEvent(
                 new CustomEvent("fireenjinSuccess", {
                   detail: {
@@ -208,7 +225,10 @@ if (window && !(window as any).FireEnjin) {
             ? await client.request(event.detail.query, event.detail.params)
             : await sdk[event.detail.endpoint](event.detail.params);
 
-          const data = await setComponentProps(event?.detail?.dataPropsMap, response);
+          const data = await setComponentProps(
+            event?.detail?.dataPropsMap,
+            response
+          );
 
           if (options.onSuccess && typeof options.onSuccess === "function") {
             options.onSuccess(response);

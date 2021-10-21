@@ -11,6 +11,7 @@ import {
   Watch,
   h,
 } from "@stencil/core";
+import resizeImage from "../../helpers/resizeImage";
 
 @Component({
   tag: "fireenjin-input-photo",
@@ -71,6 +72,10 @@ export class InputPhoto implements ComponentInterface {
    * Allow uploading multiple
    */
   @Prop() multiple = false;
+  /**
+   * Resize photos before uploading
+   */
+  @Prop() resize = false;
 
   @Prop({ mutable: true }) loading: boolean;
   @State() photoUrl: string;
@@ -145,7 +150,7 @@ export class InputPhoto implements ComponentInterface {
           id: this.documentId,
           type: this.type,
           path: this.path,
-          file,
+          file: this.resize ? resizeImage(file) : file,
           fileName: this.fileName,
           encodedContent: event.target.result,
         },
