@@ -120,7 +120,9 @@ export class InputPhoto implements ComponentInterface {
   }
 
   selectFile(event) {
-    this.uploadPhoto(event.target.files[0]);
+    for (const file of event?.target?.files || []) {
+      this.uploadPhoto(file);
+    }
   }
 
   uploadPhoto(file) {
